@@ -53,8 +53,38 @@
               </div>
 
           </div>
-          <div class="col-12 mt-3">
-              <h5 class="text-center">MEJA <b class="text-primary">
+          <div class="container">
+                  <ul class="d-flex justify-content-center g-3 list-unstyled p-0 m-2">
+                      <li class="d-lg-none">
+                          <a href="#" class="p-2 mx-2 text-decoration-none">
+                              <i class="fa-regular fa-file-lines fa-md me-2"></i>
+                          </a>
+                          <span>
+                              <h6 class="text-center"></h6>
+                          </span>
+                      </li>
+                      <li class="d-lg-none">
+                          <a href="#" class="p-2 mx-2 text-decoration-none" data-bs-toggle="offcanvas"
+                              data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
+                              <i class="fa-solid fa-cart-shopping fa-md me-2"></i>
+                              <span class="badge rounded-circle bg-primary">
+                                  {{ $total_item }}
+                              </span>
+                          </a>
+                      </li>
+                      <li class="d-lg-none">
+                          <a href="#" class="p-2 mx-2 text-decoration-none" data-bs-toggle="offcanvas"
+                              data-bs-target="#offcanvasSearch" aria-controls="offcanvasSearch">
+                              <i class="fa-solid fa-magnifying-glass fa-md me-2"></i>
+                              <span>
+                                  <h6 class="mt-0 text-center"></h6>
+                              </span>
+                          </a>
+                      </li>
+                  </ul>
+              </div>
+          <div class="col-12 mt-0">
+              <h5 class="text-center">MEJA 1 <b class="text-primary">
                       @if (session()->has('nomor_meja'))
                           <div class="alert alert-info">
                               Anda memesan dari <strong> Meja {{ session('nomor_meja') }}</strong>
@@ -65,50 +95,7 @@
                   @else
                   @endif
               </h5>
-              <div class="container-fluid">
-                  <ul class="row justify-content-center g-3 list-unstyled p-0 m-0">
-                      <!-- Item Desktop -->
-                      <li class="col-12 col-lg-none col-lg-auto text-center d-lg-none">
-                          <a href="{{ route('login') }}"
-                              class="d-flex align-items-center justify-content-center p-3 rounded text-decoration-none bg-primary text-dark">
-                              <i class="fa-regular fa-file-lines fa-lg me-2"></i>
-                              <span>
-                                  <h6 class="mt-2">Riwayat</h6>
-                              </span>
-                          </a>
-                      </li>
-
-                      <!-- Item Mobile - Keranjang -->
-                      <li class="col-md-6 col-lg-6 col-sm-6 col-lg-none text-center d-lg-none ">
-                        
-                              <a href="#"
-                                  class="d-flex align-items-center justify-content-center p-3 rounded text-decoration-none bg-light text-dark"
-                                  data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart">
-                                  <i class="fa-solid fa-cart-shopping fa-lg me-2"></i>
-                                  <span>
-                                      <h6 class="mt-2">Keranjang 
-                                        <span class="badge bg-primary">
-                                            {{ $total_item }}
-                                        </span></h6>
-                                  </span>
-                              </a>
-                    
-                      </li>
-
-                      <!-- Item Mobile - Pencarian -->
-                      <li class="col-md-6 col-lg-6 col-sm-6 col-lg-none text-center d-lg-none ">
-                          <a href="#"
-                              class="d-flex align-items-center justify-content-center p-3 rounded text-decoration-none bg-light text-dark"
-                              data-bs-toggle="offcanvas" data-bs-target="#offcanvasSearch">
-                              <i class="fa-solid fa-magnifying-glass fa-lg me-2"></i>
-
-                              <span>
-                                  <h6 class="mt-2">Pencarian</h6>
-                              </span>
-                          </a>
-                      </li>
-                  </ul>
-              </div>
+              
           </div>
 
           <div class="col">
@@ -119,41 +106,5 @@
       </div>
 
       </div>
-      <div class="container-fluid">
-          <div class="row py-3">
-
-              {{-- buttonnnn --}}
-              <div class="d-flex  justify-content-center justify-content-sm-between align-items-center">
-                  <nav class="main-menu d-flex navbar navbar-expand-lg">
-
-                      {{-- <button class="navbar-toggler " type="button" data-bs-toggle="offcanvas"
-                          data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
-                          <span class="navbar-toggler-icon"></span>
-                      </button>
-
-                      <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar"
-                          aria-labelledby="offcanvasNavbarLabel">
-
-                          <div class="offcanvas-header justify-content-center">
-                              <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
-                                  aria-label="Close"></button>
-
-                          </div>
-                          <div class="offcanvas-header justify-content-center">
-                              <ul class="navbar-nav justify-content-end menu-list list-unstyled d-flex gap-md-3 mb-0">
-                                  <span><b>Kategori</b></span>
-                                  <hr class="mb-4">
-                                  @foreach ($kategori as $item)
-                                      <li class="nav-item active">
-                                          <a href="#women" class="nav-link">- {{ $item->nama }}</a>
-                                      </li>
-                                  @endforeach
-                              </ul>
-                          </div>
-                      </div> --}}
-              </div>
-
-          </div>
-
-      </div>
+     
   </header>
