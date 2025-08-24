@@ -20,7 +20,7 @@ use App\Http\Controllers\backsite_barista\RiwayatPesanController;
 use App\Http\Controllers\backsite_kasir\DashboardKasirController;
 use App\Http\Controllers\backsite_admin\halamanDashboardController;
 use App\Http\Controllers\backsite_barista\DashboardBaristaController;
-
+use App\Http\Controllers\frondsite\RiwayatTransController;
 
 //scan 
 
@@ -52,7 +52,10 @@ Route::post('/midtrans/callback', [CheckoutController::class, 'receive']);
 
 //detail pemesanan 
 Route::get('/detailpemesanan/{order_id}', [CheckoutController::class, 'get_pesanan_detail'])->name('detail.pemesananuser');
-Route::post('/pesananselesai', [CheckoutController::class, 'finish_proses'])->name('pesanan.selesai');
+Route::get('/pesananselesai', [CheckoutController::class, 'pesanan_selesai'])->name('pesanan.selesai');
+
+//riwayat pesanan
+Route::get('/riwayat-pesanan',[RiwayatTransController::class, 'index'])->name('riwayat.pesananuser');
 
 
 //barista
