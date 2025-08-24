@@ -6,10 +6,15 @@
     <div class="col-md-12 col-lg-12 col-sm-12">
         <div class="row g-4">
             <div class="col-md-12 col-lg-12 col-sm-12 product-item mb-3 ">
+
                 <div class="h-100">
                     <div class="card-body mb-1">
-                        <div class="card card-header d-flex justify-content-between bg-primary align-items-center mt-2 mb-2">
-                            <h6 class="mt-2 text-white text-center">-- {{ $orders->order_id }} -- <br class="mt-3"> Status : {{ $orders->status }} </h6>
+                        <div
+                            class="card card-header d-flex justify-content-between bg-primary align-items-center mt-2 mb-2">
+
+                            <h6 class="mt-2 text-white text-center">-- {{ $orders->order_id }} -- <br class="mt-3"> Status
+                                :
+                                {{ $orders->status }} </h6>
                         </div>
                         <div class="table-responsive mt-2">
                             <table class="table table-sm table-borderless">
@@ -114,8 +119,7 @@
                         <div class="mb-3 mt-2">
                             <h6 class="d-flex justify-content-between align-items-center mt-2 mb-3">
                                 <span class="">* Pembayaran</span>
-                                <span class="badge bg-primary rounded-pill"><span
-                                        class="badge rounded-pill bg-primary">Tunai</span></span>
+                                <span class="badge bg-primary rounded-pill">Tunai</span>
                             </h6>
                             <h5 class="card-title">{{ 'Rp. ' . number_format($orders->total_harga) }}</h5>
                         </div>
@@ -145,7 +149,7 @@
                         </div>
 
                         <div class="mb-3 mt-2">
-                            <h6 class="card-title">--Catatan :</h6>
+                            <h6 class="card-title">-- Catatan :</h6>
                             <p class="text-body">
                                 {{ $orders->catatan }}
                             </p>
@@ -153,9 +157,9 @@
                     </div>
 
                 </div>
-                <div class="mt-5 mb-5">
+                <div class="mt-5 mb-2">
 
-                    <a href="/" class="col-12 btn btn-primary">Kembali</a>
+                    <a href="{{ route('pesanan.selesai') }}" class="col-12 btn btn-outline-primary">Selesai</a>
 
                 </div>
             </div>
