@@ -4,7 +4,6 @@ namespace App\Http\Controllers\frondsite;
 
 use Midtrans\Snap;
 
-
 use Midtrans\Config;
 use App\Models\kategoris;
 use Midtrans\Notification;
@@ -62,68 +61,190 @@ class CheckoutController extends Controller
         ]);
     }
 
-    public function show_snap(MidtransService $midtrans, Request $request)
-    {
-        $request->validate([
-            'nama' => 'required',
-            'opsi_gula' => 'required',
+    // public function show_snap(MidtransService $midtrans, Request $request)
+    // {
+    //     $request->validate([
+    //         'nama' => 'required',
+    //         'opsi_gula' => 'required',
 
-        ]);
+    //     ]);
 
-        $cart = session('cart', []);
+    //     $cart = session('cart', []);
 
-        $totalHarga = 0;
-        $totalItem = 0;
+    //     $totalHarga = 0;
+    //     $totalItem = 0;
 
-        foreach ($cart as $item) {
-            $totalHarga += $item['harga'] * $item['qty'];
-            $totalItem += $item['qty'];
-        }
+    //     foreach ($cart as $item) {
+    //         $totalHarga += $item['harga'] * $item['qty'];
+    //         $totalItem += $item['qty'];
+    //     }
 
-        $params = [
-            'transaction_details' => [
-                'order_id' => 'ORD-' . uniqid(),
-                'gross_amount' => $totalHarga,
-            ],
-            'customer_details' => [
-                'first_name' => $request->nama,
-                'last_name' => $request->nama,
-                'email' => 'guest@example.com',
-                'phone' => '08123456789',
-            ],
-            'enabled_payments' => [ // Opsional: batasi metode pembayaran
-                'credit_card',
-                'gopay',
-                'shopeepay',
+    //     $params = [
+    //         'transaction_details' => [
+    //             'order_id' => 'ORD-' . uniqid(),
+    //             'gross_amount' => $totalHarga,
+    //         ],
+    //         'customer_details' => [
+    //             'first_name' => $request->nama,
+    //             'last_name' => $request->nama,
+    //             'email' => 'guest@example.com',
+    //             'phone' => '08123456789',
+    //         ],
+    //         'enabled_payments' => [ // Opsional: batasi metode pembayaran
+    //             'credit_card',
+    //             'gopay',
+    //             'shopeepay',
 
-            ],
-        ];
+    //         ],
+    //     ];
 
-        try {
-            $snapToken = $midtrans->createSnapToken($params);
-            ;
+    //     try {
+    //         $snapToken = $midtrans->createSnapToken($params);
 
-            // Simpan data transaksi sementara di session
-            session()->flash('pending_order', [
-                'order_id' => $params['transaction_details']['order_id'],
-                'nama' => $request->nama,
-                'total' => $totalHarga,
-                'opsi_gula' => $request->opsi_gula,
-                'snap_token' => $snapToken
-            ]);
+    //         // Simpan data transaksi sementara di session
+    //         session()->flash('pending_order', [
+    //             'order_id' => $params['transaction_details']['order_id'],
+    //             'nama' => $request->nama,
+    //             'total' => $totalHarga,
+    //             'opsi_gula' => $request->opsi_gula,
+    //             'snap_token' => $snapToken
+    //         ]);
 
-            return response()->json([
-                'status' => 'success',
-                'snap_token' => $snapToken,
-                'order_id' => $params['transaction_details']['order_id']
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Gagal memproses pembayaran: ' . $e->getMessage()
-            ], 500);
-        }
-    }
+    //         return response()->json([
+    //             'status' => 'success',
+    //             'snap_token' => $snapToken,
+    //             'order_id' => $params['transaction_details']['order_id']
+    //         ]);
+    //     } catch (\Exception $e) {
+    //         return response()->json([
+    //             'status' => 'error',
+    //             'message' => 'Gagal memproses pembayaran: ' . $e->getMessage()
+    //         ], 500);
+    //     }
+    // }
+
+    // public function proses(MidtransService $midtransService, Request $request)
+    // {
+    //     $request->validate([
+    //         'nama' => 'required|string|max:255',
+    //         'opsi_gula' => 'required|in:Normal,Less,Tanpa Gula',
+    //         'metode' => 'required|in:tunai,midtrans',
+    //         'catatan' => 'nullable|string'
+    //     ]);
+
+    //     // Hitung total dari cart
+    //     $cart = session('cart', []);
+    //     $totalHarga = 0;
+    //     $totalItem = 0;
+
+    //     foreach ($cart as $item) {
+    //         $totalHarga += $item['harga'] * $item['qty'];
+    //         $totalItem += $item['qty'];
+    //     }
+
+    //     //untuk midtrans
+    //     $itemDetails = [];
+    //     foreach ($cart as $id => $item) {
+    //         $itemDetails[] = [
+    //             'id' => $id,
+    //             'name' => $item['nama'],
+    //             'price' => $item['harga'],
+    //             'quantity' => $item['qty'],
+
+    //         ];
+    //     }
+
+    //     //simpan kedatabase order
+    //     $order = orders::create([
+    //         'order_id' => 'ORD-' . uniqid(),
+    //         'nama' => $request->nama,
+    //         'meja_id' => 1,
+    //         'waktu_pesan' => now(),
+    //         'status' => 'pending',
+    //         'payment_status' => 'unpaid',
+    //         'opsi' => $request->opsi_gula,
+    //         'catatan' => $request->catatan,
+    //         'total_harga' => $totalHarga
+    //     ]);
+
+    //     //simpan ke orders item
+
+    //     if ($request->metode === 'tunai') {
+    //         $order->pembayaran()->create([
+    //             'orders_id'      => $order->id,
+    //             'metode'        => 'tunai',
+    //             'jumlah_bayar'  => $totalHarga,
+    //             'status'        => 'Menunggu',
+    //             'waktu_bayar'   => now()
+    //         ]);
+    //     } else {
+    //         $order->pembayaran()->create([
+    //             'orders_id'      => $order->id,
+    //             'metode'        => 'transfer',
+    //             'jumlah_bayar'  => $totalHarga,
+    //             'status'        => 'Menunggu',
+    //             'waktu_bayar'   => now()
+    //         ]);
+    //     }
+
+
+    //     // Jika metode midtrans, generate snap token
+    //     if ($request->metode === 'midtrans') {
+
+
+    //         try {
+    //             $params = [
+    //                 'transaction_details' => [
+    //                     'order_id' => $order->id,
+    //                     'gross_amount' => $totalHarga,
+    //                 ],
+    //                 'customer_details' => [
+    //                     'first_name' => $request->nama,
+    //                     'email' => 'guest@example.com',
+    //                     'phone' => '08123456789',
+    //                 ],
+    //                 'item_details' => $itemDetails,
+    //                 'enabled_payments' => [
+    //                     'gopay',
+    //                     'shopeepay',
+    //                     'bank_transfer',
+    //                     'bca_va',
+    //                     'bni_va',
+    //                     'bri_va',
+    //                 ],
+    //             ];
+
+    //             $snapToken = $midtransService->getSnapToken($params);
+
+    //             // Update order dengan data midtrans
+    //             $order->update([
+    //                 'midtrans_order_id' => $order->id,
+    //                 'midtrans_response' => json_encode(['snap_token' => $snapToken])
+    //             ]);
+
+    //             return response()->json([
+    //                 'status' => 'success',
+    //                 'snap_token' => $snapToken,
+    //                 'order_id' => $order->id
+    //             ]);
+    //         } catch (\Exception $e) {
+    //             $order->update(['payment_status' => 'failed']);
+
+    //             return response()->json([
+    //                 'status' => 'error',
+    //                 'message' => 'Gagal memproses pembayaran: ' . $e->getMessage()
+    //             ], 500);
+    //         }
+    //     }
+
+    //     // Jika metode tunai
+    //     return response()->json([
+    //         'status' => 'success',
+    //         'order_id' => $order->id,
+    //         'message' => 'Order berhasil dibuat. Silakan bayar di kasir.'
+    //     ]);
+    // }
+
     public function proses(MidtransService $midtransService, Request $request)
     {
         $request->validate([
@@ -143,99 +264,119 @@ class CheckoutController extends Controller
             $totalItem += $item['qty'];
         }
 
-        //untuk midtrans
-        $itemDetails = [];
-        foreach ($cart as $id => $item) {
-            $itemDetails[] = [
-                'id' => $id,
-                'name' => $item['nama'],
-                'price' => $item['harga'],
-                'quantity' => $item['qty'],
-
-            ];
-        }
-
-        //simpan kedatabase order
+        // simpan order ke database
         $order = orders::create([
-            'order_id' => 'ORD-' . uniqid(),
-            'nama' => $request->nama,
-            'meja_id' => 1,
-            'waktu_pesan' => now(),
-            'status' => 'pending',
+            'order_id'       => 'ORD-' . uniqid(),
+            'nama'           => $request->nama,
+            'meja_id'        => 1,
+            'waktu_pesan'    => now(),
+            'status'         => 'pending',
             'payment_status' => 'unpaid',
-            'opsi' => $request->opsi_gula,
-            'catatan' => $request->catatan,
-            'total_harga' => $totalHarga
+            'opsi'           => $request->opsi_gula,
+            'catatan'        => $request->catatan,
+            'total_harga'    => $totalHarga
         ]);
 
-        //simpan ke orders item
+        // simpan order items
         foreach ($cart as $item) {
             $order->items()->create([
-                'order_id' => $order->id,
-                'menu_id' => $item['id'],
-                'nama_menu' => $item['nama'],
-                'sub_total' => $totalHarga,
-                'qty' => $item['qty'],
-                'status' => 'Proses'
-
+                'order_id'      => $order->id,
+                'menu_id'       => $item['id'],
+                'nama_menu'     => $item['nama'],
+                'sub_total'     => $item['harga'] * $item['qty'],
+                'qty'           => $item['qty'],
+                'status'        => 'Proses'
             ]);
         }
 
-        // Jika metode midtrans, generate snap token
-        if ($request->metode === 'midtrans') {
-            try {
-                $params = [
-                    'transaction_details' => [
-                        'order_id' => $order->id,
-                        'gross_amount' => $totalHarga,
-                    ],
-                    'customer_details' => [
-                        'first_name' => $request->nama,
-                        'email' => 'guest@example.com',
-                        'phone' => '08123456789',
-                    ],
-                    'item_details' => $itemDetails,
-                    'enabled_payments' => [
-                        'gopay',
-                        'shopeepay',
-                        'bank_transfer', 
-                        'bca_va', 
-                        'bni_va', 
-                        'bri_va',
-                    ],
+        // proses pembayaran
+        if ($request->metode === 'tunai') {
+            $payment = $order->pembayaran()->create([
+                'metode'       => 'tunai',
+                'jumlah_bayar' => $totalHarga,
+                'status'       => 'Menunggu',
+                'waktu_bayar'  => now(),
+            ]);
+
+            // Tambahkan return response untuk metode tunai
+            return response()->json([
+                'status'     => 'success',
+                'order_id'   => $order->id,
+                'message'    => 'Pesanan berhasil dibuat, menunggu pembayaran tunai'
+            ]);
+        } else {
+
+            // untuk midtrans
+            $payment = $order->pembayaran ? $order->pembayaran->last() : null;
+
+            // siapkan item_details untuk Midtrans (sudah kamu punya)
+            $itemDetails = [];
+            foreach ($cart as $id => $item) {
+                $itemDetails[] = [
+                    'id'       => (string) $id,
+                    'name'     => $item['nama'],
+                    'price'    => (int) $item['harga'],
+                    'quantity' => (int) $item['qty'],
                 ];
-
-                $snapToken = $midtransService->getSnapToken($params);
-
-                // Update order dengan data midtrans
-                $order->update([
-                    'midtrans_order_id' => $order->id,
-                    'midtrans_response' => json_encode(['snap_token' => $snapToken])
-                ]);
-
-                return response()->json([
-                    'status' => 'success',
-                    'snap_token' => $snapToken,
-                    'order_id' => $order->id
-                ]);
-
-            } catch (\Exception $e) {
-                $order->update(['payment_status' => 'failed']);
-
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Gagal memproses pembayaran: ' . $e->getMessage()
-                ], 500);
             }
-        }
 
-        // Jika metode tunai
-        return response()->json([
-            'status' => 'success',
-            'order_id' => $order->id,
-            'message' => 'Order berhasil dibuat. Silakan bayar di kasir.'
-        ]);
+            if ($payment === null || $payment->status === 'gagal') {
+                try {
+                    // RANGKAI PARAMS SESUAI SPEK MIDTRANS
+                    $params = [
+                        'transaction_details' => [
+                            // penting: gunakan kode unik yang kamu simpan di kolom order_id (mis. "ORD-xxxx"),
+                            // bukan $order->id agar konsisten & unik di Midtrans
+                            'order_id'     => $order->order_id,
+                            'gross_amount' => (int) $totalHarga,
+                        ],
+                        'customer_details' => [
+                            'first_name' => $request->nama,
+                            'email'      => $request->email ?? 'guest@example.com',
+                            'phone'      => $request->phone ?? '',
+                        ],
+                        'item_details'     => $itemDetails,
+                        'enabled_payments' => [
+                            'gopay',
+                            'shopeepay',
+                            'bank_transfer',
+                            'bca_va',
+                            'bni_va',
+                            'bri_va',
+                        ],
+                        // opsional: atur kedaluwarsa
+                        // 'expiry' => ['unit' => 'minutes', 'duration' => 120],
+                    ];
+
+                    // PANGGIL SERVICE DENGAN ARRAY
+                    $snapToken = $midtransService->createSnapToken($params);
+
+                    // simpan payment baru
+                    $order->pembayaran()->create([
+                        // 'snap_token'   => $snapToken,
+                        'metode'       => 'transfer',
+                        'jumlah_bayar' => $totalHarga,
+                        'status'       => 'Menunggu',
+                        'waktu_bayar'  => now(),
+                    ]);
+                } catch (\Exception $e) {
+                    return response()->json([
+                        'status'  => 'error',
+                        'message' => 'Gagal memproses pembayaran: ' . $e->getMessage(),
+                    ], 500);
+                }
+            } else {
+                $snapToken = $payment->snap_token;
+            }
+
+            return response()->json([
+                'status'     => 'success',
+                'order_id'   => $order->id,       // ini untuk URL redirect kamu
+                'snap_token' => $snapToken,       // ini untuk snap.pay()
+            ]);
+        }
     }
+
 
     public function update_qty(Request $request)
     {
@@ -372,6 +513,12 @@ class CheckoutController extends Controller
         session()->forget('cart');
 
         return redirect('/')->with('success', 'Checkout dibatalkan!.');
+    }
+    public function pesanan_selesai()
+    {
+        session()->forget('cart');
+
+        return redirect('/')->with('success', 'Pesanan selesai!');
     }
 
 
