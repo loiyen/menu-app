@@ -15,41 +15,45 @@ class DashboardKasirController extends Controller
 {
     public function index(Request $request)
     {
-        $user       = Auth::user();
-        $today      = Carbon::today();
-        $perPage    = $request->get('perPage', 20);
+        $user = Auth::user();
+        $hariIni = Carbon::today();
+        $perPage = $request->get('perPage', 20);
 
-        $orderHariIni = orders::whereDate('waktu_pesan', $today)->count();
-        $pembayaran = pembayarans::whereDate('waktu_bayar', $today);
+        // Validasi input perPage
+        $perPage = max(1, min(100, (int)$perPage));
 
-        $pembayaranTunai = (clone $pembayaran)->where('metode', 'tunai')->count();
-        $pembayaranTransfer = (clone $pembayaran)->where('metode', 'transfer')->count();
+        // Query dasar
+        $queryPesananHariIni = orders::whereDate('waktu_pesan', $hariIni);
+        $queryPembayaranHariIni = pembayarans::whereDate('waktu_bayar', $hariIni);
 
-        $orders = orders::with('meja', 'pembayaran','items.menu')
-            ->whereDate('waktu_pesan', $today)
+        // Hitung jumlah
+        $jumlahPesananHariIni = $queryPesananHariIni->count();
+        $jumlahPembayaranTunai = (clone $queryPembayaranHariIni)->where('metode', 'tunai')->count();
+        $jumlahPembayaranTransfer = (clone $queryPembayaranHariIni)->where('metode', 'transfer')->count();
+
+        // Data pesanan dengan pagination
+        $daftarPesanan = $queryPesananHariIni->with('meja', 'pembayaran', 'items.menu')
             ->paginate($perPage);
 
-        //sesion kasir
-        $kasir = session(key: 'kasir');
-
-        $total_perhari                  = OrderItem::whereDate('created_at', $today)->sum('qty');
-        $total_perdapatanbyhari         = orders::whereDate('waktu_pesan', $today)->sum('total_harga');
-        $total_pembayaranTunai          = (clone $pembayaran)->where('metode', 'tunai')->sum('jumlah_bayar');
-        $total_pembayaranTf             = (clone $pembayaran)->where('metode', 'transfer')->sum('jumlah_bayar');
+        // Hitung total
+        $totalItemHariIni = OrderItem::whereDate('created_at', $hariIni)->sum('qty');
+        $totalPendapatanHariIni = $queryPesananHariIni->sum('total_harga');
+        $totalNominalTunai = (clone $queryPembayaranHariIni)->where('metode', 'tunai')->sum('jumlah_bayar');
+        $totalNominalTransfer = (clone $queryPembayaranHariIni)->where('metode', 'transfer')->sum('jumlah_bayar');
 
         return view('backsite_kasir.halamanDashboardKasir', [
-            'title'                 => 'Dashboard || Kasir',
-            'user'                  => $user,
-            'today'                 => $today,
-            'order_hari_ini'        => $orderHariIni,
-            'pembayaran_tunai'      => $pembayaranTunai,
-            'pembayaran_transfer'   => $pembayaranTransfer,
-            'order'                 => $orders,
-            'kasir'                 => $kasir,
-            'total_perhari'         => $total_perhari,
-            'total_pendapatanbyhari'=> $total_perdapatanbyhari,  
-            'total_pembayaranTunai' => $total_pembayaranTunai,
-            'total_pembayaranTf'    => $total_pembayaranTf
+            'title' => 'Dashboard || Kasir',
+            'user' => $user,
+            'today' => $hariIni,
+            'order_hari_ini' => $jumlahPesananHariIni,
+            'pembayaran_tunai' => $jumlahPembayaranTunai,
+            'pembayaran_transfer' => $jumlahPembayaranTransfer,
+            'order' => $daftarPesanan,
+            'kasir' => session('kasir'), // langsung ambil dari session
+            'total_perhari' => $totalItemHariIni,
+            'total_pendapatanbyhari' => $totalPendapatanHariIni,
+            'total_pembayaranTunai' => $totalNominalTunai,
+            'total_pembayaranTf' => $totalNominalTransfer
         ]);
     }
 
@@ -89,8 +93,6 @@ class DashboardKasirController extends Controller
                 $queryBuilder->where('order_id', 'like', '%' . $query . '%')
                     ->orWhere('nama', 'like', '%' . $query . '%');
             })->orderBy('waktu_pesan', 'desc')->limit(20)->get();
-
-
 
         // return view('backsite_kasir.partial.search_result', compact('result'));
         return view('backsite_kasir.partial.search_result', [
