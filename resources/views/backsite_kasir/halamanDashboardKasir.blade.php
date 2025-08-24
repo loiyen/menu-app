@@ -97,136 +97,141 @@
                                                 <td>{{ $item->order_id }}</td>
                                                 <td>{{ $item->nama }}</td>
                                                 <td>
-                                                    @if ($item->status == 'menunggu')
+                                                    @if ($item->status == 'pending')
                                                         <span class="badge text-bg-primary">{{ $item->status }}</span>
-                                                    @elseif($item->status == 'diproses')
+                                                    @elseif($item->status == 'processing')
                                                         <span class="badge text-bg-danger">{{ $item->status }}</span>
-                                                    @elseif($item->status == 'selesai')
+                                                    @elseif($item->status == 'completed')
                                                         <span class="badge text-bg-success">{{ $item->status }}</span>
-                                                    @elseif($item->status == 'dibatalkan')
+                                                    @elseif($item->status == 'cancelled')
                                                         <span class="badge text-bg-dark">{{ $item->status }}</span>
                                                     @endif
                                                 </td>
-                                                <td><strong>{{ $item->pembayaran->metode }}</strong>
-                                                    <div class="mt-2">
-                                                        <i>Pembayaran :</i>
-                                                        @php
-                                                            $pembayaranStatus = $item->pembayaran->status;
-                                                        @endphp
 
-                                                        @if ($pembayaranStatus == 'menunggu')
-                                                            <span
-                                                                class="badge bg-label-primary">{{ $pembayaranStatus }}</span>
-                                                        @elseif ($pembayaranStatus == 'lunas')
-                                                            <span
-                                                                class="badge bg-label-success">{{ $pembayaranStatus }}</span>
-                                                        @elseif ($pembayaranStatus == 'gagal')
-                                                            <span
-                                                                class="badge bg-label-danger">{{ $pembayaranStatus }}</span>
+                                                <td>
+                                                    <strong>{{ $item->pembayaran->metode ?? '-' }}</strong>
+                                                    <div class="mt-2">
+                                                        <i>Status Pembayaran:</i>
+                                                        @if ($item->pembayaran)
+                                                            @switch($item->pembayaran->status)
+                                                                @case('menunggu')
+                                                                    <span class="badge bg-label-primary">Menunggu</span>
+                                                                @break
+
+                                                                @case('lunas')
+                                                                    <span class="badge bg-label-success">Lunas</span>
+                                                                @break
+
+                                                                @case('gagal')
+                                                                    <span class="badge bg-label-danger">Gagal</span>
+                                                                @break
+
+                                                                @default
+                                                                    <span class="badge bg-label-secondary">Belum Ada</span>
+                                                            @endswitch
                                                         @else
-                                                            <span class="badge bg-label-secondary">Belum Ada</span>
+                                                            <span class="badge bg-label-secondary">Belum Dibayar</span>
                                                         @endif
                                                     </div>
-
                                                 </td>
                                                 <td>{{ tanggal_indo($item->waktu_pesan) }}</td>
                                                 <td>{{ format_jam($item->waktu_pesan) }}</td>
                                             </tr>
-                                        @empty
-                                            <tr>
-                                                <td colspan="9" class="text-center">
-                                                    <div class="mt-5 mb-5">
-                                                        <img src="{{ asset('images/notfound.png') }}" width="90"
-                                                            alt="not found">
-                                                        <h6 class="text-muted mt-3"><b>Tidak ditemukan!</b></h6>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        @endforelse
+                                            @empty
+                                                <tr>
+                                                    <td colspan="9" class="text-center">
+                                                        <div class="mt-5 mb-5">
+                                                            <img src="{{ asset('images/notfound.png') }}" width="90"
+                                                                alt="not found">
+                                                            <h6 class="text-muted mt-3"><b>Tidak ditemukan!</b></h6>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @endforelse
 
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="card-body">
-                                {{ $order->appends(['perPage' => request('perPage')])->links() }}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="card-body">
+                                    {{ $order->appends(['perPage' => request('perPage')])->links() }}
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    {{-- ajax --}}
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const input = document.getElementById('search-input');
-            const resultContainer = document.getElementById('search-result');
-            let abortController = null; // Untuk menghandle pembatalan fetch
+        {{-- ajax --}}
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const input = document.getElementById('search-input');
+                const resultContainer = document.getElementById('search-result');
+                let abortController = null; // Untuk menghandle pembatalan fetch
 
-            // Debounce untuk mengurangi jumlah request
-            const debounce = (func, delay) => {
-                let timeoutId;
-                return function() {
-                    const context = this;
-                    const args = arguments;
-                    clearTimeout(timeoutId);
-                    timeoutId = setTimeout(() => func.apply(context, args), delay);
+                // Debounce untuk mengurangi jumlah request
+                const debounce = (func, delay) => {
+                    let timeoutId;
+                    return function() {
+                        const context = this;
+                        const args = arguments;
+                        clearTimeout(timeoutId);
+                        timeoutId = setTimeout(() => func.apply(context, args), delay);
+                    };
                 };
-            };
 
-            const handleSearch = async function() {
-                const query = input.value.trim();
+                const handleSearch = async function() {
+                    const query = input.value.trim();
 
-                // Batalkan request sebelumnya jika masih pending
-                if (abortController) {
-                    abortController.abort();
-                }
-
-                if (query === '') {
-                    resultContainer.innerHTML = '';
-                    return;
-                }
-
-                try {
-                    abortController = new AbortController();
-                    const response = await fetch(
-                        `/order_today_kasir/search?q=${encodeURIComponent(query)}`, {
-                            signal: abortController.signal
-                        });
-
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
+                    // Batalkan request sebelumnya jika masih pending
+                    if (abortController) {
+                        abortController.abort();
                     }
 
-                    const html = await response.text();
-                    resultContainer.innerHTML = html;
-                } catch (error) {
-                    if (error.name !== 'AbortError') {
-                        console.error('Error:', error);
-                        // Tampilkan pesan error ke user jika diperlukan
-                        resultContainer.innerHTML =
-                            '<p class="error-message">Gagal memuat hasil pencarian</p>';
+                    if (query === '') {
+                        resultContainer.innerHTML = '';
+                        return;
                     }
-                } finally {
-                    abortController = null;
-                }
-            };
 
-            // Gunakan debounce dengan delay 300ms
-            const debouncedSearch = debounce(handleSearch, 300);
+                    try {
+                        abortController = new AbortController();
+                        const response = await fetch(
+                            `/order_today_kasir/search?q=${encodeURIComponent(query)}`, {
+                                signal: abortController.signal
+                            });
 
-            input.addEventListener('input', debouncedSearch);
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
 
-            // // Handle ketika user keluar dari input
-            // input.addEventListener('blur', function() {
-            //     // Tambahkan delay kecil sebelum menghapus hasil
-            //     setTimeout(() => {
-            //         if (document.activeElement !== input) {
-            //             resultContainer.innerHTML = '';
-            //         }
-            //     }, 200);
-            // });
-        });
-    </script>
-@endsection
+                        const html = await response.text();
+                        resultContainer.innerHTML = html;
+                    } catch (error) {
+                        if (error.name !== 'AbortError') {
+                            console.error('Error:', error);
+                            // Tampilkan pesan error ke user jika diperlukan
+                            resultContainer.innerHTML =
+                                '<p class="error-message">Gagal memuat hasil pencarian</p>';
+                        }
+                    } finally {
+                        abortController = null;
+                    }
+                };
+
+                // Gunakan debounce dengan delay 300ms
+                const debouncedSearch = debounce(handleSearch, 300);
+
+                input.addEventListener('input', debouncedSearch);
+
+                // // Handle ketika user keluar dari input
+                // input.addEventListener('blur', function() {
+                //     // Tambahkan delay kecil sebelum menghapus hasil
+                //     setTimeout(() => {
+                //         if (document.activeElement !== input) {
+                //             resultContainer.innerHTML = '';
+                //         }
+                //     }, 200);
+                // });
+            });
+        </script>
+    @endsection
