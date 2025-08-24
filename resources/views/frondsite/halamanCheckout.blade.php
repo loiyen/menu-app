@@ -1,7 +1,5 @@
 @extends('frondsite.layout.main')
 
-
-
 @section('container')
     @include('frondsite.partials.navbar')
 
@@ -25,9 +23,10 @@
                 <div class="col-md-12 product-item bg-primary">
                     <div class="card-body">
                         <h6 class="text-white">Perhatian !!</h6>
-                        <p class="card-text text-white">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam sint
-                            similique
-                            veniam consequatur ratione expedita temporibus </p>
+                        <p class="card-text text-white">Untuk pembayaran tunai dilakukan dikasir kami setelah anda melakukan
+                            pemesanan makanan atau
+                            minuman.
+                        </p>
                     </div>
                 </div>
 
@@ -258,10 +257,10 @@
                     success: function(response) {
                         if (response.status === 'success') {
                             if (paymentMethod === 'midtrans' && response.snap_token) {
-                                // Buka popup Midtrans
+                                // Proses midtrans
                                 snap.pay(response.snap_token, {
                                     onSuccess: function(result) {
-                                        window.location.href = '/order/success/' +
+                                        window.location.href = '/detailpemesanan/' +
                                             response.order_id;
                                     },
                                     onPending: function(result) {
@@ -274,22 +273,32 @@
                                     }
                                 });
                             } else {
-                                window.location.href = `{{ route('detail.pemesananuser', '') }}/${response.order_id}`;
+                                // Untuk metode tunai atau lainnya
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Pesanan Berhasil!',
+                                    text: response.message ||
+                                        'Pesanan Anda telah berhasil dibuat',
+                                    showConfirmButton: false,
+                                    timer: 3000,
+                                    timerProgressBar: true
+                                }).then(() => {
+                                    window.location.href =
+                                        `/detailpemesanan/${response.order_id}`;
+                                });
                             }
                         } else {
                             alert(response.message);
                         }
-                    },
+                    }
                     error: function(xhr) {
                         alert('Terjadi kesalahan: ' + xhr.responseJSON.message);
                     }
                 });
             });
-          
+
         });
     </script>
 
     @include('frondsite.partials.footer')
 @endsection
-
-
