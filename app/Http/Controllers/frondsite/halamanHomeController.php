@@ -15,8 +15,7 @@ class halamanHomeController extends Controller
 
         $kategori       = kategoris::with('menu')->get();
         $menu           = menus::orderBy('created_at', 'desc')->take(10)->get();
-        // dd($kategori);
-
+       
         $cart = session('cart', []);
         
         $totalHarga = 0;
