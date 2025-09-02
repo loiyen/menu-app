@@ -73,7 +73,9 @@
                         @forelse ($menu as $item)
                             <tr>
                                 <td>{{ $menu->firstItem() + $loop->index }}</td>
-                                <td><img src="{{ asset('storage/' . $item->gambar) }}" alt="gambar" width="75" height="60"></td>
+                                <td><img src="{{ asset('storage/' . $item->gambar) }}" alt="gambar" width="75"
+                                        height="60">
+                                </td>
                                 <td>
                                     <div>
                                         <b>{{ $item->nama }}</b>

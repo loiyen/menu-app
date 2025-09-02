@@ -28,6 +28,12 @@ Route::get('/pesan/meja/{nomor_meja}', [halamanDashboardController::class, 'scan
 
 Route::get('/', [halamanHomeController::class, 'index']);
 
+//info
+Route::get('/info-jam', [halamanHomeController::class, 'info_jam_kafe']);
+
+//detail menu
+Route::get('/detail/{id}', [halamanHomeController::class, 'detail_itemMenu'])->name('detail.menu');
+
 //pencarian
 Route::get('/menu/search-live', [SearchController::class, 'searchLive1']);
 Route::get('/menu1/search-live', [SearchController::class, 'searchLive2']);
@@ -40,8 +46,13 @@ Route::get('/hapus-cart/{id}', [halamanHomeController::class, 'delate_cartitem']
 //checkout
 Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
 Route::post('/update/item', [CheckoutController::class, 'update_qty'])->name('add.item');
+Route::post('/update/catatan', [CheckoutController::class, 'update_catatan'])->name('update.catatan');
+Route::post('/updatecatatanopsi', [CheckoutController::class, 'update_CatatandanOpsi'])->name('update.catatanopsi');
 Route::get('/hapuscartcheckout/{id}', [CheckoutController::class, 'delate_cartitem'])->name('hapus.cartitemcekout');
 Route::post('/hapus/keranjang/', [CheckoutController::class, 'cart_destroy'])->name('hapus.keranjang');
+
+//pembayaran
+Route::get('/pembayaran-pesanan', [CheckoutController::class, 'pembayaran']);
 
 
 Route::post('/generate-snap-token', [CheckoutController::class, 'show_snap'])->name('snapToken.create');
@@ -55,7 +66,8 @@ Route::get('/detailpemesanan/{order_id}', [CheckoutController::class, 'get_pesan
 Route::get('/pesananselesai', [CheckoutController::class, 'pesanan_selesai'])->name('pesanan.selesai');
 
 //riwayat pesanan
-Route::get('/riwayat-pesanan',[RiwayatTransController::class, 'index'])->name('riwayat.pesananuser');
+Route::get('/riwayat-pesanan', [RiwayatTransController::class, 'index'])->name('riwayat.pesananuser');
+Route::get('/detail-riwayat', [RiwayatTransController::class, 'detail_riwayat_pemesanan']);
 
 
 //barista
@@ -75,7 +87,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/riwayat', [RiwayatPesanController::class, 'index'])->name('orderbarista.index');
     Route::get('/riwayat/{id}', [RiwayatPesanController::class, 'detail_order_customer'])->name('riwayat.detail');
     Route::get('/orderbarista/search-live', [RiwayatPesanController::class, 'searchLive_barista']);
-
 });
 
 //kasir
@@ -96,7 +107,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/detail-kasir/{id}', [DashboardKasirController::class, 'detail_kasir'])->name('detail.kasir');
 
     Route::get('/riwayat-kasir', [RiwayatKasirController::class, 'index'])->name('orderkasir.index');
-    Route::get('/filter-by',[RiwayatKasirController::class, 'filter_datakasir'])->name('filter.kasir');
+    Route::get('/filter-by', [RiwayatKasirController::class, 'filter_datakasir'])->name('filter.kasir');
     Route::get('/order_kasir/search', [RiwayatKasirController::class, 'search_by_nama']);
 });
 
@@ -138,7 +149,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     //akun
     Route::get('/akun', [AkunController::class, 'index']);
-
 });
 
 Route::middleware('auth')->group(function () {

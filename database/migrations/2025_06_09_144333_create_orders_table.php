@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('nama');
             $table->foreignId('meja_id');
             $table->dateTime('waktu_pesan');
-            $table->enum('opsi', ['Normal', 'Less', 'Tanpa gula']);
+            $table->enum('opsi', ['Normal', 'Less', 'Tanpa gula'])->nullable();
             $table->enum('status', ['pending', 'processing', 'completed', 'cancelled'])->default('pending');
             $table->enum('payment_status', ['unpaid', 'paid', 'failed'])->default('unpaid');
             $table->text('catatan')->nullable();

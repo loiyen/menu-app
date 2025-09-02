@@ -42,9 +42,6 @@
     <script src="{{ asset('admin/assets/vendor/js/helpers.js') }}"></script>
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
 
-
-
-
     <script src="{{ asset('admin/assets/js/config.js') }}"></script>
 </head>
 
@@ -235,9 +232,6 @@
                     @yield('container')
 
 
-
-
-
                     <footer class="content-footer footer bg-footer-theme">
                         <div class="container-xxl">
                             <div
@@ -324,7 +318,6 @@
                         confirmButtonText: "Ya, hapus!"
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            // Submit form untuk menghapus
                             form.submit();
                         }
                     });

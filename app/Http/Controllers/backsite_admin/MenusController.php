@@ -22,7 +22,7 @@ class MenusController extends Controller
 
     public function index(Request $request)
     {
-        $perPage        = $request->get('perPage', 20); 
+        $perPage        = $request->get('perPage', 20);
         $pembayaran     = pembayarans::sum('jumlah_bayar');
         $user           = Auth::user();
         $kategori       = kategoris::all();
@@ -53,26 +53,11 @@ class MenusController extends Controller
         $path = null;
 
         if ($request->hasFile('gambar')) {
-            $image     = $request->file('gambar');
-            $filename  = uniqid() . '.' . $image->getClientOriginalExtension();
-            $imagePath = 'menus/' . $filename;
-
-            // ✅ Buat ImageManager dengan driver GD secara eksplisit
-            $manager = new ImageManager(new Driver());
-
-            // Resize dan kompres
-            $resizedImage = $manager->read($image)
-                ->resize(800, null, function ($constraint) {
-                    $constraint->aspectRatio();
-                    $constraint->upsize();
-                })
-                ->toJpeg(75); // Atau toPng(8) jika ingin PNG
-
-            // Simpan ke storage
-            Storage::disk('public')->put($imagePath, $resizedImage->toString());
-
-            $path = $imagePath;
+            $ext = $request->file('gambar')->getClientOriginalExtension();
+            $filename = uniqid() . '.' . $ext;
+            $path = $request->file('gambar')->storeAs('menus', $filename, 'public');
         }
+
 
         menus::create([
             'nama'        => $validate['nama'],
@@ -125,37 +110,28 @@ class MenusController extends Controller
 
         // Jika ada upload gambar baru
         if ($request->hasFile('gambar')) {
-            // Hapus gambar lama
+            // Hapus gambar lama kalau ada
             if ($menu->gambar && Storage::disk('public')->exists($menu->gambar)) {
                 Storage::disk('public')->delete($menu->gambar);
             }
 
-            $image     = $request->file('gambar');
-            $filename  = uniqid() . '.' . $image->getClientOriginalExtension();
-            $imagePath = 'menus/' . $filename;
+            // Simpan gambar baru
+            $path = $request->file('gambar')->storeAs(
+                'menus',
+                uniqid() . '.' . $request->file('gambar')->getClientOriginalExtension(),
+                'public'
+            );
 
-            // Gunakan ImageManager dengan driver GD (v3)
-            $manager = new ImageManager(new Driver());
 
-            // Resize dan kompres
-            $resizedImage = $manager->read($image)
-                ->resize(800, null, function ($constraint) {
-                    $constraint->aspectRatio();
-                    $constraint->upsize();
-                })
-                ->toJpeg(75); // toPng(8) jika gambar PNG
-
-            // Simpan ke storage
-            Storage::disk('public')->put($imagePath, $resizedImage->toString());
-
-            // Simpan path ke DB
-            $menu->gambar = $imagePath;
+            // Update path di database
+            $menu->gambar = $path;
         }
 
         $menu->save();
 
         return redirect('/menu')->with('success', 'Data berhasil diubah!');
     }
+
 
     public function searchLive_ds(Request $request)
     {

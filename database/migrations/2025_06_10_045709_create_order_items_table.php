@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('order_id');
             $table->foreignId('menu_id');
             $table->string('nama_menu');
+            $table->string('catatan_menu');
             $table->unsignedInteger('qty');
             $table->unsignedInteger('sub_total');
             $table->enum('status', ['siap','proses']);

@@ -33,6 +33,16 @@
     <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('midtrans.client_key') }}">
     </script>
 
+    {{-- footer --}}
+    <script src="{{ asset('js/jquery-1.11.0.min.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous">
+    </script>
+    <script src="{{ asset('js/plugins.js') }}"></script>
+    <script src="{{ asset('js/script.js') }}"></script>
+
+
 
 </head>
 
@@ -119,23 +129,16 @@
                 <ul class="list-group mb-4 mt-3">
                     @forelse ($keranjang as $item)
                         <li class="list-group-item d-flex justify-content-between lh-sm">
-                            <div class="d-flex align-items-start gap-2">
-                                <img src="{{ asset('storage/' . $item['gambar']) }}" alt="Growers cider" class="img-fluid rounded"
-                                  style="width: 100px; height: 100px;">
-                                  
-                                <div class="card-body">
-                                    <h5 class="mb-1">{{ $item['nama'] }}</h5>
-                                    <small class="text-body-secondary">X {{ $item['qty'] }}</small>
-                                    <div class="mt-4">
-                                        <a href="{{ route('hapus.cartitem', $item['id']) }}"
-                                            class="btn btn-sm  btn-outline-dark ms-2">
-                                            <i class="fa-solid fa-trash"></i>
-                                        </a>
-                                    </div>
-                                </div>
+                            <div>
+                                <h6 class="my-0">{{ $item['nama'] }}</h6>
+                                <small class="text-body-secondary">Jumlah : {{ $item['qty'] }}</small>
                             </div>
-                            <div class="mt-5">
-                                <span class="text-body-secondary">{{ 'Rp.' . number_format($item['harga']) }}</span>
+                            <span class="text-body-secondary">{{ 'Rp' . number_format($item['harga']) }}</span>
+                            <div>
+                                <a href="{{ route('hapus.cartitem', $item['id']) }}"
+                                    class="btn btn-sm  btn-outline-dark ">
+                                    <i class="fa-solid fa-trash"></i>
+                                </a>
                             </div>
                         </li>
                     @empty
@@ -151,7 +154,8 @@
                 </ul>
                 <div>
 
-                    <a href="{{ route('checkout') }}" class="w-100 btn btn-outline-primary mb-2 btn-lg" type="submit">Checkout</a>
+                    <a href="{{ route('checkout') }}" class="w-100 btn btn-outline-primary mb-2 btn-lg"
+                        type="submit">Pesan</a>
                     <form action="{{ route('hapus.cart') }}" method="post">
                         @csrf
                         <button class="w-100 btn btn-lg btn-dark" type="submit">Hapus</button>
@@ -176,7 +180,7 @@
 
                 <div class="d-flex mt-3 gap-0">
                     <input id="search-menu1" class="form-control rounded-start rounded-2 bg-light" type="text"
-                        placeholder="Masukan nama menu..." aria-label="Masukan nama menu..?" autofocus>
+                        placeholder="Apa yang kamu cari?" aria-label="Masukan nama menu..?" autofocus>
 
                 </div>
             </div>
@@ -192,7 +196,7 @@
 
             <div class="row">
                 <div class="col-md-12">
-                
+
                     @yield('container')
 
                 </div>

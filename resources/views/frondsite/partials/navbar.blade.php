@@ -51,51 +51,36 @@
                       </button>
                   </div>
               </div>
-
           </div>
           <div class="container">
-                  <ul class="d-flex justify-content-center g-3 list-unstyled p-0 m-2">
-                      <li class="d-lg-none">
-                          <a href="#" class="p-2 mx-2 text-decoration-none">
-                              <i class="fa-regular fa-file-lines fa-md me-2"></i>
-                          </a>
-                          <span>
-                              <h6 class="text-center"></h6>
+              <ul class="d-flex justify-content-center g-3 list-unstyled p-0 m-2">
+                  <li class="d-lg-none">
+                      <a href="/riwayat-pesanan" class="p-2 mx-2 text-decoration-none">
+                          <span><i class="fa fa-history fa-md me-2"></i></span>
+                      </a>
+                      <span>
+                          <h6 class="text-center"></h6>
+                      </span>
+                  </li>
+                  <li class="d-lg-none">
+                      <a href="#" class="p-2 mx-2 text-decoration-none" data-bs-toggle="offcanvas"
+                          data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
+                          <i class="fa-solid fa-cart-shopping fa-md me-2"></i>
+                          <span class="badge rounded-circle bg-primary">
+                              {{ $total_item }}
                           </span>
-                      </li>
-                      <li class="d-lg-none">
-                          <a href="#" class="p-2 mx-2 text-decoration-none" data-bs-toggle="offcanvas"
-                              data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
-                              <i class="fa-solid fa-cart-shopping fa-md me-2"></i>
-                              <span class="badge rounded-circle bg-primary">
-                                  {{ $total_item }}
-                              </span>
-                          </a>
-                      </li>
-                      <li class="d-lg-none">
-                          <a href="#" class="p-2 mx-2 text-decoration-none" data-bs-toggle="offcanvas"
-                              data-bs-target="#offcanvasSearch" aria-controls="offcanvasSearch">
-                              <i class="fa-solid fa-magnifying-glass fa-md me-2"></i>
-                              <span>
-                                  <h6 class="mt-0 text-center"></h6>
-                              </span>
-                          </a>
-                      </li>
-                  </ul>
-              </div>
-          <div class="col-12 mt-0">
-              <h5 class="text-center">MEJA 1 <b class="text-primary">
-                      @if (session()->has('nomor_meja'))
-                          <div class="alert alert-info">
-                              Anda memesan dari <strong> Meja {{ session('nomor_meja') }}</strong>
-                          </div>
-                      @endif
-                  </b>
-                  @if ($keranjang == null)
-                  @else
-                  @endif
-              </h5>
-              
+                      </a>
+                  </li>
+                  <li class="d-lg-none">
+                      <a href="#" class="p-2 mx-2 text-decoration-none" data-bs-toggle="offcanvas"
+                          data-bs-target="#offcanvasSearch" aria-controls="offcanvasSearch">
+                          <i class="fa-solid fa-magnifying-glass fa-md me-2"></i>
+                          <span>
+                              <h6 class="mt-0 text-center"></h6>
+                          </span>
+                      </a>
+                  </li>
+              </ul>
           </div>
 
           <div class="col">
@@ -106,5 +91,5 @@
       </div>
 
       </div>
-     
+
   </header>
