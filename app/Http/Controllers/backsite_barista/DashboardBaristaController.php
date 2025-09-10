@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Controllers\Controller;
 use App\Models\OrderItem;
-use App\Models\orders;
+use App\Models\order;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
@@ -23,9 +23,9 @@ class DashboardBaristaController extends Controller
 
         $jumlahproses           = (clone $order_hari_ini)->where('status', 'proses')->count();
         $jumlahselesai          = (clone $order_hari_ini)->where('status', 'siap')->count();
-        $order_batal            = orders::where('status', 'dibatalkan')->count();
+        $order_batal            = order::where('status', 'dibatalkan')->count();
 
-        $order                  = orders::with('meja')->whereDate('created_at', $today)->paginate($perPage);
+        $order                  = order::with('meja')->whereDate('created_at', $today)->paginate($perPage);
 
 
         return view('backsite_barista.halamanDashboard', [
@@ -43,7 +43,7 @@ class DashboardBaristaController extends Controller
     {
         $user           = Auth::user();
 
-        $order_detail   = orders::with(['items.menu', 'meja', 'pembayaran'])->findOrFail($id);
+        $order_detail   = order::with(['items.menu', 'meja', 'pembayaran'])->findOrFail($id);
 
         $total_item = 0;
         foreach ($order_detail->items as $item) {
@@ -71,7 +71,7 @@ class DashboardBaristaController extends Controller
     public function selesai(Request $request, $id)
     {
 
-        $order = orders::findOrFail($id);
+        $order = order::findOrFail($id);
         $order->status = $request->input('status', 'selesai');
         $order->save();
 
@@ -88,7 +88,7 @@ class DashboardBaristaController extends Controller
 
         $today = Carbon::today();
 
-        $result = orders::whereDate('created_at', $today)
+        $result = order::whereDate('created_at', $today)
             ->where('order_id', 'like', "%$keyword%")
             ->paginate(20);
 
@@ -97,7 +97,7 @@ class DashboardBaristaController extends Controller
 
     public function print_order($id)
     {
-        $order = orders::with('items.menu', 'meja',)->findOrFail($id);
+        $order = order::with('items.menu', 'meja',)->findOrFail($id);
 
         return view('backsite_barista.partial.print_order', [
             'title'         => 'Print order',

@@ -73,8 +73,9 @@
                                     <div class="product-item">
                                         <figure>
                                             <a href="{{ route('detail.menu', $item->id) }}" title="Product Title">
-                                                <img src="{{ asset('storage/' . $item->gambar) }}"
-                                                    style="width: 100%; height: 100px;" class="tab-image">
+                                                {{-- <img src="{{ asset('storage/' . $item->gambar) }}"
+                                                    style="width: 100%; height: 100px;" class="tab-image"> --}}
+                                                <img src="https://placehold.co/600x400/png" style="width: 100%; height: 100px;" class="tab-image">
                                             </a>
                                         </figure>
                                         <h3 class="mt-0 mb-2">{{ $item->nama }}</h3>

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\backsite_admin;
 use App\Models\User;
 use App\Models\mejas;
 use App\Models\menus;
-use App\Models\orders;
+use App\Models\order;
 use App\Models\kategoris;
 use App\Models\pembayarans;
 use Illuminate\Http\Request;
@@ -20,13 +20,13 @@ class halamanDashboardController extends Controller
         $user = Auth::user();
         $user_data = User::count();
         $menu = menus::count();
-        $order = orders::count();
+        $order = order::count();
         $order_item = OrderItem::count();
         $meja = mejas::count();
 
         //order
         $pembayaran = pembayarans::sum('jumlah_bayar');
-        $total_order_rp = orders::sum('total_harga');
+        $total_order_rp = order::sum('total_harga');
 
         //kategori
         $kategori = kategoris::withCount('menu')->get();

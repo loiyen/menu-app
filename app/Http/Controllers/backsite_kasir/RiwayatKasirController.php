@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\backsite_kasir;
-use App\Models\orders;
+use App\Models\order;
 
 use App\Models\pembayarans;
 use Illuminate\Http\Request;
@@ -19,7 +19,7 @@ class RiwayatKasirController extends Controller
         $total_tunai = pembayarans::where('metode', 'tunai')->sum('jumlah_bayar');
         $total_tf = pembayarans::where('metode', 'transfer')->sum('jumlah_bayar');
 
-        $orders = orders::with('pembayaran')->paginate($perPage);
+        $orders = order::with('pembayaran')->paginate($perPage);
 
 
         return view('backsite_kasir.riwayat.halamanRiwayatKasir', [
@@ -45,7 +45,7 @@ class RiwayatKasirController extends Controller
         $sampai = $request->input('sampai');
 
 
-        $orders = orders::when($dari && $sampai, function ($query) use ($dari, $sampai) {
+        $orders = order::when($dari && $sampai, function ($query) use ($dari, $sampai) {
             return $query->whereDate('waktu_pesan', '>=', $dari)
                 ->whereDate('waktu_pesan', '<=', $sampai);
         })->paginate($perPage);
@@ -68,7 +68,7 @@ class RiwayatKasirController extends Controller
             return response('');
         }
 
-        $result = orders::with('pembayaran')->where('order_id', 'like', "%$kyword%")
+        $result = order::with('pembayaran')->where('order_id', 'like', "%$kyword%")
             ->paginate(20);
 
         return view('backsite_kasir.partial.search_resultkasir', compact('result'));

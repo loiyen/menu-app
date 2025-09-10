@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\backsite_kasir;
 
 use Carbon\Carbon;
-use App\Models\orders;
+use App\Models\order;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\OrderItem;
@@ -23,7 +23,7 @@ class DashboardKasirController extends Controller
         $perPage = max(1, min(100, (int)$perPage));
 
         // Query dasar
-        $queryPesananHariIni = orders::whereDate('waktu_pesan', $hariIni);
+        $queryPesananHariIni = order::whereDate('waktu_pesan', $hariIni);
         $queryPembayaranHariIni = pembayarans::whereDate('waktu_bayar', $hariIni);
 
         // Hitung jumlah
@@ -61,7 +61,7 @@ class DashboardKasirController extends Controller
     {
         $user = Auth::user();
 
-        $order = orders::with('pembayaran', 'items.menu', 'meja')->findOrFail($id);
+        $order = order::with('pembayaran', 'items.menu', 'meja')->findOrFail($id);
 
         $total_item = 0;
         foreach ($order->items as $item) {
@@ -88,7 +88,7 @@ class DashboardKasirController extends Controller
             return response()->noContent();
         }
 
-        $result = orders::with('pembayaran', 'meja', 'items')->whereDate('waktu_pesan', $today)
+        $result = order::with('pembayaran', 'meja', 'items')->whereDate('waktu_pesan', $today)
             ->where(function ($queryBuilder) use ($query) {
                 $queryBuilder->where('order_id', 'like', '%' . $query . '%')
                     ->orWhere('nama', 'like', '%' . $query . '%');
@@ -104,7 +104,7 @@ class DashboardKasirController extends Controller
     {
         $user = Auth::user();
 
-        $order = orders::with('items.menu', 'pembayaran')->findOrfail($id);
+        $order = order::with('items.menu', 'pembayaran')->findOrfail($id);
         $total_item = 0;
 
         foreach ($order->items as $item) {
@@ -135,7 +135,7 @@ class DashboardKasirController extends Controller
 
         $kembalian = $nominal_bayar - $total_harga;
 
-        $order = orders::findOrFail($id);
+        $order = order::findOrFail($id);
         $pembayaran = $order->pembayaran()->first();
 
         if ($pembayaran) {
@@ -156,7 +156,7 @@ class DashboardKasirController extends Controller
 
         $user = Auth::user();
 
-        $order = orders::with('pembayaran', 'items.menu')->findOrFail($id);
+        $order = order::with('pembayaran', 'items.menu')->findOrFail($id);
 
         return view('backsite_kasir.halamanNotaPembayaran', [
             'title' => 'Pembayaran || kasir',
@@ -167,7 +167,7 @@ class DashboardKasirController extends Controller
 
     public function print_nota_kasir($id)
     {
-        $order = orders::with('pembayaran', 'meja', 'items.menu')->findOrFail($id);
+        $order = order::with('pembayaran', 'meja', 'items.menu')->findOrFail($id);
         return view('backsite_kasir.partial.print_order', [
             'title' => 'Print-nota',
             'order' => $order

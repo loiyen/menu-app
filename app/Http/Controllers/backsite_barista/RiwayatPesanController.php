@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\backsite_barista;
 
-use App\Models\orders;
+use App\Models\order;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -14,7 +14,7 @@ class RiwayatPesanController extends Controller
     {
         $perPage        = $request->get('perPage', 20);
         $user          = Auth::user();
-        $order         = orders::with('meja')->paginate($perPage);
+        $order         = order::with('meja')->paginate($perPage);
 
         return view('backsite_barista.riwayat.halamanRiwayat', [
             'title'     => 'Riwayat',
@@ -27,7 +27,7 @@ class RiwayatPesanController extends Controller
     {
         $user           = Auth::user();
 
-        $order_detail   = orders::with(['items.menu', 'meja', 'pembayaran'])->findOrFail($id);
+        $order_detail   = order::with(['items.menu', 'meja', 'pembayaran'])->findOrFail($id);
 
          $total_item = 0;
         foreach ($order_detail->items as $item) {
@@ -51,7 +51,7 @@ class RiwayatPesanController extends Controller
             return response('');
         }
 
-        $result = orders::where('order_id', 'like', "%$keyword%")->paginate(20);
+        $result = order::where('order_id', 'like', "%$keyword%")->paginate(20);
 
         return view('backsite_barista.partial.search_result', compact('result'));
     }
