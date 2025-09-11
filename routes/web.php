@@ -21,6 +21,7 @@ use App\Http\Controllers\backsite_kasir\DashboardKasirController;
 use App\Http\Controllers\backsite_admin\halamanDashboardController;
 use App\Http\Controllers\backsite_barista\DashboardBaristaController;
 use App\Http\Controllers\frondsite\RiwayatTransController;
+use App\Http\Controllers\frondsite\PaymentController;
 
 //scan 
 
@@ -58,8 +59,11 @@ Route::get('/pembayaran-pesanan', [CheckoutController::class, 'pembayaran']);
 Route::post('/generate-snap-token', [CheckoutController::class, 'show_snap'])->name('snapToken.create');
 
 //pembayaran
-Route::post('/order/process', [CheckoutController::class, 'proses'])->name('checkout.proses');
-Route::post('/midtrans/callback', [CheckoutController::class, 'receive']);
+Route::post('/order/process', [PaymentController::class, 'createOrder'])->name('order.create');
+Route::get('/history-order', [PaymentController::class, 'historyOrder'])->name('history.order');
+Route::get('/payment-success', [PaymentController::class, 'success'])->name('success');
+Route::get('/payment-failure', [PaymentController::class, 'failed'])->name('failed');
+
 
 //detail pemesanan 
 Route::get('/detailpemesanan/{order_id}', [CheckoutController::class, 'get_pesanan_detail'])->name('detail.pemesananuser');

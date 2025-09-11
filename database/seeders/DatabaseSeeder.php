@@ -6,7 +6,7 @@ use App\Models\kategoris;
 use App\Models\mejas;
 use App\Models\menus;
 use App\Models\OrderItem;
-use App\Models\orders;
+use App\Models\order;
 use App\Models\pembayarans;
 use App\Models\subkategoris;
 use App\Models\User;
@@ -30,10 +30,8 @@ class DatabaseSeeder extends Seeder
          kategoris::factory(1)->create();
          mejas::factory(5)->create();
          menus::factory(10)->create();
-         orders::factory(10)->create();
-         OrderItem::factory(5)->create();
-         pembayarans::factory(5)->create();
-        
-         
+        //  orders::factory(10)->create();
+        //  OrderItem::factory(5)->create();
+        //  pembayarans::factory(5)->create();
     }
 }

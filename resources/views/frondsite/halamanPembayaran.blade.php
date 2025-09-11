@@ -21,44 +21,47 @@
                 </div>
             </div>
         </div>
-
+        <form action="{{ route('order.create') }}" method="POST">
+        @csrf
         <div class="col-12 product-item mb-3">
             <div class="card-body">
                 <h6>Informasi Pemesan</h6>
                 <div class="">
-                    <form action="">
                         <div class="mb-4">
-                            <label for="username" class="form-label"><small>Nama Lengkap</small></label>
+                            <label for="nama" class="form-label"><small>Nama Lengkap</small></label>
                             <div class="input-group ">
                                 <span class="input-group-text" id="basic-addon1"><i class="fa fa-user"></i></span>
-                                <input type="text" class="form-control" id="username" placeholder="Nama Lengkap"
-                                    aria-label="Username" aria-describedby="basic-addon1">
+                                <input type="text" class="form-control" id="nama" name="nama" placeholder="Nama Lengkap"
+                                    aria-label="Nama" aria-describedby="basic-addon1" required value="Jery Hardianto">
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label for="username" class="form-label"><small>Nomor Ponsel (info promosi)</small></label>
+                            <label for="phone" class="form-label"><small>Nomor Ponsel (info promosi)</small></label>
                             <div class="input-group">
                                 <span class="input-group-text" id="basic-addon1"><i class="fa fa-phone"></i></span>
-                                <input type="text" class="form-control" id="username" placeholder="Nomor Ponsel"
-                                    aria-label="Username" aria-describedby="basic-addon1">
+                                <input type="text" class="form-control" id="phone" name="phone" placeholder="Nomor Ponsel"
+                                    aria-label="Phone" aria-describedby="basic-addon1" value="08123456789">
                             </div>
                         </div>
                         <div class="mb-4">
-                            <label for="username" class="form-label"><small>Kirim struk ke email</small></label>
+                            <label for="email" class="form-label"><small>Kirim struk ke email</small></label>
                             <div class="input-group">
                                 <span class="input-group-text" id="basic-addon1"><i class="fa fa-envelope"></i></span>
-                                <input type="text" class="form-control" id="username" placeholder="Email"
-                                    aria-label="Username" aria-describedby="basic-addon1">
+                                <input type="email" class="form-control" id="email" name="email" placeholder="Email"
+                                    aria-label="Email" aria-describedby="basic-addon1" value="jeryhardianto@gmail.com">
                             </div>
                         </div>
                         <div class="mb-4">
-                            <label for="username" class="form-label"><small>Nomor Meja</small></label>
+                            <label for="catatan" class="form-label"><small>Catatan</small></label>
+                            <textarea class="form-control" id="catatan" name="catatan" placeholder="Catatan tambahan (opsional)" rows="2">Halo, saya ingin makan di tempat</textarea>
+                        </div>
+                        <div class="mb-4">
+                            <label for="nomorMeja" class="form-label"><small>Nomor Meja</small></label>
                             <div class="input-group">
                                 <span class="input-group-text" id="basic-addon1"><i class="fa fa-map-marker"></i></span>
-                                <input type="text" class="form-control" value="JT12" disabled>
+                                <input type="text" class="form-control" value="JT12" id="nomorMeja" disabled>
                             </div>
                         </div>
-                    </form>
                 </div>
             </div>
         </div>
@@ -74,13 +77,13 @@
                     <div class="card-body">
                         <p>Metode Pembayaran</p>
                         <div class="form-check d-flex align-items-center justify-content-between mb-1">
-                            <label class="form-check-label d-flex align-items-center" for="flexRadioDefault1">
+                            <label class="form-check-label d-flex align-items-center" for="metodeMidtrans">
                                 <span class="m-2"><i class="fa fa-qrcode"></i></span>
                                 <b>QRIS</b>
                             </label>
-                            <input class="form-check-input me-2" type="radio" name="flexRadioDefault"
-                                id="flexRadioDefault1">
+                            <input class="form-check-input me-2" type="radio" name="metode" id="metodeMidtrans" required checked>
                         </div>
+                        @error('metode') <small class="text-danger">{{ $message }}</small> @enderror
                     </div>
                 </div>
 
@@ -96,77 +99,11 @@
                     </div>
                     <div></div>
                     <div class="col-6">
-                        <button class="btn btn-primary col-12"><small>Bayar</small></button>
+                        <button type="submit" class="btn btn-primary col-12"><small>Bayar</small></button>
                     </div>
                 </div>
             </div>
         </div>
+        </form>
     </div>
-
-    {{-- <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('midtrans.client_key') }}">
-    </script>
-    <script src="https://code.jquery.com/jquery-3.7.1.slim.js"
-        integrity="sha256-UgvvN8vBkgO0luPSUl2s8TIlOSYRoGFAX4jlCIm9Adc=" crossorigin="anonymous"></script>
-
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('#payment-form').on('submit', function(e) {
-                e.preventDefault();
-
-                const form = this;
-                const formData = $(form).serializeArray();
-                const paymentMethod = $("input[name='metode']:checked").val();
-
-                $.ajax({
-                    url: '/order/process',
-                    method: 'POST',
-                    data: formData,
-                    dataType: 'json',
-                    success: function(response) {
-                        if (response.status === 'success') {
-                            if (paymentMethod === 'midtrans' && response.snap_token) {
-                                // Proses midtrans
-                                snap.pay(response.snap_token, {
-                                    onSuccess: function(result) {
-                                        window.location.href = '/detailpemesanan/' +
-                                            response.order_id;
-                                    },
-                                    onPending: function(result) {
-                                        window.location.href = '/order/pending/' +
-                                            response.order_id;
-                                    },
-                                    onError: function(result) {
-                                        window.location.href = '/order/failed/' +
-                                            response.order_id;
-                                    }
-                                });
-                            } else {
-                                // Untuk metode tunai atau lainnya
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Pesanan Berhasil!',
-                                    text: response.message ||
-                                        'Pesanan Anda telah berhasil dibuat',
-                                    showConfirmButton: false,
-                                    timer: 3000,
-                                    timerProgressBar: true
-                                }).then(() => {
-                                    window.location.href =
-                                        `/detailpemesanan/${response.order_id}`;
-                                });
-                            }
-                        } else {
-                            alert(response.message);
-                        }
-                    }
-                    error: function(xhr) {
-                        alert('Terjadi kesalahan: ' + xhr.responseJSON.message);
-                    }
-                });
-            });
-
-        });
-    </script> --}}
-
-    {{-- @include('frondsite.partials.footer') --}}
 @endsection

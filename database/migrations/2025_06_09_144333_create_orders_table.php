@@ -13,15 +13,14 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->string('order_id');
             $table->string('nama');
+            $table->string('phone');
+            $table->string('email')->nullable();
             $table->foreignId('meja_id');
             $table->dateTime('waktu_pesan');
-            $table->enum('opsi', ['Normal', 'Less', 'Tanpa gula'])->nullable();
-            $table->enum('status', ['pending', 'processing', 'completed', 'cancelled'])->default('pending');
-            $table->enum('payment_status', ['unpaid', 'paid', 'failed'])->default('unpaid');
+            $table->string('payment_status')->default('unpaid');
             $table->text('catatan')->nullable();
-            $table->unsignedInteger('total_harga');
+            $table->decimal('total_harga', 15, 2);
             $table->timestamps();
         });
     }

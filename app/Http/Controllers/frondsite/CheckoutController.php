@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 use App\Services\MidtransService;
 use App\Http\Controllers\Controller;
 use App\Models\menus;
-use App\Models\orders;
+use App\Models\order;
 use Illuminate\Validation\Rules\Unique;
 
 class CheckoutController extends Controller
@@ -66,6 +66,7 @@ class CheckoutController extends Controller
 
     public function pembayaran()
     {
+        
         $kategori       = kategoris::with('menu')->get();
         $menu           = menus::orderBy('created_at', 'desc')->take(10)->get();
 
@@ -84,7 +85,6 @@ class CheckoutController extends Controller
             $totalItem += $item['qty'];
         }
 
-
         return view('frondsite.halamanPembayaran', [
             'title'     => 'Pembayaran',
             'kategori' => $kategori,
@@ -98,9 +98,9 @@ class CheckoutController extends Controller
 
     public function proses(MidtransService $midtransService, Request $request)
     {
+        // dd($request->all());
         $request->validate([
             'nama' => 'required|string|max:255',
-            'opsi_gula' => 'required|in:Normal,Less,Tanpa Gula',
             'metode' => 'required|in:tunai,midtrans',
             'catatan' => 'nullable|string'
         ]);
@@ -116,7 +116,7 @@ class CheckoutController extends Controller
         }
 
         // simpan order ke database
-        $order = orders::create([
+        $order = order::create([
             'order_id'       => 'ORD-' . uniqid(),
             'nama'           => $request->nama,
             'meja_id'        => 1,
@@ -140,22 +140,7 @@ class CheckoutController extends Controller
             ]);
         }
 
-        // proses pembayaran
-        if ($request->metode === 'tunai') {
-            $payment = $order->pembayaran()->create([
-                'metode'       => 'tunai',
-                'jumlah_bayar' => $totalHarga,
-                'status'       => 'Menunggu',
-                'waktu_bayar'  => now(),
-            ]);
-
-            // Tambahkan return response untuk metode tunai
-            return response()->json([
-                'status'     => 'success',
-                'order_id'   => $order->id,
-                'message'    => 'Pesanan berhasil dibuat, menunggu pembayaran tunai'
-            ]);
-        } else {
+      
 
             // untuk midtrans
             $payment = $order->pembayaran ? $order->pembayaran->last() : null;
@@ -225,7 +210,7 @@ class CheckoutController extends Controller
                 'order_id'   => $order->id,       // ini untuk URL redirect kamu
                 'snap_token' => $snapToken,       // ini untuk snap.pay()
             ]);
-        }
+        
     }
 
 

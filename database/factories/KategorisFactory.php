@@ -17,7 +17,7 @@ class KategorisFactory extends Factory
     public function definition(): array
     {
         return [
-            'nama' => $this->faker->word(10),
+            'nama' => "Kopi",
         ];
     }
 }

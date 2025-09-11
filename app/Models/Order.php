@@ -5,15 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class orders extends Model
+class Order extends Model
 {
   /** @use HasFactory<\Database\Factories\OrdersFactory> */
   use HasFactory;
 
   protected $fillable = [
-    'order_id',
     'nama',
-    'meja_id',       // tambahkan ini
+    'phone',
+    'email',
+    'meja_id',    
     'waktu_pesan',
     'opsi',
     'status',
@@ -38,4 +39,11 @@ class orders extends Model
   {
     return $this->hasOne(pembayarans::class, 'orders_id');
   }
+
+  public function transaction()
+  {
+    return $this->hasOne(Transaction::class);
+  }
+
+
 }

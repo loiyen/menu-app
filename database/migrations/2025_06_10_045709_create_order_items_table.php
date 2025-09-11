@@ -16,9 +16,10 @@ return new class extends Migration
             $table->foreignId('order_id');
             $table->foreignId('menu_id');
             $table->string('nama_menu');
-            $table->string('catatan_menu');
-            $table->unsignedInteger('qty');
-            $table->unsignedInteger('sub_total');
+            $table->string('catatan_menu')->nullable();
+            $table->integer('qty');
+            $table->decimal('harga', 15, 2);
+            $table->decimal('sub_total', 15, 2);
             $table->enum('status', ['siap','proses']);
             $table->timestamps();
         });

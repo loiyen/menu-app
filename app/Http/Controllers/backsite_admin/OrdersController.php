@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\backsite_admin;
 
-use App\Models\orders;
+use App\Models\order;
 
 use App\Models\pembayarans;
 use App\Http\Controllers\Controller;
@@ -24,7 +24,7 @@ class OrdersController extends Controller
 
         $pembayaran     = pembayarans::sum('jumlah_bayar');
         $user           = Auth::user();
-        $orders         = orders::with('meja')->paginate($perPage);
+        $orders          = order::with('meja')->paginate($perPage);
 
 
         return view('backsite.order.halamanOrder', [
@@ -40,7 +40,7 @@ class OrdersController extends Controller
         $pembayaran     = pembayarans::sum('jumlah_bayar');
         $user           = Auth::user();
 
-        $order_detail   = orders::with(['items.menu', 'meja', 'pembayaran'])->findOrFail($id);
+        $order_detail   = order::with(['items.menu', 'meja', 'pembayaran'])->findOrFail($id);
 
         $total_item = 0;
         foreach ($order_detail->items as $item) {
@@ -65,7 +65,7 @@ class OrdersController extends Controller
             return response('');
         }
 
-        $result = orders::with(['items.menu', 'meja', 'pembayaran'])
+        $result = order::with(['items.menu', 'meja', 'pembayaran'])
             ->where('order_id', 'like', "%$keyword%")
             ->paginate(20);
 
@@ -82,7 +82,7 @@ class OrdersController extends Controller
         $sampai = $request->input('sampai');
         $perPage = 20; 
 
-        $order = orders::when($dari && $sampai, function ($query) use ($dari, $sampai) {
+        $order = order::when($dari && $sampai, function ($query) use ($dari, $sampai) {
             return $query->whereDate('waktu_pesan', '>=', $dari)
                 ->whereDate('waktu_pesan', '<=', $sampai);
         })->paginate($perPage);
@@ -97,18 +97,18 @@ class OrdersController extends Controller
 
 
 
-    public function edit(orders $orders)
+    public function edit(order $orders)
     {
         //
     }
 
 
-    public function update(UpdateordersRequest $request, orders $orders)
+    public function update(UpdateordersRequest $request, order $orders)
     {
         //
     }
 
-    public function destroy(orders $orders)
+    public function destroy(order $orders)
     {
         //
     }

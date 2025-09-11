@@ -14,16 +14,17 @@ class OrderItem extends Model
         'order_id',
         'menu_id',
         'nama_menu',
-        'price',
+        'harga',
         'qty',
         'sub_total',
+        'catatan_menu',
         'status'
     ];
 
 
     public function order()
     {
-        return $this->belongsTo(orders::class);
+        return $this->belongsTo(Order::class);
     }
 
     public function menu()
