@@ -11,6 +11,7 @@ use App\Models\pembayarans;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\OrderItem;
+use App\Models\Transaction;
 use Illuminate\Support\Facades\Auth;
 
 class halamanDashboardController extends Controller
@@ -26,13 +27,14 @@ class halamanDashboardController extends Controller
 
         //order
         $pembayaran = pembayarans::sum('jumlah_bayar');
-        $total_order_rp = order::sum('total_harga');
+        $total_order = order::where('payment_status', 'paid')->sum('total_harga');
 
         //kategori
         $kategori = kategoris::withCount('menu')->get();
 
-        $pembayaran_metode_tunai  = pembayarans::where('metode','tunai')->sum('jumlah_bayar');
-        $pembayaran_metode_trans  = pembayarans::where('metode','transfer')->sum('jumlah_bayar');
+        $total_gross_amount         = Transaction::where('payment_type','qris')->sum('gross_amount');
+        $total_paid                 = Transaction::where('transaction_status','paid')->count();
+        $total_expired              = Transaction::where('transaction_status','expired')->count();
         
         $pembayaran_status_sukses       = pembayarans::where('status','lunas')->count();
         $pembayaran_status_menunggu     = pembayarans::where('status','menunggu')->count();
@@ -46,16 +48,18 @@ class halamanDashboardController extends Controller
             'menu'                  => $menu,
             'order'                 => $order,
             'order_item'            => $order_item,
-            'total_order'           => $total_order_rp,
+            'total_order'           => $total_order,
             'meja'                  => $meja,
             'pembayaran'            => $pembayaran,
             'kategori'              => $kategori,
-            'pembayaran_tunai'      => $pembayaran_metode_tunai,    
-            'pembayaran_trans'      => $pembayaran_metode_trans,
+            'pendapatan'            => $total_gross_amount,
+            'paid'                  => $total_paid,
+            'expired'               => $total_expired,
+            // 'pembayaran_tunai'      => $pembayaran_metode_tunai,    
+            // 'pembayaran_trans'      => $pembayaran_metode_trans,
             'pembayaran_sukses'     => $pembayaran_status_sukses,    
             'pembayaran_menunggu'   => $pembayaran_status_menunggu,    
             'pembayaran_gagal'      => $pembayaran_status_gagal,    
-
         ]);
     }
 

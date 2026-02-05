@@ -1,67 +1,89 @@
 @if ($result->isEmpty())
-    <tr>
-        <td colspan="9" class="text-center">
-            <div class="mt-5 mb-5">
-                <img src="{{ asset('images/notfound.png') }}" width="90" alt="not found">
-                <h6 class="text-muted mt-3"><b>Tidak ditemukan!</b></h6>
-            </div>
-        </td>
-    </tr>
+    <div class="d-flex align-items-center justify-content-center py-10" style="background-color: rgb(230, 230, 230)">
+        <div>
+            <img src="{{ asset('images/notfound.png') }}" width="90" alt="not found">
+            <h6 class="mt-2 fw-bold">Data Kosong!</h6>
+        </div>
+
+    </div>
 @else
     @foreach ($result as $item)
-        <tr>
-            <td>{{ $loop->iteration }}</td>
-            <td>
-                @if ($item->pembayaran && $item->pembayaran->metode == 'tunai')
-                    <form action="{{ route('bayar.kasir', $item->id) }}" method="POST">
-                        @csrf
-                        @method('PUT')
-                        <button type="submit" class="btn btn-outline-success btn-sm">
-                            <p class="mt-3">Bayar</p>
-                        </button>
-                    </form>
-                @else
-                    <button disabled class="btn btn-outline-secondary btn-sm">
-                        <p class="mt-3">Bayar</p>
-                    </button>
-                @endif
-            </td>
-            <td>{{ $item->order_id }}</td>
-            <td>{{ $item->nama }}</td>
-            <td>
-                @if ($item->status == 'menunggu')
-                    <span class="badge text-bg-primary">{{ $item->status }}</span>
-                @elseif($item->status == 'diproses')
-                    <span class="badge text-bg-danger">{{ $item->status }}</span>
-                @elseif($item->status == 'selesai')
-                    <span class="badge text-bg-success">{{ $item->status }}</span>
-                @elseif($item->status == 'dibatalkan')
-                    <span class="badge text-bg-dark">{{ $item->status }}</span>
-                @endif
-            </td>
-            <td><strong>{{ $item->pembayaran?->metode ?? '-' }}</strong>
-                <div class="mt-2">
-                    <i>Pembayaran :</i>
-                    @php
-                        $pembayaranStatus = $item->pembayaran?->status;
-                    @endphp
+        <div id="search-result" class="col mb-2">
+            <div class="card h-100">
 
-                    @if ($pembayaranStatus == 'menunggu')
-                        <span class="badge bg-label-primary">{{ $pembayaranStatus }}</span>
-                    @elseif ($pembayaranStatus == 'lunas')
-                        <span class="badge bg-label-success">{{ $pembayaranStatus }}</span>
-                    @elseif ($pembayaranStatus == 'gagal')
-                        <span class="badge bg-label-danger">{{ $pembayaranStatus }}</span>
-                    @else
-                        <span class="badge bg-label-secondary">Belum Ada</span>
-                    @endif
+                <div class="card-body">
+                    <div class="mb-4">
+                        @if ($item->status === 'pending')
+                            <span class="col-12 badge bg-info mb-2">Pending</span>
+                        @elseif($item->status === 'processing')
+                            <span class="col-12 badge bg-warning mb-2">Proccessing</span>
+                        @elseif($item->status === 'completed')
+                            <span class="col-12 badge bg-success mb-2">Completed</span>
+                        @else
+                            <span class="col-12 badge bg-danger mb-2">Canceled</span>
+                        @endif
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <small>No. {{ $loop->iteration }}</small>
+                            <h6 class="text-warning">Pesanan <br>
+                                <small style="color: rgb(138, 138, 138)">{{ tanggal_indo($item->waktu_pesan) }},
+                                    {{ format_jam($item->waktu_pesan) }}</small>
+                            </h6>
+                        </div>
+                        <span class="mt-2">
+                            <h4><i class="bx bx-bowl-hot" style="color: rgb(133, 133, 133)"></i>
+                            </h4>
+                        </span>
+                    </div>
+                    <hr>
+                    <div class="d-flex align-items-center justify-content-between mb-1">
+                        <small>Kode Pesanan</small>
+                        <small style="color: black">ORD-{{ $item->order_id }}</small>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between mb-1">
+                        <small>Nama</small>
+                        <small style="color: black">{{ $item->nama }}</small>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between mb-1">
+                        <small>Meja</small>
+                        <small style="color: black">{{ $item->meja->nomor_meja }} - (
+                            {{ $item->meja->lokasi }} )</small>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between mb-1">
+                        <small>Status</small>
+                        <small>
+                            @if ($item->payment_status == 'paid')
+                                <span class="badge text-bg-info">{{ $item->payment_status }}</span>
+                            @elseif($item->payment_status == 'unpaid')
+                                <span class="badge text-bg-warning">{{ $item->payment_status }}</span>
+                            @elseif($item->payment_status == 'failed')
+                                <span class="badge text-bg-danger">{{ $item->payment_status }}</span>
+                            @endif
+                        </small>
+                    </div>
+                    <hr>
+                    <div class="d-flex align-items-center justify-content-between mb-1">
+                        <small>Pembayaran</small>
+                        <small style="color: black">{{ $item->pembayaran->metode ?? '-' }}</small>
+                    </div>
+                    <hr>
+                    <div class="d-flex align-items-center justify-content-between mb-1">
+                        <small>Total Pembayaran :</small>
+                        <small style="color: black"><b>{{ 'Rp' . number_format($item->total_harga) }}</b></small>
+                    </div>
+                    <hr>
+                    <div class="d-flex align-items-center justify-content-between mb-1">
+                        <small>Lihat Pesanan</small>
+                        <a href="{{ route('detail.kasir', $item->id) }}" class="text-decoration-none">
+                            <small><i class="bx bx-right-arrow-circle"
+                                    style="color: rgb(186, 186, 186)"></i></small></small>
+                        </a>
+                    </div>
                 </div>
-
-            </td>
-            <td>{{ tanggal_indo($item->waktu_pesan) }}</td>
-            <td>{{ format_jam($item->waktu_pesan) }}</td>
-        </tr>
+            </div>
+        </div>
     @endforeach
-    
+
 
 @endif

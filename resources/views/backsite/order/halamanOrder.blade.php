@@ -4,10 +4,10 @@
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="card">
             <div class="col-md-12">
-                <div class="card-header d-flex justify-content-between align-items-center mb-0">
-                    <h5 class="mb-0">Order</h5>
+                <div class="card-body">
+                    <h4 class="mb-0 fw-bolder">Daftar Pemesanan</h4>
+                    <hr class="mb-0 mt-2">
                 </div>
-
                 <div class="card-header d-flex justify-content-between align-items-center mb-0">
                     <div class="col-1 mt-1">
                         <form method="GET" action="{{ route('order.index') }}" class="mb-3">
@@ -32,7 +32,6 @@
                                     placeholder="Masukan order id..." aria-describedby="basic-addon-search31" />
                             </div>
                         </form>
-
                     </div>
                     <small class="text-body float-end mt-4">
                         <a href="" class="btn btn-danger btn-sm"><i class='bx bx-printer'></i> Print</a>
@@ -49,12 +48,10 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th class="text-center">Tanggal</th>
-                                    <th class="text-center">Jam</th>
-                                    <th class="text-center">Order_ID</th>
-                                    <th class="text-center">Meja</th>
-                                    <th class="text-center">Status</th>
-                                    <th class="text-center">Total harga</th>
+                                    <th class="text-center">ID transaksi</th>
+                                    <th class="">Nama</th>
+                                    <th class="text-center">Status pembayaran</th>
+                                    <th class="text-center">Total pesanan</th>
                                     <th class="text-center">Detail</th>
                                     <th>Aksi</th>
                                 </tr>
@@ -63,27 +60,26 @@
                                 @forelse ($order as $item)
                                     <tr>
                                         <td>{{ $order->firstItem() + $loop->index }}</td>
-                                        <td class="text-center">{{ tanggal_indo($item->waktu_pesan) }}</td>
-                                        <td class="text-center">{{ format_jam($item->waktu_pesan) }}</td>
-                                        <td class="text-center text-moted">{{ $item->order_id }}</td>
-                                        <td class="text-center"> <small><b>{{ $item->meja?->nomor_meja ?? '-' }}</b> <br>
-                                                <i>{{ $item->meja?->lokasi ?? '-' }}</i></small>
+                                        <td class="">
+                                            <div class="mb-2">No.Transaksi : <br> <small style="color: black">{{ $item->transaction->xendit_external_id }}
+                                                </small>
+                                            </div>
+                                            <div>Tanggal & waktu : <br> <small style="color: black">
+                                                  {{ tanggal_indo($item->waktu_pesan) }}, {{ format_jam($item->waktu_pesan) }}
+                                                </small>
+                                            </div>
                                         </td>
+                                        <td>
+                                            {{ $item->nama }} <br> <small>{{ $item->email }}</small>
+                                        </td>
+                                       
                                         <td class="text-center">
-                                                @if ($item->status == 'menunggu')
-                                                    <span
-                                                        class="badge rounded-pill text-bg-primary">{{ $item->status }}</span>
-                                                @elseif($item->status == 'diproses')
-                                                    <span
-                                                        class="badge rounded-pill text-bg-warning">{{ $item->status }}</span>
-                                                @elseif($item->status == 'selesai')
-                                                    <span
-                                                        class="badge rounded-pill text-bg-success">{{ $item->status }}</span>
-                                                @elseif($item->status == 'dibatalkan')
-                                                    <span
-                                                        class="badge rounded-pill text-bg-dark">{{ $item->status }}</span>
-                                                @endif
-                                            
+                                            @if ($item->payment_status == 'PAID')
+                                                <span class="badge rounded-pill text-bg-success"><i class="bx bx-check-circle"></i> Paid</span>
+                                            @else
+                                            <span class="badge rounded-pill text-bg-danger"><i class="bx bx-x-circle"></i> Expired</span>
+                                            @endif
+
                                         </td>
                                         <td class="text-center">
                                             {{ 'Rp. ' . number_format($item->total_harga) }}
@@ -91,7 +87,7 @@
 
                                         <td class="text-center">
                                             <a href="{{ route('detail.order', $item->id) }}"
-                                                class="btn btn-sm mb-2 btn-warning">
+                                                class="btn mb-2 btn-warning">
                                                 <i class="bx bx-info-circle"></i>
                                             </a>
                                         </td>
@@ -100,8 +96,8 @@
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit"
-                                                    class="btn btn-danger btn-sm mb-2 btn-konfirmasi-hapus">
-                                                    <i class="bx bx-trash"></i>
+                                                    class="btn btn-danger mb-2 btn-konfirmasi-hapus">
+                                                    <i class="bx bx-trash"></i> 
                                                 </button>
                                             </form>
 
@@ -139,7 +135,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="/filterdataorder" method="GET" >
+                    <form action="/filterdataorder" method="GET">
                         @csrf
                         <div class="row g-6">
                             <div class="col mb-0">
@@ -148,7 +144,7 @@
                             </div>
                             <div class="col mb-0">
                                 <label for="defaultFormControlInput" class="form-label">Sampai : </label>
-                                <input type="date" name="sampai" class="form-control"/>
+                                <input type="date" name="sampai" class="form-control" />
                             </div>
                         </div>
                 </div>

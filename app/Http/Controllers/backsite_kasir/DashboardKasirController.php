@@ -17,10 +17,9 @@ class DashboardKasirController extends Controller
     {
         $user = Auth::user();
         $hariIni = Carbon::today();
-        $perPage = $request->get('perPage', 20);
+        $perPage = $request->get('perPage', 10);
 
-        // Validasi input perPage
-        $perPage = max(1, min(100, (int)$perPage));
+       
 
         // Query dasar
         $queryPesananHariIni = order::whereDate('waktu_pesan', $hariIni);
@@ -40,6 +39,7 @@ class DashboardKasirController extends Controller
         $totalPendapatanHariIni = $queryPesananHariIni->sum('total_harga');
         $totalNominalTunai = (clone $queryPembayaranHariIni)->where('metode', 'tunai')->sum('jumlah_bayar');
         $totalNominalTransfer = (clone $queryPembayaranHariIni)->where('metode', 'transfer')->sum('jumlah_bayar');
+
 
         return view('backsite_kasir.halamanDashboardKasir', [
             'title' => 'Dashboard || Kasir',

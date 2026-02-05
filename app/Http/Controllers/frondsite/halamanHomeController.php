@@ -18,6 +18,7 @@ class halamanHomeController extends Controller
 
         $cart = session('cart', []);
 
+        // dd($cart);
 
         $totalHarga = 0;
         $totalItem =  0;
@@ -81,10 +82,14 @@ class halamanHomeController extends Controller
         $qty = $request->qty;
         $harga = $request->harga;
 
+        if ($qty > 10) {
+            return redirect('/')->with('error', 'Maximal 10 item!');
+        }
+
         $cart = session()->get('cart', []);
 
         if (isset($cart[$id])) {
-            // update qty
+
             $cart[$id]['qty'] += $qty;
             // update total harga untuk item ini
             $cart[$id]['total'] = $cart[$id]['qty'] * $cart[$id]['harga'];
@@ -94,6 +99,7 @@ class halamanHomeController extends Controller
                 'nama'   => $request->nama,
                 'harga'  => $harga,
                 'qty'    => $qty,
+                'gambar' => $request->gambar,
                 'total'  => $harga * $qty,
                 'catatan' => $request->catatan
             ];
@@ -101,8 +107,25 @@ class halamanHomeController extends Controller
 
         session()->put('cart', $cart);
 
-        return redirect('/')
-            ->with('success', 'Di simpan ke keranjang.');
+
+        return redirect()->route('beranda')->with('success', 'Di simpan ke keranjang.');
+    }
+
+    public function update_cart(Request $request)
+    {
+        $cart = session('cart', []);
+        $id = $request->id;
+
+        if ($request->qty > 10) {
+            return redirect('/checkout')->with('error', 'Maximal 10 item!');
+        }
+
+        $cart[$id]['qty']           = $request->input('qty', $cart[$id]['qty']);
+        $cart[$id]['catatan']       = $request->input('catatan', $cart[$id]['catatan']);
+
+        session(['cart' => $cart]);
+
+        return redirect('/checkout')->with('success', 'Berhasil ubah pesanan');
     }
 
 

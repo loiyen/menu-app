@@ -4,17 +4,22 @@
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="card">
             <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-5">
                     <a href="/dashboard-kasir" class="btn btn-sm btn-warning">Kembali</a>
                 </div>
-                <div class="d-flex justify-content-between align-items-center mb-5 mt-5">
-                    <div>
-                        <h6>Customer : <br> <strong> {{ $order->nama }}</strong> </h6>
-                    </div>
-                    <div>
-                        <h6>Kode : <br> <strong>{{ $order->order_id }}</strong></h6>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-2 mt-2">
+                            <div>
+                                <h6>Nama Customer </h6>
+                            </div>
+                            <div>
+                                <h6><strong> {{ $order->nama }}</strong></h6>
+                        </div>
+
                     </div>
                 </div>
+
                 @if ($order->pembayaran->status == 'lunas')
                     <div class="card-body">
                         <div class="col-md-12">

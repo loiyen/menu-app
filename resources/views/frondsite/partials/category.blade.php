@@ -30,7 +30,7 @@
                                             <figure>
                                                 <a href="{{ route('detail.menu', $item->id) }}" title="Product Title">
                                                     <img src="{{ asset('storage/' . $item->gambar) }}"
-                                                        style="width: 100%; height: 100px;"  class="tab-image">
+                                                        style="width: 100%; height: 100px;" class="tab-image">
                                                 </a>
                                             </figure>
                                             <h3 class="mt-0 mb-2">{{ $item->nama }}</h3>
@@ -41,32 +41,37 @@
                                                 <input type="hidden" name="nama" value="{{ $item->nama }}">
                                                 <input type="hidden" name="harga" value="{{ $item->harga }}">
                                                 <input type="hidden" name="gambar" value="{{ $item->gambar }}">
-                                                <div class="d-flex align-items-center justify-content-between">
-                                                    <div class="input-group product-qty">
-                                                        <span class="input-group-btn">
-                                                            <button type="button"
-                                                                class="quantity-left-minus btn btn-danger btn-number"
-                                                                data-type="minus">
-                                                                <svg width="16" height="16">
-                                                                    <use xlink:href="#minus"></use>
-                                                                </svg>
-                                                            </button>
-                                                        </span>
-                                                        <input type="text" name="qty" id="quantity"
-                                                            class="form-control input-number" value="1">
-                                                        <span class="input-group-btn">
-                                                            <button type="button"
-                                                                class="quantity-right-plus btn btn-primary btn-number"
-                                                                data-type="plus">
-                                                                <svg width="16" height="16">
-                                                                    <use xlink:href="#plus"></use>
-                                                                </svg>
-                                                            </button>
-                                                        </span>
+                                                <div class="">
+                                                    <div
+                                                        class="d-flex align-items-center justify-content-between   mb-3 mt-3">
+                                                        <div class="input-group product-qty">
+                                                            <span class="input-group-btn ">
+                                                                <button type="button"
+                                                                    class="quantity-left-minus btn btn-danger btn-number"
+                                                                    data-type="minus">
+                                                                    <svg width="16" height="16">
+                                                                        <use xlink:href="#minus"></use>
+                                                                    </svg>
+                                                                </button>
+                                                            </span>
+                                                            <input type="text" name="qty" id="quantity"
+                                                                class="form-control input-number" value="1">
+                                                            <span class="input-group-btn">
+                                                                <button type="button"
+                                                                    class="quantity-right-plus btn btn-primary btn-number"
+                                                                    data-type="plus">
+                                                                    <svg width="16" height="16">
+                                                                        <use xlink:href="#plus"></use>
+                                                                    </svg>
+                                                                </button>
+                                                            </span>
+                                                        </div>
+                                                        <small>Max:10</small>
                                                     </div>
-                                                    <button type="submit" class="btn btn-primary btn-sm">
-                                                        <i class="fa fa-plus" aria-hidden="true"></i>
-                                                        <iconify-icon icon="uil:shopping-cart"></iconify-icon>
+
+                                                    <button type="submit"
+                                                        class="col-12 btn btn-outline-primary btn-sm">
+                                                        Tambah
                                                     </button>
                                                 </div>
                                             </form>

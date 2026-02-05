@@ -5,11 +5,11 @@
 
     <div class="row">
 
-        <div class="col-md-12">
+        <div class="col-lg-12">
             <div class="bootstrap-tabs product-tabs mb-4 mt-4">
                 <div class="tabs-header d-flex justify-content-between my-1">
                     <a href="/"><i class="fa fa-arrow-left mt-0"></i></a>
-                    <h5 class="mt-2">Pesanan</h5>
+                    <h6 class="mt-2">Pesanan</h6>
                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
                     </div>
                 </div>
@@ -42,7 +42,7 @@
                         <div class="order-md-last">
                             <div class="d-flex justify-content-between align-items-center mb-1">
                                 <h6 class="mb-0 mt-2">Item yang dipesan ({{ $total_item }})</h6>
-                                <a href="/" class="btn btn-outline-danger"><span><i class="fa fa-plus"></i> <small
+                                <a href="/" class="btn btn-outline-primary"><span><i class="fa fa-plus"></i> <small
                                             class="fw-bold">Tambah
                                             Item</small></span></a>
                             </div>
@@ -54,20 +54,21 @@
                                             {{-- info --}}
                                             <div class="d-flex align-items-center justify-content-between mb-2">
                                                 <p class="card-title fw-bold text-black">{{ $item['nama'] }}</p>
-                                                <div></div>
+                                                <a href="{{ route('ubah.pesanan', $item['id']) }}"
+                                                    class="text-decoration-none btn btn-sm btn-outline-danger"><small
+                                                        class="fw-bold"><i class="fa fa-pencil"></i>
+                                                        Ubah</small></a>
                                             </div>
                                             {{-- catatan --}}
                                             <div class="mb-2">
-                                                <form action="{{ route('update.catatan', $item['id']) }}" method="post">
-                                                    @csrf
-                                                    <div class="input-group mb-3">
-                                                        <input type="hidden" name="id" value="{{ $item['id'] }}">
-                                                        <span class="input-group-text"><i class="fa fa-pencil"></i></span>
-                                                        <textarea type="text" class="form-control" name="catatan" placeholder="Tulis catatan...">{{ $item['catatan'] }}</textarea>
-                                                        <button type="submit" class="input-group-text btn btn-primary"><i
-                                                                class="fa fa-paper-plane" aria-hidden="true"></i></button>
-                                                    </div>
-                                                </form>
+                                                <div class="input-group mb-3">
+                                                    <input type="hidden" name="id" value="{{ $item['id'] }}">
+                                                    <span class="input-group-text"><i class="fa fa-file"></i></span>
+                                                    <input type="text" class="form-control" name="catatan" readonly
+                                                        placeholder="Belum ada catatan..."
+                                                        value="{{ $item['catatan'] }}"></input>
+
+                                                </div>
                                                 <div class="mb-2">
                                                     <h6>{{ 'Rp' . number_format($item['total']) }}</h6>
                                                 </div>
@@ -75,7 +76,7 @@
                                             {{-- optional --}}
                                             <div class="mb-2">
                                                 <small class="text-body-secondary">
-                                                    <form action="{{ route('add.item') }}" method="POST">
+                                                    <form id="cart-form-{{ $item['id'] }}">
                                                         @csrf
                                                         <input type="hidden" name="id" value="{{ $item['id'] }}">
                                                         <div class="d-flex align-items-center justify-content-between mb-2">
@@ -83,38 +84,27 @@
                                                                 <span class="input-group-btn">
                                                                     <button type="button"
                                                                         class="quantity-left-minus btn btn-danger btn-number"
-                                                                        data-type="minus">
+                                                                        data-id="{{ $item['id'] }}">
                                                                         <svg width="16" height="16">
                                                                             <use xlink:href="#minus"></use>
                                                                         </svg>
                                                                     </button>
                                                                 </span>
-                                                                <input type="text" name="qty" id="quantity"
+                                                                <input type="text" name="qty"
+                                                                    id="quantity-{{ $item['id'] }}"
                                                                     class="form-control input-number"
                                                                     value="{{ $item['qty'] }}">
                                                                 <span class="input-group-btn">
                                                                     <button type="button"
                                                                         class="quantity-right-plus btn btn-primary btn-number"
-                                                                        data-type="plus">
+                                                                        data-id="{{ $item['id'] }}">
                                                                         <svg width="16" height="16">
                                                                             <use xlink:href="#plus"></use>
                                                                         </svg>
                                                                     </button>
                                                                 </span>
                                                             </div>
-                                                            <div>
-                                                                <button type="submit" class="btn btn-primary btn-sm ">
-                                                                    <i class="fa fa-paper-plane" aria-hidden="true"></i>
-                                                                    <span class="fw-bold"></span>
-                                                                </button>
-                                                                <a href="{{ route('hapus.cartitemcekout', $item['id']) }}"
-                                                                    class="btn btn-outline-dark btn-sm">
-                                                                    <span class="fw-bold"><i class="fa fa-trash fa-sm"
-                                                                            aria-hidden="true"></i>
-                                                                    </span>
-                                                                </a>
-                                                            </div>
-
+                                                            <small>Max.10</small>
                                                         </div>
                                                     </form>
                                                 </small>
@@ -128,53 +118,7 @@
                                     </div>
                                 @endforelse
                             </ul>
-                        </div>
-                        <hr>
-                        <div class="mt-4">
-                            <button type="button" class="btn btn-primary col-12" data-bs-toggle="modal"
-                                data-bs-target="#exampleModal">
-                                <h6 class="mt-1 mb-1 text-white"><span><i class="fa fa-pencil"></i></span><i> Tambah catatan
-                                        lainnya</i></h6>
-                            </button>
-                            {{-- modal --}}
-                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                                aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h6 class="modal-title" id="exampleModalLabel">Catatan lainnya</h6>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <form action="{{ route('update.catatanopsi') }}" method="post">
-                                                @csrf
-                                                <div class="mb-3">
-                                                    <label for="exampleFormControlInput1"
-                                                        class="form-label">Optional</label>
-                                                    <textarea class="form-control" name="catatan_optional" placeholder="Tambahkan catatan lain di sini..."
-                                                        rows="3"></textarea>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="exampleFormControlInput1" class="form-label">Opsi
-                                                        Gula</label>
-                                                    <select class="form-select" name="opsi_gula"
-                                                        aria-label="Default select example">
-                                                        <option selected>Pilih --</option>
-                                                        <option value="Normal">Normal</option>
-                                                        <option value="Less">Less</option>
-                                                        <option value="Tanpa gula">Tanpa gula</option>
-                                                    </select>
-                                                </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="submit" class="btn btn-primary col-12">Tambah</button>
-                                        </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        </div>    
                     </div>
                 </div>
 
@@ -224,6 +168,63 @@
             </div>
         </div>
     </div>
+
+    {{-- ajax-tambah-kurang item --}}
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Fungsi update qty via AJAX
+            function updateQty(id, qty) {
+                fetch("{{ route('add.item') }}", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                        },
+                        body: JSON.stringify({
+                            id: id,
+                            qty: qty
+                        }),
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log("Update sukses:", data);
+                         location.reload();
+                    })
+                    .catch(error => console.error("Error:", error));
+            }
+
+            // Tombol +
+            document.querySelectorAll(".quantity-right-plus").forEach(btn => {
+                btn.addEventListener("click", function() {
+                    let id = this.getAttribute("data-id");
+                    let qtyInput = document.getElementById("quantity-" + id);
+                    let qty = parseInt(qtyInput.value) || 0;
+
+                    if (qty < 10) {
+                        qty++;
+                        qtyInput.value = qty;
+                        updateQty(id, qty);
+                    }
+                });
+            });
+
+            // Tombol -
+            document.querySelectorAll(".quantity-left-minus").forEach(btn => {
+                btn.addEventListener("click", function() {
+                    let id = this.getAttribute("data-id");
+                    let qtyInput = document.getElementById("quantity-" + id);
+                    let qty = parseInt(qtyInput.value) || 0;
+
+                    if (qty > 1) {
+                        qty--;
+                        qtyInput.value = qty;
+                        updateQty(id, qty);
+                    }
+                });
+            });
+        });
+    </script>
 
     {{-- @include('frondsite.partials.footer') --}}
 @endsection

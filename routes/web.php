@@ -27,7 +27,7 @@ use App\Http\Controllers\frondsite\PaymentController;
 
 Route::get('/pesan/meja/{nomor_meja}', [halamanDashboardController::class, 'scan_qr']);
 
-Route::get('/', [halamanHomeController::class, 'index']);
+Route::get('/', [halamanHomeController::class, 'index'])->name('beranda');
 
 //info
 Route::get('/info-jam', [halamanHomeController::class, 'info_jam_kafe']);
@@ -41,12 +41,14 @@ Route::get('/menu1/search-live', [SearchController::class, 'searchLive2']);
 
 //cart
 Route::post('/add-cart', [halamanHomeController::class, 'add_cart'])->name('cart.add');
+Route::post('/add-update', [halamanHomeController::class, 'update_cart'])->name('cart.update');
 Route::post('/hapus', [halamanHomeController::class, 'delate_cart'])->name('hapus.cart');
 Route::get('/hapus-cart/{id}', [halamanHomeController::class, 'delate_cartitem'])->name('hapus.cartitem');
 
 //checkout
 Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
 Route::post('/update/item', [CheckoutController::class, 'update_qty'])->name('add.item');
+Route::get('/ubah-pesanan/{id}', [CheckoutController::class, 'edit_pesanan'])->name('ubah.pesanan');
 Route::post('/update/catatan', [CheckoutController::class, 'update_catatan'])->name('update.catatan');
 Route::post('/updatecatatanopsi', [CheckoutController::class, 'update_CatatandanOpsi'])->name('update.catatanopsi');
 Route::get('/hapuscartcheckout/{id}', [CheckoutController::class, 'delate_cartitem'])->name('hapus.cartitemcekout');
@@ -56,11 +58,9 @@ Route::post('/hapus/keranjang/', [CheckoutController::class, 'cart_destroy'])->n
 Route::get('/pembayaran-pesanan', [CheckoutController::class, 'pembayaran']);
 
 
-Route::post('/generate-snap-token', [CheckoutController::class, 'show_snap'])->name('snapToken.create');
-
 //pembayaran
 Route::post('/order/process', [PaymentController::class, 'createOrder'])->name('order.create');
-Route::get('/history-order', [PaymentController::class, 'historyOrder'])->name('history.order');
+
 Route::get('/payment-success', [PaymentController::class, 'success'])->name('success');
 Route::get('/payment-failure', [PaymentController::class, 'failed'])->name('failed');
 
@@ -71,7 +71,7 @@ Route::get('/pesananselesai', [CheckoutController::class, 'pesanan_selesai'])->n
 
 //riwayat pesanan
 Route::get('/riwayat-pesanan', [RiwayatTransController::class, 'index'])->name('riwayat.pesananuser');
-Route::get('/detail-riwayat', [RiwayatTransController::class, 'detail_riwayat_pemesanan']);
+Route::get('/history/order/{id}', [RiwayatTransController::class, 'detail_riwayat_pemesanan'])->name('detail.history');
 
 
 //barista

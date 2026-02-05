@@ -118,7 +118,7 @@
                     <li class="menu-item {{ request()->is('order') ? 'active open' : ' ' }}">
                         <a href="/order" class="menu-link ">
                             <i class="menu-icon tf-icons bx bx-receipt"></i>
-                            <div class="text-truncate" data-i18n="Basic">Order</div>
+                            <div class="text-truncate" data-i18n="Basic">Pemesanan</div>
                         </a>
                     </li>
 

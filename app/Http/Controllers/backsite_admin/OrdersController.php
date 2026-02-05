@@ -24,7 +24,7 @@ class OrdersController extends Controller
 
         $pembayaran     = pembayarans::sum('jumlah_bayar');
         $user           = Auth::user();
-        $orders          = order::with('meja')->paginate($perPage);
+        $orders          = order::with('meja','transaction')->paginate($perPage);
 
 
         return view('backsite.order.halamanOrder', [

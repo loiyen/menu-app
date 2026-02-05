@@ -1,11 +1,86 @@
 @extends('frondsite.layout.main')
 
 @section('container')
-    @include('frondsite.partials.navbar')
+    {{-- @include('frondsite.partials.navbar') --}}
 
     <div class="col-md-12 col-lg-12 col-sm-12">
-        <div class="row g-4">
-            <div class="col-md-12 col-lg-12 col-sm-12 product-item mb-3 ">
+        <div class="row">
+            <div class="bootstrap-tabs product-tabs mb-4 mt-4">
+                <div class="tabs-header d-flex justify-content-center my-1">
+                    <h5 class="mt-2">Ringkasan Pesanan</h5>
+                </div>
+            </div>
+
+            <div class="col-12 mb-3">
+                <div class="card-body">
+                    <div class="d-flex align-content-center justify-content-between mb-3">
+                        <h6>Nomor Pesanan <br><small style="color: rgb(135, 135, 135)">
+                                {{ $orders->transaction->xendit_external_id }}</small></h6>
+                        <h6>Tanggal <br><small style="color: rgb(135, 135, 135)">{{ tanggal_indo($orders->waktu_pesan) }},
+                                {{ format_jam($orders->waktu_pesan) }}</small></h6>
+
+                    </div>
+                    <div class="product-item mb-1">
+                        <h6>Catatan</h6>
+                        <small class="card-text">{{ $orders->catatan }}</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 product-item mb-4">
+                <div class="card-body">
+                    <div class="d-flex align-content-center justify-content-between">
+                        <h6>Item yang dipesan</h6>
+                        <h6></h6>
+                    </div>
+                    @foreach ($orders->items as $item)
+                        <div class="d-flex align-content-center justify-content-between">
+                            <small class="fw-bold"><b>{{ $item->qty }}x</b></small>
+                            <small>{{ $item->nama_menu }} <br>{{ $item->qty }} x
+                                {{ 'Rp' . number_format($item->menu->harga) }}</small>
+                            <small></small>
+                            <small></small>
+                            <small>{{ 'Rp' . number_format($item->sub_total) }}</small>
+                        </div>
+                    @endforeach
+                    <hr>
+                    <div class="d-flex align-content-center justify-content-between mb-1">
+                        <small class="">Subtotal</small>
+                        <small style="color: rgb(19, 19, 19)">{{ 'Rp' . number_format($orders->total_harga) }}</small>
+                    </div>
+                    <div class="d-flex align-content-center justify-content-between mb-1">
+                        <small class="">Biaya lainya <br></small>
+                        <small style="color: rgb(19, 19, 19)">Rp4000</small>
+                    </div>
+                    <div class="d-flex align-content-center justify-content-between mb-3">
+                        <small class="">Metode Pembayaran <br></small>
+                        <small style="color: rgb(19, 19, 19)">{{ $orders->transaction->payment_type }}</small>
+                    </div>
+                    <hr>
+                    <div class="d-flex align-content-center justify-content-between mb-1">
+                        <small class="fw-bold">Total <br></small>
+                        <small class="fw-bold"
+                            style="color: brown">{{ 'Rp' . number_format($orders->total_harga + 4000) }}</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 product-item">
+                <div class="card-body">
+                    <h6 class="text-center mt-2">Apakah anda tertarik untuk melakukan memesan lagi ?</h6>
+                    <div class="d-flex align-items-center justify-content-center">
+                        <div class="m-3">
+                            <a href="/riwayat-pesanan" class=" btn btn-outline-danger">Riwayat</a>
+                        </div>
+                        <div>
+                            <a href="/" class="btn btn-primary">Pesan Lagi</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            {{-- <div class="col-md-12 col-lg-12 col-sm-12 product-item mb-3 ">
 
                 <div class="h-100">
                     <div class="card-body mb-1">
@@ -52,7 +127,7 @@
                         </div>
                     </div>
 
-                    {{-- <div class="card-body mb-2">
+                    <div class="card-body mb-2">
                         if
                         <div class="alert bg-danger d-flex align-items-center" role="alert">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
@@ -66,7 +141,7 @@
                             </div>
                         </div>
 
-                    </div> --}}
+                    </div>
 
                     <div class="card-body">
                         <div class="order-md-last">
@@ -110,10 +185,9 @@
                     </div>
 
                 </div>
-            </div>
+            </div> --}}
 
-
-            <div class="col-md-12 col-lg-12 mb-2 product-item mb-1">
+            {{-- <div class="col-md-12 col-lg-12 mb-2 product-item mb-1">
                 <div class="">
                     <div class="card-body">
                         <div class="mb-3 mt-2">
@@ -162,11 +236,11 @@
                     <a href="{{ route('pesanan.selesai') }}" class="col-12 btn btn-outline-primary">Selesai</a>
 
                 </div>
-            </div>
+            </div> --}}
 
         </div>
     </div>
 
 
-    @include('frondsite.partials.footer')
+    {{-- @include('frondsite.partials.footer') --}}
 @endsection

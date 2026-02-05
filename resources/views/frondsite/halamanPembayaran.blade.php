@@ -6,7 +6,7 @@
             <div class="bootstrap-tabs product-tabs mb-4 mt-4">
                 <div class="tabs-header d-flex justify-content-between my-1">
                     <a href="/checkout"><i class="fa fa-arrow-left mt-0"></i></a>
-                    <h5 class="mt-2">Pembayaran</h5>
+                    <h6 class="mt-2">Pembayaran</h6>
                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
                     </div>
                 </div>
@@ -32,7 +32,7 @@
                             <div class="input-group ">
                                 <span class="input-group-text" id="basic-addon1"><i class="fa fa-user"></i></span>
                                 <input type="text" class="form-control" id="nama" name="nama" placeholder="Nama Lengkap"
-                                    aria-label="Nama" aria-describedby="basic-addon1" required value="Jery Hardianto">
+                                    aria-label="Nama" aria-describedby="basic-addon1" required>
                             </div>
                         </div>
                         <div class="mb-3">
@@ -40,7 +40,7 @@
                             <div class="input-group">
                                 <span class="input-group-text" id="basic-addon1"><i class="fa fa-phone"></i></span>
                                 <input type="text" class="form-control" id="phone" name="phone" placeholder="Nomor Ponsel"
-                                    aria-label="Phone" aria-describedby="basic-addon1" value="08123456789">
+                                    aria-label="Phone" aria-describedby="basic-addon1" required>
                             </div>
                         </div>
                         <div class="mb-4">
@@ -48,12 +48,12 @@
                             <div class="input-group">
                                 <span class="input-group-text" id="basic-addon1"><i class="fa fa-envelope"></i></span>
                                 <input type="email" class="form-control" id="email" name="email" placeholder="Email"
-                                    aria-label="Email" aria-describedby="basic-addon1" value="jeryhardianto@gmail.com">
+                                    aria-label="Email" aria-describedby="basic-addon1">
                             </div>
                         </div>
                         <div class="mb-4">
                             <label for="catatan" class="form-label"><small>Catatan</small></label>
-                            <textarea class="form-control" id="catatan" name="catatan" placeholder="Catatan tambahan (opsional)" rows="2">Halo, saya ingin makan di tempat</textarea>
+                            <textarea class="form-control" id="catatan" name="catatan" placeholder="Catatan tambahan (opsional)" rows="2"></textarea>
                         </div>
                         <div class="mb-4">
                             <label for="nomorMeja" class="form-label"><small>Nomor Meja</small></label>
@@ -70,7 +70,7 @@
                 <h6 class="">Pembayaran</h6>
                 <div class="card mt-4 mb-3 bg-primary">
                     <div class="card-body">
-                        <small class="text-white">Mohon untuk tidak pindah meja, setelah pembayaran sukses.</small>
+                        <p class="card-text text-white"><i class="fa fa-exclamation-circle"></i> Mohon untuk tidak pindah meja, setelah pembayaran sukses.</p>
                     </div>
                 </div>
                 <div class="">

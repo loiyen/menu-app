@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\frondsite;
+
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Transaction;
@@ -32,10 +33,11 @@ class PaymentController extends Controller
 
         session()->put('phone', $request->phone);
 
-         // Hitung total dari cart
-         $cart = session('cart', []);
-         $totalHarga = 0;
-         $totalItem = 0;
+        // Hitung total dari cart
+        $cart = session('cart', []);
+
+        $totalHarga = 0;
+        $totalItem = 0;
 
         foreach ($cart as $item) {
             $totalHarga += $item['harga'] * $item['qty'];
@@ -47,20 +49,20 @@ class PaymentController extends Controller
             return redirect(route('history.order'))->with('error', 'Anda sudah memiliki pesanan yang belum dibayar');
         }
 
-         // simpan order ke database
-         $order = Order::create([
-             'order_id'       => 'ORD-' . Str::uuid(),
-             'nama'           => $request->nama,
-             'phone'          => $request->phone,
-             'email'          => $request->email,
-             'meja_id'        => 1,
-             'waktu_pesan'    => now(),
-             'payment_status' => 'unpaid',
-             'catatan'        => $request->catatan,
-             'total_harga'    => $totalHarga
-         ]);
+        // simpan order ke database
+        $order = Order::create([
+            'order_id'       => 'ORD-' . Str::uuid(),
+            'nama'           => $request->nama,
+            'phone'          => $request->phone,
+            'email'          => $request->email,
+            'meja_id'        => 1,
+            'waktu_pesan'    => now(),
+            'payment_status' => 'unpaid',
+            'catatan'        => $request->catatan,
+            'total_harga'    => $totalHarga
+        ]);
 
-       // simpan order items
+        // simpan order items
         foreach ($cart as $item) {
             $order->items()->create([
                 'order_id'      => $order->id,
@@ -69,7 +71,7 @@ class PaymentController extends Controller
                 'sub_total'     => $item['harga'] * $item['qty'],
                 'qty'           => $item['qty'],
                 'harga'         => $item['harga'],
-                'catatan_menu'       => $item['catatan'],
+                'catatan_menu'  => $item['catatan'],
                 'status'        => 'Proses'
             ]);
         }
@@ -78,25 +80,16 @@ class PaymentController extends Controller
         return redirect($transaction->invoice_url);
     }
 
-    public function historyOrder()
-    {
-        $phone = session('phone');
-        $orders = Order::with('transaction')->where('phone', $phone)->get();
-        return view('frondsite.order-history', [
-            'title' => 'Order History',
-            'orders' => $orders
-        ]);
-    }
 
     public function success(Request $request)
     {
+        session()->forget('cart');
 
-        return redirect(route('history.order'))->with('success', 'Payment success');
+        return redirect(route('riwayat.pesananuser'))->with('success', 'Payment success');
     }
 
     public function failed(Request $request)
     {
         return redirect(route('history.order'))->with('error', 'Payment failed');
     }
-    
 }

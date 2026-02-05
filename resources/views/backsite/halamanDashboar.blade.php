@@ -3,67 +3,96 @@
 @section('container')
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="row">
-            <div class="col-xxl-4 col-lg-12 col-md-12 order-1">
+            <div class="col-xxl-12 col-lg-12 col-md-12 order-1">
                 <div class="row">
-                    <div class="col-lg-4 col-md-4 col-sm-4 mb-6">
+
+                    <div class="col-lg-6 col-md-12 col-sm-12 mb-6">
                         <div class="card h-100">
                             <div class="card-body">
-                                <h4 class="card-title mb-3">{{ $menu }}</h4>
-                                <p class="mb-1">Total menu</p>
+                                <small class="mb-3">Saldo anda</small>
+                                <h4 class="mb-2 fw-bold">{{ 'Rp' . number_format($pendapatan) }}</h4>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-md-4 col-sm-4 mb-6">
+                    <div class="col-lg-2 col-md-4 col-sm-4 mb-6">
                         <div class="card h-100">
                             <div class="card-body">
-
-                                <h4 class="card-title mb-3">{{ $user_data }}</h4>
-                                <p class="mb-1">Total user</p>
-
+                                <small class="mb-1">Total Menu</small>
+                                <h4 class="mb-2 fw-bold">{{ $menu }}</h4>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-md-4 col-sm-4 mb-6 ">
+                    <div class="col-lg-2 col-md-4 col-sm-4 mb-6 ">
                         <div class="card h-100 ">
                             <div class="card-body">
-                                <h4 class="card-title mb-3">{{ $meja }}</h4>
-                                <p class="mb-1">Total meja</p>
+                                <small class="mb-1">Total Meja</small>
+                                <h4 class="mb-2 fw-bold">{{ $meja }}</h4>
                             </div>
                         </div>
                     </div>
-
+                    <div class="col-lg-2 col-md-4 col-sm-4 mb-6 ">
+                        <div class="card h-100 ">
+                            <div class="card-body">
+                                <small class="mb-1">Total user</small>
+                                <h4 class="mb-2 fw-bold">{{ $user_data }}</h4>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="col-xxl-4 col-lg-12 col-md-12 order-1">
+            <div class="col-xxl-12 col-lg-12 col-md-12 order-1">
                 <div class="row">
                     <div class="col-md-8">
                         <div class="card h-100">
                             <div class="card-header d-flex justify-content-between">
-                                <div class="card-title mb-0">
-                                    <h5 class="mb-1 me-2">Data Order</h5>
-                                    <p class="card-subtitle">{{ 'Rp.' . number_format($total_order) }}</p>
-                                </div>
+                                <h6 class="mb-1 me-2">Pemesanan</h6>
+                                <small class="card-subtitle"></small>
                             </div>
                             <div class="card-body">
+                                <div class="card mb-5">
+                                    <div class="card-body">
+                                        <small>Total pendapat</small>
+                                        <h4 class="text-success">{{ 'Rp'.number_format($total_order) }} </h4>
+                                    </div>
+                                </div>
                                 <div class="d-flex justify-content-between align-items-center mb-6">
                                     <div class="d-flex flex-column align-items-center gap-1">
-                                        <h3 class="mb-1 text-success">{{ $order }}</h3>
+                                        <h4 class="mb-1">{{ $order }}</h4>
                                         <small>Total Orders</small>
                                     </div>
                                     <div>
-                                        <h3 class="mb-1 text-success text-center">{{ $order_item }}</h3>
-                                        <small >Total item Orders</small>
+                                        <h4 class="mb-1  text-center">{{ $order_item }}</h4>
+                                        <small>Total item Orders</small>
                                     </div>
-
+                                    <div>
+                                        <h4 class="mb-1  text-center">{{ $paid }}</h4>
+                                        <small>Paid</small>
+                                    </div>
+                                    <div>
+                                        <h4 class="mb-1 text-center">{{ $expired }}</h4>
+                                        <small>Expired</small>
+                                    </div>
                                 </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card h-100">
+                            <div class="card-header d-flex align-items-center justify-content-between">
+                                <h6 class="card-title m-0 me-2">Kategori</h6>
+                            </div>
+
+                            <div class="card-body">
                                 <ul class="p-0 m-0">
                                     @forelse ($kategori as $item)
                                         <li class="d-flex align-items-center mb-5">
                                             <div
                                                 class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
                                                 <div class="me-2">
-                                                    <h6 class="mb-0">{{ $item->nama }}</h6>
+                                                    <p class="mb-0 fw-bold">{{ $item->nama }}</p>
                                                     <small>-- Kategori</small>
                                                 </div>
                                                 <div class="user-progress">
@@ -80,89 +109,9 @@
                                         </li>
                                     @endforelse
                                 </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card h-100">
-                            <div class="card-header d-flex align-items-center justify-content-between">
-                                <h5 class="card-title m-0 me-2">Transaksi</h5>
-                            </div>
-                            <div class="card-body pt-4">
-                                <ul class="p-0 m-0">
-                                    <li class="d-flex align-items-center mb-6">
-                                        <div class="avatar flex-shrink-0 me-3">
-                                            <h3><i class="bx bx-wallet-alt bg-danger"></i></h3>
-                                        </div>
-                                        <div
-                                            class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                                            <div class="me-2">
-                                                <small class="d-block">Pay</small>
-                                                <h6 class="fw-normal mb-0">Online</h6>
-                                            </div>
-                                            <div class="user-progress d-flex align-items-center gap-2">
-                                                <h6 class="fw-normal mb-0">
-                                                    <strong>{{ 'Rp.' . number_format($pembayaran_trans) }}</strong>
-                                                </h6>
-                                                <span class="text-body-secondary">IDN</span>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="d-flex align-items-center mb-6">
-                                        <div class="avatar flex-shrink-0 me-3">
-                                            <h3><i class="bx bx-wallet-alt bg-success"></i></h3>
-                                        </div>
-                                        <div
-                                            class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                                            <div class="me-2">
-                                                <small class="d-block">Tunai</small>
-                                                <h6 class="fw-normal mb-0">Kasir</h6>
-                                            </div>
-                                            <div class="user-progress d-flex align-items-center gap-2">
-                                                <h6 class="fw-normal mb-0">
-                                                    <strong>{{ 'Rp.' . number_format($pembayaran_tunai) }}</strong>
-                                                </h6>
-                                                <span class="text-body-secondary">IDN</span>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="card-body">
-                                            <h6>Status transaksi</h6>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="d-flex align-items-center justify-content-between">
-                                                        <p>-- <small class="badge text-bg-success">Sukses</small>
-                                                        </p>
-                                                        <h6></h6>
-                                                        <h6>{{ $pembayaran_sukses }}</h6>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <div class="d-flex align-items-center justify-content-between">
-                                                        <p>-- <small class="badge text-bg-warning">Menunggu</small>
-                                                        </p>
-                                                        <h6></h6>
-                                                        <h6>{{ $pembayaran_menunggu }}</h6>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-12 ">
-                                                    <div class="d-flex align-items-center justify-content-between">
-                                                        <p>-- <small class="badge text-bg-danger">Gagal</small>
-                                                        </p>
-                                                        <h6></h6>
-                                                        <h6>{{ $pembayaran_gagal }}</h6>
-                                                    </div>
-                                                </div>
-                                            </div>
 
-                                        </div>
-                                    </div>
-
-                                </div>
                             </div>
+
                         </div>
                     </div>
                 </div>

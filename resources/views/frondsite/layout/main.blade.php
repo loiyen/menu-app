@@ -123,21 +123,28 @@
             <div class="order-md-last">
                 <h4 class="d-flex justify-content-between align-items-center mb-3">
                     <span class="text-primary fs-5">Keranjang anda</span>
-                    <span class="badge rounded-pill bg-primary">{{ $total_item }}</span>
+                    <span class="badge rounded-pill bg-primary">{{ $total_item ?? '' }}</span>
 
                 </h4>
                 <ul class="list-group mb-4 mt-3">
                     @forelse ($keranjang as $item)
                         <li class="list-group-item d-flex justify-content-between lh-sm">
                             <div>
-                                <h6 class="my-0">{{ $item['nama'] }}</h6>
-                                <small class="text-body-secondary">Jumlah : {{ $item['qty'] }}</small>
+                                <small class="text-body-secondary fw-bold">{{ $item['qty'] ?? '' }}x</small>
                             </div>
-                            <span class="text-body-secondary">{{ 'Rp' . number_format($item['harga']) }}</span>
+                            <div>
+                                <h6 class="my-0">{{ $item['nama'] }} <br> <span
+                                        style="color: rgb(166, 166, 166)"><small>
+                                            {{ $item['qty'] }} x {{ 'Rp' . number_format($item['harga']) ?? '' }}
+                                        </small></span>
+                                </h6>
+
+                            </div>
+                            <small style="color: rgb(88, 88, 88)">{{ 'Rp' . number_format($item['total']) ?? '' }}</small>
                             <div>
                                 <a href="{{ route('hapus.cartitem', $item['id']) }}"
-                                    class="btn btn-sm  btn-outline-dark ">
-                                    <i class="fa-solid fa-trash"></i>
+                                    class="btn btn-sm  btn-outline-danger">
+                                    <i class="fa fa-minus"></i>
                                 </a>
                             </div>
                         </li>
@@ -158,7 +165,8 @@
                         type="submit">Pesan</a>
                     <form action="{{ route('hapus.cart') }}" method="post">
                         @csrf
-                        <button class="w-100 btn btn-lg btn-dark" type="submit">Hapus</button>
+                        <button class="w-100 btn btn-lg text-white" style="background-color: brown"
+                            type="submit">Hapus</button>
                     </form>
 
                 </div>
@@ -243,47 +251,59 @@
         });
     </script>
 
-    {{-- <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const input = document.getElementById('search-menu');
-            const resultDiv = document.getElementById('menu-results');
+    {{-- alert --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-            // Live search AJAX
-            input.addEventListener('keyup', function() {
-                const keyword = input.value.trim();
-                if (keyword.length === 0) {
-                    resultDiv.innerHTML = ""; // Kosongkan hasil jika input kosong
-                    return;
-                }
-
-                fetch(`/menu/search-live?keyword=${encodeURIComponent(keyword)}`)
-                    .then(response => response.text())
-                    .then(html => {
-                        resultDiv.innerHTML = html; // Isi ulang hasil
-                    })
-                    .catch(err => {
-                        console.error("Fetch error:", err);
-                    });
-            });
-
-            // Event delegation untuk tombol + dan -
-            resultDiv.addEventListener('click', function(e) {
-                const isPlus = e.target.classList.contains('quantity-right-plus');
-                const isMinus = e.target.classList.contains('quantity-left-minus');
-
-                if (isPlus || isMinus) {
-                    const product = e.target.closest('.product-item');
-                    if (!product) return;
-
-                    const input = product.querySelector('.input-number');
-                    let value = parseInt(input.value) || 1;
-
-                    if (isPlus) {
-                        input.value = value + 1;
-                    } else if (isMinus && value > 1) {
-                        input.value = value - 1;
-                    }
+    @if (session('success'))
+        <script>
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
                 }
             });
-        });
-    </script> --}}
+            Toast.fire({
+                icon: 'success',
+                title: 'Sukses',
+                text: '{{ session('success') }}'
+            });
+        </script>
+    @endif
+    @if (session('error'))
+        <script>
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+            Toast.fire({
+                icon: 'error',
+                title: 'Gagal!',
+                text: '{{ session('error') }}'
+            });
+        </script>
+    @endif
+
+    @if (session('success1'))
+        <script>
+            Swal.fire({
+                position: "top-end",
+                icon: 'success',
+                title: 'Sukses',
+                text: '{{ session('success1') }}',
+                showConfirmButton: false,
+                timer: 1500
+            });
+        </script>
+    @endif
