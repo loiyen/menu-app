@@ -21,38 +21,38 @@
             </div>
         </div>
     </div>
-    <div class="col-12 mt-0 mb-4 ">
-        <div class="card rounded-sm" style="background-color: rgb(255, 252, 214); height:50px;">
-            <div class="card-body">
-                <h6 class="text-center text-dark">Nomor Meja : JDA6 <b class="text-primary">
-                        @if (session()->has('nomor_meja'))
-                            <div class="alert alert-info">
-                                Anda memesan dari <strong> Meja {{ session('nomor_meja') }}</strong>
-                            </div>
-                        @endif
-                    </b>
-                </h6>
+    @if (session()->has('nomor_meja'))
+        <div class="col-12 mt-0 mb-4 ">
+            <div class="card rounded-sm" style="background-color: rgb(255, 252, 214); height:50px;">
+                <div class="card-body">
+                    <h6 class="text-center text-dark">Anda memesan dari <strong> Meja : {{ session('nomor_meja') }} 
+                    </h6>
+                </div>
             </div>
-
         </div>
-    </div>
+    @endif
 
     <div class="col-md-12">
         <div class="bootstrap-tabs product-tabs">
-            <div class="tabs-header d-flex justify-content-between border-bottom my-0 mt-0">
-                <h5 class="mt-3 mb-2">Kategori</h5>
-                <nav>
-                    <div class="nav nav-tabs col-sm-12" id="nav-tab" role="tablist">
+            <div class="tabs-header border-bottom pb-2 mb-3">
+                <h5 class="fw-semibold mb-2">Kategori</h5>
+                <div class="overflow-auto">
+                    <ul class="nav nav-pills flex-nowrap gap-2" id="nav-tab" role="tablist">
+
                         @foreach ($kategori as $category)
-                            <a class="nav-link fs-6 {{ $loop->first ? 'active' : '' }}" id="nav-{{ $category->id }}-tab"
-                                data-bs-toggle="tab" data-bs-target="#nav-{{ $category->id }}" type="button" role="tab"
-                                aria-controls="nav-{{ $category->id }}"
-                                aria-selected="{{ $loop->first ? 'true' : 'false' }}">
-                                {{ $category->nama }}
-                            </a>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link rounded-pill px-3 text-nowrap {{ $loop->first ? 'active' : '' }}"
+                                    id="nav-{{ $category->id }}-tab" data-bs-toggle="tab"
+                                    data-bs-target="#nav-{{ $category->id }}" type="button" role="tab">
+
+                                    {{ $category->nama }}
+
+                                </button>
+                            </li>
                         @endforeach
-                    </div>
-                </nav>
+
+                    </ul>
+                </div>
             </div>
             <div class="tab-content" id="nav-tabContent ">
                 @if ($errors->any())
@@ -76,7 +76,7 @@
                                             <a href="{{ route('detail.menu', $item->id) }}" title="Product Title">
                                                 <img src="{{ asset('storage/' . $item->gambar) }}"
                                                     style="width: 100%; height: 100px;" class="tab-image">
-                                               
+
                                             </a>
                                         </figure>
                                         <h3 class="mt-0 mb-2">{{ $item->nama }}</h3>
@@ -114,7 +114,7 @@
                                                     <small>Max:10</small>
                                                 </div>
                                                 <button type="submit" class="col-12 btn btn-outline-primary btn-sm">
-                                                 Tambah
+                                                    Tambah
                                                 </button>
                                             </div>
                                         </form>

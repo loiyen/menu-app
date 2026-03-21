@@ -49,7 +49,7 @@ class PaymentController extends Controller
             return redirect(route('history.order'))->with('error', 'Anda sudah memiliki pesanan yang belum dibayar');
         }
 
-        // simpan order ke database
+       
         $order = Order::create([
             'order_id'       => 'ORD-' . Str::uuid(),
             'nama'           => $request->nama,

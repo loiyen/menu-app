@@ -41,8 +41,8 @@ return [
         'is_production' => env('MIDTRANS_IS_PRODUCTION', false),
     ],
     'xendit' => [
-    'api_key' => env('XENDIT_API_KEY'),
-    'is_production' => env('XENDIT_IS_PRODUCTION', false),
+        'api_key' => env('XENDIT_API_KEY'),
+        'is_production' => env('XENDIT_IS_PRODUCTION', false),
 ],
 
 ];

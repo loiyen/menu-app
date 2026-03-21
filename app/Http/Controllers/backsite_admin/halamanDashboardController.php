@@ -65,7 +65,6 @@ class halamanDashboardController extends Controller
 
     public function scan_qr($nomor_meja)
     {
-        $nomor_meja = 2;
 
         $meja = mejas::where('nomor_meja', $nomor_meja)->first();
 
