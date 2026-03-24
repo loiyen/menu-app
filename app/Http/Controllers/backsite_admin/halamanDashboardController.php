@@ -7,7 +7,7 @@ use App\Models\User;
 use App\Http\Controllers\Controller;
 use App\Models\Kategoris;
 use App\Models\Mejas;
-use App\Models\Menus;
+use App\Models\Menuses;
 use App\Models\OrderItems;
 use App\Models\Orders;
 use App\Models\Pembayarans;
@@ -20,7 +20,7 @@ class halamanDashboardController extends Controller
     {
         $user = Auth::user();
         $user_data = User::count();
-        $menu = Menus::count();
+        $menu = Menuses::count();
         $order = Orders::count();
         $order_item = OrderItems::count();
         $meja = Mejas::count();
@@ -36,9 +36,9 @@ class halamanDashboardController extends Controller
         $total_paid                 = Transaction::where('transaction_status','paid')->count();
         $total_expired              = Transaction::where('transaction_status','expired')->count();
         
-        $pembayaran_status_sukses       = pembayarans::where('status','lunas')->count();
-        $pembayaran_status_menunggu     = pembayarans::where('status','menunggu')->count();
-        $pembayaran_status_gagal        = pembayarans::where('status','gagal')->count();
+        $pembayaran_status_sukses       = Pembayarans::where('status','lunas')->count();
+        $pembayaran_status_menunggu     = Pembayarans::where('status','menunggu')->count();
+        $pembayaran_status_gagal        = Pembayarans::where('status','gagal')->count();
 
 
         return view('backsite.halamanDashboar', [
