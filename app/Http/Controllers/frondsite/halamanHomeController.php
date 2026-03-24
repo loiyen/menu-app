@@ -4,7 +4,9 @@ namespace App\Http\Controllers\frondsite;
 
 use App\Http\Controllers\Controller;
 use App\Models\kategoris;
+use App\Models\Kategoris as ModelsKategoris;
 use App\Models\menus;
+use App\Models\Menus as ModelsMenus;
 use Illuminate\Http\Request;
 
 class halamanHomeController extends Controller
@@ -13,8 +15,8 @@ class halamanHomeController extends Controller
     public function index()
     {
 
-        $kategori       = kategoris::with('menu')->get();
-        $menu           = menus::orderBy('created_at', 'desc')->take(10)->get();
+        $kategori       = ModelsKategoris::with('menu')->get();
+        $menu           = ModelsMenus::orderBy('created_at', 'desc')->take(10)->get();
 
         $cart = session('cart', []);
 
