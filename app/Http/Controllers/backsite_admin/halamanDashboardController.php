@@ -3,14 +3,15 @@
 namespace App\Http\Controllers\backsite_admin;
 
 use App\Models\User;
-use App\Models\mejas;
-use App\Models\menus;
-use App\Models\order;
-use App\Models\kategoris;
-use App\Models\pembayarans;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Kategoris;
+use App\Models\Mejas;
+use App\Models\Menus as ModelsMenus;
+use App\Models\Order as ModelsOrder;
 use App\Models\OrderItem;
+use App\Models\Orders;
+use App\Models\Pembayarans;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\Auth;
 
@@ -20,17 +21,17 @@ class halamanDashboardController extends Controller
     {
         $user = Auth::user();
         $user_data = User::count();
-        $menu = menus::count();
-        $order = order::count();
+        $menu = ModelsMenus::count();
+        $order = Orders::count();
         $order_item = OrderItem::count();
-        $meja = mejas::count();
+        $meja = Mejas::count();
 
         //order
-        $pembayaran = pembayarans::sum('jumlah_bayar');
-        $total_order = order::where('payment_status', 'paid')->sum('total_harga');
+        $pembayaran = Pembayarans::sum('jumlah_bayar');
+        $total_order = Orders::where('payment_status', 'paid')->sum('total_harga');
 
         //kategori
-        $kategori = kategoris::withCount('menu')->get();
+        $kategori = Kategoris::withCount('menu')->get();
 
         $total_gross_amount         = Transaction::where('payment_type','qris')->sum('gross_amount');
         $total_paid                 = Transaction::where('transaction_status','paid')->count();
