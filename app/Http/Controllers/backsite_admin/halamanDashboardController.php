@@ -66,7 +66,7 @@ class halamanDashboardController extends Controller
     public function scan_qr($nomor_meja)
     {
 
-        $meja = mejas::where('nomor_meja', $nomor_meja)->first();
+        $meja = Mejas::where('nomor_meja', $nomor_meja)->first();
 
         if (!$meja) {
             abort(404, 'Meja tidak ditemukan');
