@@ -7,8 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Kategoris;
 use App\Models\Mejas;
-use App\Models\Menus as ModelsMenus;
-use App\Models\Order as ModelsOrder;
+use App\Models\Menus;
 use App\Models\OrderItem;
 use App\Models\Orders;
 use App\Models\Pembayarans;
@@ -21,7 +20,7 @@ class halamanDashboardController extends Controller
     {
         $user = Auth::user();
         $user_data = User::count();
-        $menu = ModelsMenus::count();
+        $menu = Menus::count();
         $order = Orders::count();
         $order_item = OrderItem::count();
         $meja = Mejas::count();
