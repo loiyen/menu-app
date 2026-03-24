@@ -13,7 +13,7 @@ class halamanHomeController extends Controller
     public function index()
     {
 
-        $kategori       = kategoris::with('menu')->get();
+        $kategori       = Kategoris::with('menu')->get();
         $menu           = Menuses::orderBy('created_at', 'desc')->take(10)->get();
 
         $cart = session('cart', []);
