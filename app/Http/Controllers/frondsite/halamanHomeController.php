@@ -4,7 +4,7 @@ namespace App\Http\Controllers\frondsite;
 
 use App\Http\Controllers\Controller;
 use App\Models\Kategoris;
-use App\Models\Menuses ;
+use App\Models\Menuses;
 use Illuminate\Http\Request;
 
 class halamanHomeController extends Controller
