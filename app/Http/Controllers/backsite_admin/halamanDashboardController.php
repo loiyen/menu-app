@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\backsite_admin;
 
 use App\Models\User;
-use Illuminate\Http\Request;
+
 use App\Http\Controllers\Controller;
 use App\Models\Kategoris;
 use App\Models\Mejas;
 use App\Models\Menus;
-use App\Models\OrderItem;
+use App\Models\OrderItems;
 use App\Models\Orders;
 use App\Models\Pembayarans;
 use App\Models\Transaction;
@@ -22,7 +22,7 @@ class halamanDashboardController extends Controller
         $user_data = User::count();
         $menu = Menus::count();
         $order = Orders::count();
-        $order_item = OrderItem::count();
+        $order_item = OrderItems::count();
         $meja = Mejas::count();
 
         //order
