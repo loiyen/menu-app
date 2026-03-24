@@ -9,7 +9,7 @@ class Mejas extends Model
 {
     /** @use HasFactory<\Database\Factories\MejasFactory> */
     use HasFactory;
-    protected $table = 'mejas';
+    protected $table = 'meja';
     protected $fillable = [
         'nomor_meja',
         'lokasi'
