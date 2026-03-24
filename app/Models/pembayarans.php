@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class pembayarans extends Model
+class Pembayarans extends Model
 {
     /** @use HasFactory<\Database\Factories\PembayaransFactory> */
     use HasFactory;
@@ -21,6 +21,6 @@ class pembayarans extends Model
 
     public function order()
     {
-        return $this->belongsTo(orders::class, 'orders_id');
+        return $this->belongsTo(Order::class, 'orders_id');
     }
 }

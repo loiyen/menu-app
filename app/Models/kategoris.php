@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class kategoris extends Model
+class Kategoris extends Model
 {
     /** @use HasFactory<\Database\Factories\KategorisFactory> */
     use HasFactory;
@@ -16,11 +16,11 @@ class kategoris extends Model
     public function menu()
     {
 
-        return $this->hasMany(menus::class, 'kategori_id');
+        return $this->hasMany(Menus::class, 'kategori_id');
     }
 
     public function menu_ds()
     {
-        return $this->belongsTo(kategoris::class, 'kategori_id');
+        return $this->belongsTo(Kategoris::class, 'kategori_id');
     }
 }

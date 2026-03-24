@@ -26,7 +26,7 @@ class Order extends Model
 
   public function meja()
   {
-    return $this->belongsTo(mejas::class, 'meja_id');
+    return $this->belongsTo(Mejas::class, 'meja_id');
   }
 
 
@@ -37,7 +37,7 @@ class Order extends Model
 
   public function pembayaran()
   {
-    return $this->hasOne(pembayarans::class, 'orders_id');
+    return $this->hasOne(Pembayarans::class, 'orders_id');
   }
 
   public function transaction()
