@@ -2,13 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Menuses extends Model
 {
-    /** @use HasFactory<\Database\Factories\MenusFactory> */
-    use HasFactory;
+    protected $table = 'menuses';
 
     protected $fillable = [
         'nama',
@@ -22,6 +20,4 @@ class Menuses extends Model
     {
         return $this->belongsTo(Kategoris::class);
     }
-
-    
 }
