@@ -23,7 +23,7 @@ class halamanDashboardController extends Controller
         $menu = Menuses::count();
         $order = Orders::count();
         $order_item = OrderItems::count();
-        $meja = Mejas::count();
+        // $meja = Mejas::count();
 
         //order
         $pembayaran = Pembayarans::sum('jumlah_bayar');
@@ -49,7 +49,7 @@ class halamanDashboardController extends Controller
             'order'                 => $order,
             'order_item'            => $order_item,
             'total_order'           => $total_order,
-            'meja'                  => $meja,
+            // 'meja'                  => $meja,
             'pembayaran'            => $pembayaran,
             'kategori'              => $kategori,
             'pendapatan'            => $total_gross_amount,
