@@ -9,7 +9,7 @@ class Pembayarans extends Model
 {
     /** @use HasFactory<\Database\Factories\PembayaransFactory> */
     use HasFactory;
-
+    protected $table = 'pembayarans';
     protected $fillable = [
         'orders_id',
         'metode',
@@ -21,6 +21,6 @@ class Pembayarans extends Model
 
     public function order()
     {
-        return $this->belongsTo(Order::class, 'orders_id');
+        return $this->belongsTo(Orders::class, 'orders_id');
     }
 }
