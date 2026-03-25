@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers\frondsite;
 
-use Midtrans\Snap;
-
-use Midtrans\Config;
-use App\Models\kategoris;
-use Midtrans\Notification;
-use Illuminate\Http\Request;
-use App\Services\MidtransService;
 use App\Http\Controllers\Controller;
+use App\Models\Kategoris;
 use App\Models\menus;
+use App\Models\Menuses;
 use App\Models\order;
+use App\Models\Orders;
+use App\Services\MidtransService;
+use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\Unique;
+use Midtrans\Config;
+use Midtrans\Notification;
+use Midtrans\Snap;
 
 class CheckoutController extends Controller
 {
@@ -28,8 +29,8 @@ class CheckoutController extends Controller
     public function index()
     {
 
-        $kategori       = kategoris::with('menu')->get();
-        $menu           = menus::orderBy('created_at', 'desc')->take(10)->get();
+        $kategori       = Kategoris::with('menu')->get();
+        $menu           = Menuses::orderBy('created_at', 'desc')->take(10)->get();
 
         $cart = session('cart', []);
         
@@ -120,10 +121,10 @@ class CheckoutController extends Controller
     public function get_pesanan_detail($Id)
     {
 
-        $orders = order::with('items', 'meja', 'transaction')->findOrFail($Id);
+        $orders = Orders::with('items', 'meja', 'transaction')->findOrFail($Id);
 
         $cart = session('cart', []);
-        $kategori = kategoris::with('menu')->get();
+        $kategori = Kategoris::with('menu')->get();
 
         $totalHarga = 0;
         $totalItem = 0;
@@ -150,7 +151,7 @@ class CheckoutController extends Controller
     {
 
         $cart = session('cart', []);
-        $kategori = kategoris::with('menu')->get();
+        $kategori = Kategoris::with('menu')->get();
 
         $totalHarga = 0;
         $totalItem = 0;
@@ -201,8 +202,8 @@ class CheckoutController extends Controller
     public function pembayaran()
     {
         
-        $kategori       = kategoris::with('menu')->get();
-        $menu           = menus::orderBy('created_at', 'desc')->take(10)->get();
+        $kategori       = Kategoris::with('menu')->get();
+        $menu           = Menuses::orderBy('created_at', 'desc')->take(10)->get();
 
         $cart = session('cart', []);
 

@@ -2,13 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Pembayarans extends Model
 {
-    /** @use HasFactory<\Database\Factories\PembayaransFactory> */
-    use HasFactory;
     protected $table = 'pembayarans';
     protected $fillable = [
         'orders_id',

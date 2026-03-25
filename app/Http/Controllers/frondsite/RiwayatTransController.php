@@ -4,6 +4,7 @@ namespace App\Http\Controllers\frondsite;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Models\Orders;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
@@ -16,7 +17,7 @@ class RiwayatTransController extends Controller
         
         $today = now()->timezone('Asia/Jakarta')->startOfDay();
 
-        $orders = Order::with('transaction', 'items.menu')->where('phone', $phone)->whereDate('waktu_pesan',$today)->get();
+        $orders = Orders::with('transaction', 'items.menu')->where('phone', $phone)->whereDate('waktu_pesan',$today)->get();
 
         $cart = session('cart', []);
         
@@ -29,11 +30,14 @@ class RiwayatTransController extends Controller
         }
 
         $totalItempembalian = 0;
+
         //mencari jumlah item
         foreach ($orders as $order) {
+
             foreach ($order->items as $item) {
                 $totalItempembalian += $item->qty;
             }
+            
         }
 
         return view('frondsite.riwayat.halamanRiwayatTrans', [
@@ -57,7 +61,7 @@ class RiwayatTransController extends Controller
             $totalItem += $item['qty'];
         }
 
-        $orders  = Order::with('items','transaction')->findOrFail($id);
+        $orders  = Orders::with('items','transaction')->findOrFail($id);
 
         $totalItem = $orders->items->sum('qty');
 

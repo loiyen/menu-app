@@ -12,7 +12,6 @@ class halamanHomeController extends Controller
 
     public function index()
     {
-
         $kategori       = Kategoris::with('menu')->get();
         $menu           = Menuses::orderBy('created_at', 'desc')->take(10)->get();
 
@@ -27,19 +26,18 @@ class halamanHomeController extends Controller
         }
 
         return view('frondsite.halamanBeranda', [
-            'title'         => 'Kafe-one',
-            'kategori'      => $kategori,
-            'menu_lain'          => $menu,
-            'keranjang'     => $cart,
-            'total_harga'   => $totalHarga,
-            'total_item'    => $totalItem
-
+            'title'             => 'Kafe-one',
+            'kategori'          => $kategori,
+            'menu_lain'         => $menu,
+            'keranjang'         => $cart,
+            'total_harga'       => $totalHarga,
+            'total_item'        => $totalItem
         ]);
     }
 
     public function detail_itemMenu($id)
     {
-        $kategori = kategoris::with('menu')->get();
+        $kategori = Kategoris::with('menu')->get();
         $menu     = Menuses::with('kategori')->findOrFail($id);
         $menu2    = Menuses::orderBy('created_at', 'desc')->take(10)->get();
 
@@ -146,7 +144,6 @@ class halamanHomeController extends Controller
 
         return redirect('/')->with('success', 'Kerajang di hapus!');
     }
-
 
     //info kafe
     public function info_jam_kafe()

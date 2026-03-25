@@ -12,6 +12,7 @@ use App\Services\MidtransService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use App\Models\Orders;
 
 class PaymentController extends Controller
 {
@@ -43,14 +44,14 @@ class PaymentController extends Controller
             $totalHarga += $item['harga'] * $item['qty'];
             $totalItem += $item['qty'];
         }
-        $order = Order::where('phone', $request->phone)->where('payment_status', 'unpaid')->first();
+        $order = Orders::where('phone', $request->phone)->where('payment_status', 'unpaid')->first();
 
         if ($order) {
             return redirect(route('history.order'))->with('error', 'Anda sudah memiliki pesanan yang belum dibayar');
         }
 
        
-        $order = Order::create([
+        $order = Orders::create([
             'order_id'       => 'ORD-' . Str::uuid(),
             'nama'           => $request->nama,
             'phone'          => $request->phone,

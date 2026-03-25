@@ -25,7 +25,7 @@
 @else
     <div class="col mb-5 mt-5">
         <div class="text-center mt-5">
-            <img src="images/notfound.png" width="10%" alt="not found">
+            <img src="images/notfound.png" width="20%" alt="not found">
             <h6 class="text-muted mt-3"><b>Tidak ditemukan!</b></h6>
         </div>
     </div>

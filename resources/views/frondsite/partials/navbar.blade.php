@@ -5,7 +5,7 @@
               <div class="col-sm-6 col-lg-3 text-center text-sm-start">
                   <div class="main-logo">
                       <a href="#">
-                          <img src="{{ asset('images/logo2.png') }}" width="25%" height="20%" alt="logo"
+                          <img src="{{ asset('images/logo.jpg') }}" width="25%" height="20%" alt="logo"
                               class="img-fluid">
                       </a>
                   </div>

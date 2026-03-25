@@ -11,6 +11,6 @@ class Subkategoris extends Model
     use HasFactory;
 
     public function menu(){
-        return $this->hasMany(Menus::class, 'subkategori_id');
+        return $this->hasMany(Menuses::class, 'subkategori_id');
     }
 }

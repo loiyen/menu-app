@@ -8,16 +8,14 @@
             <div class="card-body">
                 <div class="d-flex align-items-center justify-content-between">
                     <div>
-                        <h6 class="mt-0 mb-0">Kafe Lundayeh</h6>
-                        <small>Buka hari ini, 09:00-01:00</small>
+                        <h6 class="mt-0 mb-0">Digiz Coffee & Eatery</h6>
+                        <small>Buka hari ini, 15:00 - 01:00</small>
                     </div>
                     <div class="">
                         <span><a href="/info-jam"><i class="fa fa-arrow-right" style="color: rgb(84, 84, 84)"
                                     aria-hidden="true"></i></a></span>
                     </div>
                 </div>
-
-
             </div>
         </div>
     </div>

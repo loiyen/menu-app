@@ -4,7 +4,7 @@ namespace App\Http\Controllers\frondsite;
 
 use App\Http\Controllers\Controller;
 
-use App\Models\menus;
+use App\Models\Menuses;
 use Illuminate\Http\Request;
 
 class SearchController extends Controller
@@ -18,7 +18,7 @@ class SearchController extends Controller
             return response('');
         }
 
-        $menus = menus::where('nama', 'like', "%$keyword%")->get();
+        $menus = Menuses::where('nama', 'like', "%$keyword%")->get();
 
         return view('frondsite.partials.result', compact('menus'));
     }
@@ -31,7 +31,7 @@ class SearchController extends Controller
             return response('');
         }
 
-        $menus = menus::where('nama', 'like', "%$keyword%")->get();
+        $menus = Menuses::where('nama', 'like', "%$keyword%")->get();
 
         return view('frondsite.partials.result', compact('menus'));
     }
