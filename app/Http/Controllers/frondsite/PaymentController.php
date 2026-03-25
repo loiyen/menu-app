@@ -47,12 +47,13 @@ class PaymentController extends Controller
         $order = Orders::where('phone', $request->phone)->where('payment_status', 'unpaid')->first();
 
         if ($order) {
-            return redirect(route('history.order'))->with('error', 'Anda sudah memiliki pesanan yang belum dibayar');
+            return redirect(route('riwayat.pesananuser'))->with('error', 'Anda sudah memiliki pesanan yang belum dibayar');
         }
 
        
         $order = Orders::create([
             'order_id'       => 'ORD-' . Str::uuid(),
+            'nomor_pesanan'  => 123456,
             'nama'           => $request->nama,
             'phone'          => $request->phone,
             'email'          => $request->email,
