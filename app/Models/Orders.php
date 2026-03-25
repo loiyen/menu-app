@@ -11,6 +11,7 @@ class Orders extends Model
   use HasFactory;
 
   protected $fillable = [
+    'nomor_pesanan',
     'nama',
     'phone',
     'email',
