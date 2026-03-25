@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Order;
+use App\Models\Orders;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
@@ -20,7 +21,7 @@ class XenditService
     /**
      * Buat QRIS Transaction
      */
-    public function createQrisTransaction(Order $order)
+    public function createQrisTransaction(Orders $order)
     {
         $externalId = 'ORD-' . $order->id . '-' . Str::uuid();
         $grossAmount = $order->total_harga + 4000;
