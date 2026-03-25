@@ -3,15 +3,15 @@
 namespace App\Http\Controllers\backsite_admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\mejas;
-use Illuminate\Http\Request;
+use App\Models\Mejas;
+
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class QrcodeController extends Controller
 {
 
     public function printAllQr(){
-        $meja       = mejas::all();
+        $meja       = Mejas::all();
         
         return view('backsite.Qrcode.halamanAllPrintQrcode', compact('meja'));
 
@@ -19,7 +19,7 @@ class QrcodeController extends Controller
 
     public function printQr($nomor)
     {
-        $meja = mejas::where('nomor_meja', $nomor)->firstOrFail();
+        $meja = Mejas::where('nomor_meja', $nomor)->firstOrFail();
        
         $url = url('/pesan/meja/' . $meja->nomor_meja);
         $qr  = QrCode::size(200)->generate($url);

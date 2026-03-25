@@ -3,21 +3,20 @@
 namespace App\Http\Controllers\backsite_admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\kategoris;
-use App\Models\pembayarans;
-use Illuminate\Support\Facades\Auth;
-
 use App\Http\Requests\UpdatekategorisRequest;
+use App\Models\Kategoris;
+use App\Models\Pembayarans;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class KategorisController extends Controller
 {
 
     public function index()
     {
-        $pembayaran     = pembayarans::sum('jumlah_bayar');
+        $pembayaran     = Pembayarans::sum('jumlah_bayar');
         $user           = Auth::user();
-        $kategori       = kategoris::withCount('menu')->get();
+        $kategori       = Kategoris::withCount('menu')->get();
 
         return view('backsite.kategori.halamanKategori', [
             'title'         => 'Kategori || coffe shop',
@@ -36,7 +35,7 @@ class KategorisController extends Controller
            
         ]);
 
-        kategoris::create([
+        Kategoris::create([
             'nama' => $request->nama,
         ]);
 
@@ -46,7 +45,7 @@ class KategorisController extends Controller
 
     public function destroy($id)
     {
-        $kategori = kategoris::findOrFail($id);
+        $kategori = Kategoris::findOrFail($id);
         $kategori->delete();
 
         return redirect('/kategori')->with('success', 'Data dihapus!');

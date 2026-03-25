@@ -2,29 +2,22 @@
 
 namespace App\Http\Controllers\backsite_admin;
 
-use App\Models\order;
-
-use App\Models\pembayarans;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\StoreordersRequest;
-use App\Http\Requests\UpdateordersRequest;
-use App\Models\menus;
+use App\Models\Orders;
+use App\Models\Pembayarans;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class OrdersController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index(Request $request)
     {
 
-        $perPage        = $request->get('perPage', 20); // default 5
-
-        $pembayaran     = pembayarans::sum('jumlah_bayar');
-        $user           = Auth::user();
-        $orders          = order::with('meja','transaction')->paginate($perPage);
+        $perPage         = $request->get('perPage', 20); 
+        $pembayaran      = Pembayarans::sum('jumlah_bayar');
+        $user            = Auth::user();
+        $orders          = Orders::with('meja','transaction')->paginate($perPage);
 
 
         return view('backsite.order.halamanOrder', [
@@ -37,10 +30,10 @@ class OrdersController extends Controller
 
     public function show($id)
     {
-        $pembayaran     = pembayarans::sum('jumlah_bayar');
+        $pembayaran     = Pembayarans::sum('jumlah_bayar');
         $user           = Auth::user();
 
-        $order_detail   = order::with(['items.menu', 'meja', 'pembayaran'])->findOrFail($id);
+        $order_detail   = Orders::with(['items.menu', 'meja', 'pembayaran'])->findOrFail($id);
 
         $total_item = 0;
         foreach ($order_detail->items as $item) {
@@ -65,7 +58,7 @@ class OrdersController extends Controller
             return response('');
         }
 
-        $result = order::with(['items.menu', 'meja', 'pembayaran'])
+        $result = Orders::with(['items.menu', 'meja', 'pembayaran'])
             ->where('order_id', 'like', "%$keyword%")
             ->paginate(20);
 
@@ -75,14 +68,14 @@ class OrdersController extends Controller
 
     public function filter_Data_by_date(Request $request)
     {
-        $pembayaran     = pembayarans::sum('jumlah_bayar');
+        $pembayaran     = Pembayarans::sum('jumlah_bayar');
         $user           = Auth::user();
 
         $dari   = $request->input('dari');
         $sampai = $request->input('sampai');
         $perPage = 20; 
 
-        $order = order::when($dari && $sampai, function ($query) use ($dari, $sampai) {
+        $order = Orders::when($dari && $sampai, function ($query) use ($dari, $sampai) {
             return $query->whereDate('waktu_pesan', '>=', $dari)
                 ->whereDate('waktu_pesan', '<=', $sampai);
         })->paginate($perPage);
@@ -95,21 +88,4 @@ class OrdersController extends Controller
         ]);
     }
 
-
-
-    public function edit(order $orders)
-    {
-        //
-    }
-
-
-    public function update(UpdateordersRequest $request, order $orders)
-    {
-        //
-    }
-
-    public function destroy(order $orders)
-    {
-        //
-    }
 }

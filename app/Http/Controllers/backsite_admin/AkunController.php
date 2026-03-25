@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers\backsite_admin;
 
-use App\Models\pembayarans;
-
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Pembayarans;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AkunController extends Controller
@@ -13,7 +12,7 @@ class AkunController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $pembayaran = pembayarans::sum('jumlah_bayar');
+        $pembayaran = Pembayarans::sum('jumlah_bayar');
 
         return view('backsite.akun.halamanAkun', [
             'title'             => 'Akun || Coffe',

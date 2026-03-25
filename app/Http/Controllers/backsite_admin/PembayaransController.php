@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\backsite_admin;
 
-use App\Models\pembayarans;
-
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StorepembayaransRequest;
 use App\Http\Requests\UpdatepembayaransRequest;
+use App\Models\Pembayarans;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 class PembayaransController extends Controller
 {
@@ -17,12 +17,12 @@ class PembayaransController extends Controller
      */
     public function index(Request $request)
     {
-        $pembayaran         = pembayarans::sum('jumlah_bayar');
+        $pembayaran         = Pembayarans::sum('jumlah_bayar');
         $user               = Auth::user();
 
         $perPage            = $request->get('perPage', 20); // default 5
 
-        $data_pembayaran     = pembayarans::whereHas('order')->with('order')->paginate($perPage);
+        $data_pembayaran     = Pembayarans::whereHas('order')->with('order')->paginate($perPage);
 
         return view('backsite.pembayaran.halamanPembayaran', [
             'title'                => 'Pembayaran || coffe shopp',
@@ -35,10 +35,10 @@ class PembayaransController extends Controller
 
     public function detail_pembayaran($id)
     {
-        $pembayaran         = pembayarans::sum('jumlah_bayar');
+        $pembayaran         = Pembayarans::sum('jumlah_bayar');
         $user               = Auth::user();
 
-        $detail_pembayaran     = pembayarans::with('order.items')->findOrFail($id);
+        $detail_pembayaran     = Pembayarans::with('order.items')->findOrFail($id);
         $order = $detail_pembayaran->order;
         $items = $order->items;
 
@@ -55,14 +55,14 @@ class PembayaransController extends Controller
 
     public function filter_Data_by_date(Request $request)
     {
-        $pembayaran     = pembayarans::sum('jumlah_bayar');
+        $pembayaran     = Pembayarans::sum('jumlah_bayar');
         $user           = Auth::user();
 
         $dari   = $request->input('dari');
         $sampai = $request->input('sampai');
         $perPage = 20;
 
-        $data_pembayaran = pembayarans::when($dari && $sampai, function ($query) use ($dari, $sampai) {
+        $data_pembayaran = Pembayarans::when($dari && $sampai, function ($query) use ($dari, $sampai) {
             return $query->whereDate('waktu_bayar', '>=', $dari)
                 ->whereDate('waktu_bayar', '<=', $sampai);
         })->paginate($perPage);
@@ -72,7 +72,6 @@ class PembayaransController extends Controller
             'user'                 => $user,
             'pembayaran'           => $pembayaran,
             'data_pembayaran'      => $data_pembayaran,
-
         ]);
     }
 }

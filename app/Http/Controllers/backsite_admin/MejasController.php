@@ -2,23 +2,22 @@
 
 namespace App\Http\Controllers\backsite_admin;
 use App\Http\Controllers\Controller;
-
-use App\Models\mejas;
-use App\Models\pembayarans;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoremejasRequest;
 use App\Http\Requests\UpdatemejasRequest;
+use App\Models\Mejas;
+use App\Models\Pembayarans;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MejasController extends Controller
 {
     
     public function index()
     {
-        $pembayaran     = pembayarans::sum('jumlah_bayar');
+        $pembayaran     = Pembayarans::sum('jumlah_bayar');
         $user           = Auth::user();
 
-        $meja           = mejas::all();
+        $meja           = Mejas::all();
 
         return view('backsite.meja.halamanMeja', [
             'title'         => 'Meja || coffe shopp',
@@ -37,7 +36,7 @@ class MejasController extends Controller
             'lokasi'           => 'required',
         ]);
 
-        mejas::create([
+        Mejas::create([
             'nomor_meja'        => $validate['nomor'],
             'lokasi'            => $validate['lokasi'],
         ]);

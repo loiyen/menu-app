@@ -2,19 +2,16 @@
 
 namespace App\Http\Controllers\backsite_admin;
 
-use App\Models\menus;
-use Intervention\Image\ImageManager;
-
-use Intervention\Image\Drivers\Gd\Driver;
-
-use App\Models\kategoris;
-use App\Models\pembayarans;
-use Illuminate\Http\Request;
-
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UpdatemenusRequest;
+use App\Models\Kategoris;
+use App\Models\Menuses;
+use App\Models\Pembayarans;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use App\Http\Requests\UpdatemenusRequest;
+use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\ImageManager;
 
 
 class MenusController extends Controller
@@ -23,11 +20,11 @@ class MenusController extends Controller
     public function index(Request $request)
     {
         $perPage        = $request->get('perPage', 20);
-        $pembayaran     = pembayarans::sum('jumlah_bayar');
+        $pembayaran     = Pembayarans::sum('jumlah_bayar');
         $user           = Auth::user();
-        $kategori       = kategoris::all();
+        $kategori       = Kategoris::all();
 
-        $menu           = menus::with('kategori')->paginate($perPage);
+        $menu           = Menuses::with('kategori')->paginate($perPage);
 
         return view('backsite.menu.halamanMenu', [
             'title'         => 'Menu || coffe shopp',
@@ -59,7 +56,7 @@ class MenusController extends Controller
         }
 
 
-        menus::create([
+        Menuses::create([
             'nama'        => $validate['nama'],
             'kategori_id' => $validate['kategori'],
             'harga'       => $validate['harga'],
@@ -77,7 +74,7 @@ class MenusController extends Controller
         $user           = Auth::user();
         $kategori       = kategoris::all();
 
-        $menu = Menus::findOrFail($id);
+        $menu = Menuses::findOrFail($id);
 
         return view('backsite.menu.halamanEdit', [
             'title'         => 'Edit || coffe shop',
@@ -92,7 +89,7 @@ class MenusController extends Controller
 
     public function update(Request $request, $id)
     {
-        $menu = menus::findOrFail($id);
+        $menu = Menuses::findOrFail($id);
 
         $validate = $request->validate([
             'nama'     => 'required',
@@ -141,7 +138,7 @@ class MenusController extends Controller
             return response('');
         }
 
-        $result = menus::where('nama', 'like', "%$keyword%")->get();
+        $result = Menuses::where('nama', 'like', "%$keyword%")->get();
 
         return view('backsite.partial.search_result', compact('result'));
     }
@@ -149,7 +146,7 @@ class MenusController extends Controller
     public function destroy($id)
     {
 
-        $menus = menus::findOrFail($id);
+        $menus = Menuses::findOrFail($id);
         $menus->delete();
 
         return redirect('/menu')->with('success', 'Data dihapus!');
