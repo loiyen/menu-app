@@ -53,7 +53,7 @@ class PaymentController extends Controller
 
 
         $order = Orders::create([
-            // 'nomor_pesanan'       => 'ORD-' . Str::uuid(),
+            'nomor_pesanan'       => 'ORD-' . Str::uuid(),
             'nama'                => $request->nama,
             'phone'               => $request->phone,
             'email'          => $request->email,
@@ -64,7 +64,7 @@ class PaymentController extends Controller
             'total_harga'    => $totalHarga
         ]);
 
-        // simpan order items
+
         foreach ($cart as $item) {
             $order->items()->create([
                 'menu_id'       => $item['id'],
