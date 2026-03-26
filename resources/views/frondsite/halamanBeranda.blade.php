@@ -1,50 +1,75 @@
 @extends('frondsite.layout.main')
 
 @section('container')
-
     @include('frondsite.partials.navbar')
-    <div class="col-12 mt-0 mb-3">
-        <div class="card rounded-sm">
-            <div class="card-body">
+    <div class="col-12 mb-3">
+        <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+            <div class="card-body p-3">
                 <div class="d-flex align-items-center justify-content-between">
+
+                    <!-- Left Content -->
                     <div>
-                        <h6 class="mt-0 mb-0">Digiz Coffee & Eatery</h6>
-                        <small>Buka hari ini, 15:00 - 01:00</small>
+                        <h6 class="fw-semibold mb-1 text-dark">
+                            Digiz Coffee & Eatery
+                        </h6>
+                        <small class="text-muted d-flex align-items-center gap-2">
+                            <span class="badge bg-success-subtle text-success fw-medium px-2 py-1 rounded-pill">
+                                Buka
+                            </span>
+                            <span>Hari ini, 15:00 - 01:00</span>
+                        </small>
                     </div>
-                    <div class="">
-                        <span><a href="/info-jam"><i class="fa fa-arrow-right" style="color: rgb(84, 84, 84)"
-                                    aria-hidden="true"></i></a></span>
-                    </div>
+
+                    <!-- Right Icon -->
+                    <a href="/info-jam"
+                        class="btn btn-light rounded-circle shadow-sm d-flex align-items-center justify-content-center"
+                        style="width: 38px; height: 38px;">
+                        <i class="fa fa-arrow-right text-secondary"></i>
+                    </a>
+
                 </div>
             </div>
         </div>
     </div>
     @if (session()->has('nomor_meja'))
-        <div class="col-12 mt-0 mb-4 ">
-            <div class="card rounded-sm" style="background-color: rgb(255, 252, 214); height:50px;">
-                <div class="card-body">
-                    <h6 class="text-center text-dark">Anda memesan dari <strong> Meja : {{ session('nomor_meja') }} 
-                    </h6>
+        <div class="col-12 mb-4">
+            <div class="card border-0 shadow-sm rounded-4 bg-warning-subtle">
+                <div class="card-body py-2 px-3">
+                    <div class="d-flex align-items-center justify-content-center gap-2">
+
+                        <!-- Icon -->
+                        <i class="fa fa-chair text-warning"></i>
+
+                        <!-- Text -->
+                        <small class="text-dark mb-0">
+                            Anda memesan dari
+                            <span class="fw-semibold">Meja {{ session('nomor_meja') }}</span>
+                        </small>
+
+                    </div>
                 </div>
             </div>
         </div>
     @endif
 
-    <div class="col-md-12">
-        <div class="bootstrap-tabs product-tabs">
-            <div class="tabs-header border-bottom pb-2 mb-3">
+
+    <div class="col-12">
+
+        <div class="card border-0 shadow-sm rounded-4 p-3">
+
+            <!-- Header -->
+            <div class="mb-3">
                 <h5 class="fw-semibold mb-2">Kategori</h5>
+
                 <div class="overflow-auto">
-                    <ul class="nav nav-pills flex-nowrap gap-2" id="nav-tab" role="tablist">
+                    <ul class="nav nav-pills flex-nowrap gap-2">
 
                         @foreach ($kategori as $category)
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link rounded-pill px-3 text-nowrap {{ $loop->first ? 'active' : '' }}"
-                                    id="nav-{{ $category->id }}-tab" data-bs-toggle="tab"
-                                    data-bs-target="#nav-{{ $category->id }}" type="button" role="tab">
+                            <li class="nav-item">
+                                <button class="nav-link rounded-pill px-3 small {{ $loop->first ? 'active' : '' }}"
+                                    data-bs-toggle="tab" data-bs-target="#nav-{{ $category->id }}">
 
                                     {{ $category->nama }}
-
                                 </button>
                             </li>
                         @endforeach
@@ -52,84 +77,118 @@
                     </ul>
                 </div>
             </div>
-            <div class="tab-content" id="nav-tabContent ">
-                @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul class="mb-0">
-                            @foreach ($errors->all() as $error)
-                                <p>Warning! {{ $error }}</p>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
+
+            <!-- Content -->
+            <div class="tab-content">
+
                 @foreach ($kategori as $kat)
-                    <div class="tab-pane fade {{ $loop->first ? 'show active' : '' }}" id="nav-{{ $kat->id }}"
-                        role="tabpanel" aria-labelledby="nav-{{ $kat->id }}-tab">
+                    <div class="tab-pane fade {{ $loop->first ? 'show active' : '' }}" id="nav-{{ $kat->id }}">
 
-                        <div class="row mt-4">
+                        <div class="row g-3 mt-1">
+
                             @forelse ($kat->menu as $item)
-                                <div id="menu-results" class="col-6 col-md-3 col-lg-3">
-                                    <div class="product-item">
-                                        <figure>
-                                            <a href="{{ route('detail.menu', $item->id) }}" title="Product Title">
-                                                <img src="{{ asset('storage/' . $item->gambar) }}"
-                                                    style="width: 100%; height: 100px;" class="tab-image">
+                                <!-- CARD MENU -->
+                                <div class="col-6 col-md-4 col-lg-3">
+                                    <div class="card border-0 shadow-sm rounded-4 h-100 menu-card">
 
-                                            </a>
-                                        </figure>
-                                        <h3 class="mt-0 mb-2">{{ $item->nama }}</h3>
-                                        <h6 class="mt-2 mb-2">{{ 'Rp.' . number_format($item->harga) }}</h6>
-                                        <form action="{{ route('cart.add') }}" method="POST">
-                                            @csrf
-                                            <input type="hidden" name="id" value="{{ $item->id }}">
-                                            <input type="hidden" name="nama" value="{{ $item->nama }}">
-                                            <input type="hidden" name="harga" value="{{ $item->harga }}">
-                                            <input type="hidden" name="gambar" value="{{ $item->gambar }}">
-                                            <div class="">
-                                                <div class="d-flex align-items-center justify-content-between mb-3 mt-3">
-                                                    <div class="input-group product-qty">
-                                                        <span class="input-group-btn ">
-                                                            <button type="button"
-                                                                class="quantity-left-minus btn btn-danger btn-number"
-                                                                data-type="minus">
-                                                                <svg width="16" height="16">
-                                                                    <use xlink:href="#minus"></use>
-                                                                </svg>
-                                                            </button>
-                                                        </span>
-                                                        <input type="text" name="qty" id="quantity"
-                                                            class="form-control input-number" value="1">
-                                                        <span class="input-group-btn">
-                                                            <button type="button"
-                                                                class="quantity-right-plus btn btn-primary btn-number"
-                                                                data-type="plus">
-                                                                <svg width="16" height="16">
-                                                                    <use xlink:href="#plus"></use>
-                                                                </svg>
-                                                            </button>
-                                                        </span>
+                                        <!-- Image -->
+                                        <a href="{{ route('detail.menu', $item->id) }}">
+                                            <img src="{{ asset('storage/' . $item->gambar) }}"
+                                                class="card-img-top rounded-top-4" style="height:140px; object-fit:cover;">
+                                        </a>
+
+                                        <!-- Body -->
+                                        <div class="card-body p-2 d-flex flex-column">
+
+                                            <h6 class="fw-semibold mb-1 text-dark">
+                                                {{ $item->nama }}
+                                            </h6>
+
+                                            <small class="text-primary fw-semibold mb-2">
+                                                Rp {{ number_format($item->harga) }}
+                                            </small>
+
+                                            <!-- Spacer -->
+                                            <div class="mt-auto">
+
+                                                <form action="{{ route('cart.add') }}" method="POST">
+                                                    @csrf
+
+                                                    <input type="hidden" name="id" value="{{ $item->id }}">
+                                                    <input type="hidden" name="nama" value="{{ $item->nama }}">
+                                                    <input type="hidden" name="harga" value="{{ $item->harga }}">
+                                                    <input type="hidden" name="gambar" value="{{ $item->gambar }}">
+
+                                                    <!-- QTY -->
+                                                    <div class="d-flex align-items-center justify-content-between mb-2">
+                                                        <div class="input-group input-group-sm" style="width:120px;">
+                                                            <div class="input-group product-qty">
+                                                                <span class="input-group-btn ">
+                                                                    <button type="button"
+                                                                        class="quantity-left-minus btn btn-danger btn-number"
+                                                                        data-type="minus">
+                                                                        <svg width="16" height="16">
+                                                                            <use xlink:href="#minus"></use>
+                                                                        </svg>
+                                                                    </button>
+                                                                </span>
+                                                                <input type="text" name="qty" id="quantity"
+                                                                    class="form-control input-number" value="1">
+                                                                <span class="input-group-btn">
+                                                                    <button type="button"
+                                                                        class="quantity-right-plus btn btn-primary btn-number"
+                                                                        data-type="plus">
+                                                                        <svg width="16" height="16">
+                                                                            <use xlink:href="#plus"></use>
+                                                                        </svg>
+                                                                    </button>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+
+                                                        <small class="text-muted">Max 10</small>
                                                     </div>
-                                                    <small>Max:10</small>
-                                                </div>
-                                                <button type="submit" class="col-12 btn btn-outline-primary btn-sm">
-                                                    Tambah
-                                                </button>
+
+                                                    <!-- BUTTON -->
+                                                    <button type="submit"
+                                                        class="btn btn-primary w-100 btn-sm rounded-pill">
+                                                        + Tambah
+                                                    </button>
+
+                                                </form>
+
                                             </div>
-                                        </form>
+                                        </div>
                                     </div>
                                 </div>
+
                             @empty
-                                <div class="col mb-5 mt-5">
-                                    <div class="text-center mt-5">
-                                        <img src="images/notfound.png" width="10%" alt="not found">
-                                        <h6 class="text-muted mt-3"><b>Tidak ditemukan!</b></h6>
+                                <div class="col-12">
+                                    <div
+                                        class="d-flex flex-column align-items-center justify-content-center text-center py-5">
+                                        <div class="mb-3">
+                                            <img src="images/notfound.png" width="90" class="opacity-75">
+                                        </div>
+                                        <h6 class="fw-semibold text-dark mb-1">
+                                            Menu tidak tersedia
+                                        </h6>
+                                        <small class="text-muted mb-3">
+                                            Silakan pilih kategori lain atau coba lagi nanti
+                                        </small>
+                                        <a href="#" class="btn btn-light btn-sm rounded-pill px-3">
+                                            Refresh
+                                        </a>
+
                                     </div>
                                 </div>
                             @endforelse
+
                         </div>
                     </div>
                 @endforeach
+
             </div>
+
         </div>
     </div>
 

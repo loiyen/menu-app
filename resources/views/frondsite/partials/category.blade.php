@@ -26,101 +26,87 @@
                             <div class="swiper-slide">
                                 <div class="row g-0">
                                     <div id="menu-results" class="col">
-                                        <div class="product-item h-100">
-                                            <figure>
-                                                <a href="{{ route('detail.menu', $item->id) }}" title="Product Title">
-                                                    <img src="{{ asset('storage/' . $item->gambar) }}"
-                                                        style="width: 100%; height: 100px;" class="tab-image">
-                                                </a>
-                                            </figure>
-                                            <h3 class="mt-0 mb-2">{{ $item->nama }}</h3>
-                                            <h6 class="mt-2 mb-2">{{ 'Rp.' . number_format($item->harga) }}</h6>
-                                            <form action="{{ route('cart.add') }}" method="POST">
-                                                @csrf
-                                                <input type="hidden" name="id" value="{{ $item->id }}">
-                                                <input type="hidden" name="nama" value="{{ $item->nama }}">
-                                                <input type="hidden" name="harga" value="{{ $item->harga }}">
-                                                <input type="hidden" name="gambar" value="{{ $item->gambar }}">
-                                                <div class="">
-                                                    <div
-                                                        class="d-flex align-items-center justify-content-between   mb-3 mt-3">
-                                                        <div class="input-group product-qty">
-                                                            <span class="input-group-btn ">
-                                                                <button type="button"
-                                                                    class="quantity-left-minus btn btn-danger btn-number"
-                                                                    data-type="minus">
-                                                                    <svg width="16" height="16">
-                                                                        <use xlink:href="#minus"></use>
-                                                                    </svg>
-                                                                </button>
-                                                            </span>
-                                                            <input type="text" name="qty" id="quantity"
-                                                                class="form-control input-number" value="1">
-                                                            <span class="input-group-btn">
-                                                                <button type="button"
-                                                                    class="quantity-right-plus btn btn-primary btn-number"
-                                                                    data-type="plus">
-                                                                    <svg width="16" height="16">
-                                                                        <use xlink:href="#plus"></use>
-                                                                    </svg>
-                                                                </button>
-                                                            </span>
-                                                        </div>
-                                                        <small>Max:10</small>
-                                                    </div>
 
-                                                    <button type="submit"
-                                                        class="col-12 btn btn-outline-primary btn-sm">
-                                                        Tambah
-                                                    </button>
+                                        <div class="card border-0 shadow-sm rounded-4 h-100 menu-card">
+
+                                            <!-- Image -->
+                                            <a href="{{ route('detail.menu', $item->id) }}">
+                                                <img src="{{ asset('storage/' . $item->gambar) }}"
+                                                    class="card-img-top rounded-top-4"
+                                                    style="height:140px; object-fit:cover;">
+                                            </a>
+
+                                            <!-- Body -->
+                                            <div class="card-body p-2 d-flex flex-column">
+
+                                                <h6 class="fw-semibold mb-1 text-dark">
+                                                    {{ $item->nama }}
+                                                </h6>
+
+                                                <small class="text-primary fw-semibold mb-2">
+                                                    Rp {{ number_format($item->harga) }}
+                                                </small>
+
+                                                <!-- Spacer -->
+                                                <div class="mt-auto">
+
+                                                    <form action="{{ route('cart.add') }}" method="POST">
+                                                        @csrf
+
+                                                        <input type="hidden" name="id"
+                                                            value="{{ $item->id }}">
+                                                        <input type="hidden" name="nama"
+                                                            value="{{ $item->nama }}">
+                                                        <input type="hidden" name="harga"
+                                                            value="{{ $item->harga }}">
+                                                        <input type="hidden" name="gambar"
+                                                            value="{{ $item->gambar }}">
+
+                                                        <!-- QTY -->
+                                                        <div
+                                                            class="d-flex align-items-center justify-content-between mb-2">
+                                                            <div class="input-group input-group-sm"
+                                                                style="width:120px;">
+                                                                <div class="input-group product-qty">
+                                                                    <span class="input-group-btn ">
+                                                                        <button type="button"
+                                                                            class="quantity-left-minus btn btn-danger btn-number"
+                                                                            data-type="minus">
+                                                                            <svg width="16" height="16">
+                                                                                <use xlink:href="#minus"></use>
+                                                                            </svg>
+                                                                        </button>
+                                                                    </span>
+                                                                    <input type="text" name="qty" id="quantity"
+                                                                        class="form-control input-number"
+                                                                        value="1">
+                                                                    <span class="input-group-btn">
+                                                                        <button type="button"
+                                                                            class="quantity-right-plus btn btn-primary btn-number"
+                                                                            data-type="plus">
+                                                                            <svg width="16" height="16">
+                                                                                <use xlink:href="#plus"></use>
+                                                                            </svg>
+                                                                        </button>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+
+                                                            <small class="text-muted">Max 10</small>
+                                                        </div>
+
+                                                        <!-- BUTTON -->
+                                                        <button type="submit"
+                                                            class="btn btn-primary w-100 btn-sm rounded-pill">
+                                                            + Tambah
+                                                        </button>
+
+                                                    </form>
+
                                                 </div>
-                                            </form>
+                                            </div>
                                         </div>
                                     </div>
-                                    {{-- <div class="col-md-8">
-                                            <div class="card-body py-0 mt-2">
-                                                <h3 class="text-muted mb-0">{{ $item->nama }}</h3>
-                                                <p class="card-title">Tersedia</p>
-                                                <span class="qty text-primary"><b>Tersedia</b></span>
-                                                <h6 class="mt-2 mb-2">{{ 'Rp.' . number_format($item->harga) }}</h6>
-                                                <form action="{{ route('cart.add') }}" method="POST">
-                                                    @csrf
-                                                    <input type="hidden" name="id" value="{{ $item->id }}">
-                                                    <input type="hidden" name="nama" value="{{ $item->nama }}">
-                                                    <input type="hidden" name="harga" value="{{ $item->harga }}">
-                                                    <input type="hidden" name="gambar" value="{{ $item->gambar }}">
-                                                    <div class="d-flex align-items-center justify-content-between">
-                                                        <div class="input-group product-qty">
-                                                            <span class="input-group-btn">
-                                                                <button type="button"
-                                                                    class="quantity-left-minus btn btn-danger btn-number"
-                                                                    data-type="minus">
-                                                                    <svg width="16" height="16">
-                                                                        <use xlink:href="#minus"></use>
-                                                                    </svg>
-                                                                </button>
-                                                            </span>
-                                                            <input type="text" name="qty" id="quantity"
-                                                                class="form-control input-number" value="1">
-                                                            <span class="input-group-btn">
-                                                                <button type="button"
-                                                                    class="quantity-right-plus btn btn-primary btn-number"
-                                                                    data-type="plus">
-                                                                    <svg width="16" height="16">
-                                                                        <use xlink:href="#plus"></use>
-                                                                    </svg>
-                                                                </button>
-                                                            </span>
-                                                        </div>
-                                                        <button type="submit" class="btn btn-primary">
-                                                            <i class="fa fa-plus" aria-hidden="true"></i>
-                                                            <iconify-icon icon="uil:shopping-cart"></iconify-icon>
-                                                        </button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div> --}}
-
                                 </div>
                             </div>
                         @empty

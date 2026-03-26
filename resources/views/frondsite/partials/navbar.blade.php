@@ -51,41 +51,57 @@
                       </button>
                   </div>
               </div>
+
           </div>
-          <div class="container">
-              <ul class="d-flex justify-content-center g-3 list-unstyled p-0 m-2">
-                  <li class="d-lg-none">
-                      <a href="/riwayat-pesanan" class="p-2 mx-2 text-decoration-none">
-                          <span><i class="fa fa-history fa-md me-2"></i></span>
+
+          <div class="fixed-bottom bg-white border-top shadow-sm">
+              <div class="container">
+
+                  <div class="d-flex justify-content-around align-items-center py-2">
+
+                      <!-- Riwayat -->
+                      <a href="/riwayat-pesanan" class="text-decoration-none text-center text-dark">
+                          <div class="d-flex flex-column align-items-center small">
+                              <i class="fa fa-history mb-1"></i>
+                              <span>Riwayat</span>
+                          </div>
                       </a>
-                      <span>
-                          <h6 class="text-center"></h6>
-                      </span>
-                  </li>
-                  <li class="d-lg-none">
-                      <a href="#" class="p-2 mx-2 text-decoration-none" data-bs-toggle="offcanvas"
-                          data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
-                          <i class="fa-solid fa-cart-shopping fa-md me-2"></i>
-                          <span class="badge rounded-circle bg-primary">
-                              {{ $total_item }}
-                          </span>
+
+                      <!-- Search -->
+                      <a href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSearch"
+                          class="text-decoration-none text-center text-dark">
+                          <div class="d-flex flex-column align-items-center small">
+                              <i class="fa fa-search mb-1"></i>
+                              <span>Cari</span>
+                          </div>
                       </a>
-                  </li>
-                  <li class="d-lg-none">
-                      <a href="#" class="p-2 mx-2 text-decoration-none" data-bs-toggle="offcanvas"
-                          data-bs-target="#offcanvasSearch" aria-controls="offcanvasSearch">
-                          <i class="fa-solid fa-magnifying-glass fa-md me-2"></i>
-                          <span>
-                              <h6 class="mt-0 text-center"></h6>
-                          </span>
+
+                      <!-- Cart (Highlight) -->
+                      <a href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart"
+                          class="text-decoration-none text-center position-relative">
+
+                          <div class="d-flex flex-column align-items-center small text-primary fw-semibold">
+                              <i class="fa fa-shopping-cart mb-1"></i>
+                              <span>Keranjang</span>
+                          </div>
+
+                          <!-- Badge -->
+                          @if ($total_item > 0)
+                              <span
+                                  class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                  {{ $total_item }}
+                              </span>
+                          @endif
+
                       </a>
-                  </li>
-              </ul>
+
+                  </div>
+
+              </div>
           </div>
 
           <div class="col">
               <div id="hasil-makanan" class="mt-3">
-
               </div>
           </div>
       </div>

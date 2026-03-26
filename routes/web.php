@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\XenditCallbackController;
 use App\Models\kategoris;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
@@ -64,6 +65,9 @@ Route::post('/order/process', [PaymentController::class, 'createOrder'])->name('
 Route::get('/payment-success', [PaymentController::class, 'success'])->name('success');
 Route::get('/payment-failure', [PaymentController::class, 'failed'])->name('failed');
 
+//bayar kembali
+Route::get('/bayar/{id}', [PaymentController::class, 'bayar'])
+    ->name('pembayaran.pesanan');
 
 //detail pemesanan 
 Route::get('/detailpemesanan/{order_id}', [CheckoutController::class, 'get_pesanan_detail'])->name('detail.pemesananuser');

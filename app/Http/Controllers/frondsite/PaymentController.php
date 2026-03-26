@@ -35,6 +35,7 @@ class PaymentController extends Controller
         session()->put('phone', $request->phone);
 
         // Hitung total dari cart
+        $meja = session('id');
         $cart = session('cart', []);
 
         $totalHarga = 0;
@@ -44,21 +45,21 @@ class PaymentController extends Controller
             $totalHarga += $item['harga'] * $item['qty'];
             $totalItem += $item['qty'];
         }
-        $order = Orders::where('phone', $request->phone)->where('payment_status', 'unpaid')->first();
+        $order = Orders::where('phone', $request->phone)->where('payment_status', 'UNPAID')->first();
 
         if ($order) {
             return redirect(route('riwayat.pesananuser'))->with('error', 'Anda sudah memiliki pesanan yang belum dibayar');
         }
 
-       
+
         $order = Orders::create([
-            'nomor_pesanan'       => 'ORD-' . Str::uuid(),
-            'nama'           => $request->nama,
-            'phone'          => $request->phone,
+            // 'nomor_pesanan'       => 'ORD-' . Str::uuid(),
+            'nama'                => $request->nama,
+            'phone'               => $request->phone,
             'email'          => $request->email,
-            'meja_id'        => 1,
+            'meja_id'        => $meja,
             'waktu_pesan'    => now(),
-            'payment_status' => 'unpaid',
+            'payment_status' => 'UNPAID',
             'catatan'        => $request->catatan,
             'total_harga'    => $totalHarga
         ]);
@@ -66,7 +67,6 @@ class PaymentController extends Controller
         // simpan order items
         foreach ($cart as $item) {
             $order->items()->create([
-                'order_id'      => $order->id,
                 'menu_id'       => $item['id'],
                 'nama_menu'     => $item['nama'],
                 'sub_total'     => $item['harga'] * $item['qty'],
@@ -92,5 +92,21 @@ class PaymentController extends Controller
     public function failed(Request $request)
     {
         return redirect(route('history.order'))->with('error', 'Payment failed');
+    }
+
+    public function bayar($id)
+    {
+        $order = Orders::with('transaction')->findOrFail($id);
+
+        if (!$order->transaction) {
+            return back()->with('error', 'Transaksi tidak ditemukan');
+        }
+
+        if ($order->transaction->transaction_status === 'PAID') {
+            return back()->with('success', 'Sudah dibayar');
+        }
+
+       
+        return redirect($order->transaction->invoice_url);
     }
 }

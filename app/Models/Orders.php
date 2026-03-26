@@ -30,7 +30,6 @@ class Orders extends Model
     return $this->belongsTo(Mejas::class, 'meja_id');
   }
 
-
   public function items()
   {
     return $this->hasMany(OrderItems::class, 'order_id');

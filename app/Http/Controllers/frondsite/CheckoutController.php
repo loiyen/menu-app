@@ -204,7 +204,7 @@ class CheckoutController extends Controller
         
         $kategori       = Kategoris::with('menu')->get();
         $menu           = Menuses::orderBy('created_at', 'desc')->take(10)->get();
-
+        
         $cart = session('cart', []);
 
 
