@@ -11,44 +11,45 @@
     <ul class="list-group">
         @foreach ($result as $item)
             <tr>
-                <td><small>{{ $result->firstItem() + $loop->index }}</small></td>
-                <td class="text-center"><small>{{ tanggal_indo($item->waktu_pesan) }}</small></td>
-                <td class="text-center"> <small>{{ format_jam($item->
-                waktu_pesan) }}</small></td>
-                <td class="text-center text-moted"> <small>{{ $item->order_id }}</small></td>
-                <td class="text-center"> <small><b>{{ $item->meja?->nomor_meja ?? '-' }}</b> <br>
-                        <i>{{ $item->meja?->lokasi ?? '-' }}</i></small>
+                <td>{{ $result->firstItem() + $loop->index }}</td>
+                <td class="">
+                    <div class="mb-2">Kode Pemesanan : <br> <small
+                            style="color: black">{{ $item->nomor_pesanan ?? '0' }}
+                        </small>
+                    </div>
+
+
+                    <div>Tanggal & waktu : <br> <small style="color: black">
+                            {{ tanggal_indo($item->waktu_pesan) }}, {{ format_jam($item->waktu_pesan) }}
+                        </small>
+                    </div>
                 </td>
-                <td class="text-center"><small>
-                        @if ($item->status == 'menunggu')
-                            <span class="badge rounded-pill text-bg-primary">{{ $item->status }}</span>
-                        @elseif($item->status == 'diproses')
-                            <span class="badge rounded-pill text-bg-warning">{{ $item->status }}</span>
-                        @elseif($item->status == 'selesai')
-                            <span class="badge rounded-pill text-bg-success">{{ $item->status }}</span>
-                        @elseif($item->status == 'dibatalkan')
-                            <span class="badge rounded-pill text-bg-dark">{{ $item->status }}</span>
-                        @endif
-                    </small>
-                </td>
-                <td class="text-center">
-                    <small>{{ 'Rp. ' . number_format($item->total_harga) }}</small>
+                <td>
+                    {{ $item->nama }} <br> <small>{{ $item->email }}</small>
                 </td>
 
                 <td class="text-center">
-                    <form action="{{ route('detail.order', $item->id) }}" method="post">
-                        @csrf
-                        @method('PUT')
-                        <button type="submit" class="btn btn-sm mb-2 btn-warning">
-                            <i class="bx bx-info-circle"></i>
-                        </button>
-                    </form>
+                    @if ($item->payment_status == 'PAID')
+                        <span class="badge rounded-pill text-bg-success"><i class="bx bx-check-circle"></i> Paid</span>
+                    @else
+                        <span class="badge rounded-pill text-bg-danger"><i class="bx bx-x-circle"></i> Expired</span>
+                    @endif
+
+                </td>
+                <td class="text-center">
+                    {{ 'Rp. ' . number_format($item->total_harga) }}
+                </td>
+
+                <td class="text-center">
+                    <a href="{{ route('detail.order', $item->id) }}" class="btn mb-2 btn-warning">
+                        <i class="bx bx-info-circle"></i>
+                    </a>
                 </td>
                 <td class="text-center">
                     <form action="" method="post" class="form-hapus">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger btn-sm mb-2 btn-konfirmasi-hapus">
+                        <button type="submit" class="btn btn-danger mb-2 btn-konfirmasi-hapus">
                             <i class="bx bx-trash"></i>
                         </button>
                     </form>

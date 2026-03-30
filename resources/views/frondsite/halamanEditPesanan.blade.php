@@ -4,8 +4,8 @@
     <div class="row">
 
         <!-- HEADER -->
-        <div class="col-12 mb-3">
-            <div class="d-flex align-items-center justify-content-between">
+        <div class="col-12 mb-3 mt-2">
+            <div class="d-flex align-items-center justify-content-between py-2">
 
                 <a href="{{ url()->previous() }}"
                     class="btn btn-light rounded-circle shadow-sm d-flex align-items-center justify-content-center"
@@ -13,7 +13,7 @@
                     <i class="fa fa-arrow-left text-dark"></i>
                 </a>
 
-                <h6 class="fw-semibold mb-0">Ubah Menu</h6>
+                <h6 class="fw-semibold mb-0">Ubah menu</h6>
 
                 <div style="width:38px;"></div>
             </div>
@@ -71,7 +71,7 @@
                                         </button>
                                     </span>
                                     <input type="text" name="qty" id="quantity" class="form-control input-number"
-                                        value="1">
+                                        value="{{ $pesanan['qty'] }}">
                                     <span class="input-group-btn">
                                         <button type="button" class="quantity-right-plus btn btn-primary btn-number"
                                             data-type="plus">

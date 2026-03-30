@@ -1,4 +1,4 @@
-<section class="py-5 overflow-hidden">
+<section class="py-5 mb-5 overflow-hidden">
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">

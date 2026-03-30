@@ -3,8 +3,8 @@
 @section('container')
     <div class="row">
         <!-- HEADER -->
-        <div class="col-12 mb-3">
-            <div class="d-flex align-items-center justify-content-between">
+        <div class="col-12 mb-3 mt-2">
+            <div class="d-flex align-items-center justify-content-between py-2">
 
                 <!-- Back -->
                 <a href="/checkout"
@@ -61,7 +61,7 @@
 
         <form action="{{ route('order.create') }}" method="POST">
             @csrf
-            <div class="col-12 mb-3">
+            <div class="col-12 mb-4">
                 <div class="card border-0 shadow-sm rounded-4">
 
                     <div class="card-body p-3">
@@ -104,15 +104,21 @@
                         <!-- EMAIL -->
                         <div class="mb-3">
                             <label class="form-label small text-muted mb-1">
-                                Email (Opsional)
+                                Email
                             </label>
 
                             <div class="input-group">
                                 <span class="input-group-text bg-light border-0">
                                     <i class="fa fa-envelope text-muted"></i>
                                 </span>
-                                <input type="email" class="form-control border-0 bg-light" name="email"
-                                    placeholder="email@gmail.com">
+                                <input type="email"
+                                    class="form-control border-0 bg-light @error('email') is-invalid @enderror"
+                                    name="email" placeholder="email@gmail.com">
+                                @error('email')
+                                    <div class="invalid-feedback d-block">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
                         </div>
 
@@ -136,8 +142,8 @@
                                 <span class="input-group-text bg-light border-0">
                                     <i class="fa fa-map-marker text-muted"></i>
                                 </span>
-                                <input type="text" class="form-control border-0 bg-light fw-semibold" value="{{ session('nomor_meja') }}"
-                                    disabled>
+                                <input type="text" class="form-control border-0 bg-light fw-semibold"
+                                    value="{{ session('nomor_meja') }}" disabled>
                             </div>
                         </div>
 
@@ -146,8 +152,8 @@
                 </div>
             </div>
 
-            <div class="col-12 product-item mb-3">
-                <div class="card-body ">
+            <div class="col-12 product-item mb-5">
+                <div class="card-body">
 
                     <!-- TITLE -->
                     <h6 class="fw-semibold mb-3">
@@ -163,7 +169,7 @@
                     </div>
 
                     <!-- METODE -->
-                    <div class="mb-5">
+                    <div class="">
                         <small class="text-muted d-block mb-2">
                             Metode Pembayaran
                         </small>
@@ -193,6 +199,8 @@
                     </div>
                 </div>
             </div>
+
+            <div class="pb-5 mt-5"></div>
 
             <div class="fixed-bottom bg-white border-top shadow-sm">
                 <div class="container py-2">

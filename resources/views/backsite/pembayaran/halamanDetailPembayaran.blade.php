@@ -18,7 +18,7 @@
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between align-items-center mb-0">
                                         <div></div>
-                                        <h6 class="">Kode : <i> {{ $detail->order->order_id }} </i></h6>
+                                        <h6 class="">Kode : <i> {{ $detail->xendit_external_id }} </i></h6>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-6 mb-4">
@@ -31,30 +31,18 @@
                                                             <tr>
                                                                 <td>Tanggal</td>
                                                                 <td>:</td>
-                                                                <td>{{ tanggal_indo($detail->waktu_bayar) }}</td>
+                                                                <td>{{ tanggal_indo($detail->created_at) }}</td>
                                                             </tr>
                                                             <tr>
                                                                 <td>Jam</td>
                                                                 <td>:</td>
-                                                                <td>{{ format_jam($detail->waktu_bayar) }}</td>
+                                                                <td>{{ format_jam($detail->created_at) }}</td>
                                                             </tr>
                                                             <tr>
-                                                                <td>Status pesanan</td>
+                                                                <td>Nama</td>
                                                                 <td>:</td>
                                                                 <td>
-                                                                    @if ($order->status == 'menunggu')
-                                                                        <span
-                                                                            class="badge rounded-pill text-bg-primary">{{ $order->status }}</span>
-                                                                    @elseif($order->status == 'diproses')
-                                                                        <span
-                                                                            class="badge rounded-pill text-bg-warning">{{ $order->status }}</span>
-                                                                    @elseif($order->status == 'selesai')
-                                                                        <span
-                                                                            class="badge rounded-pill text-bg-success">{{ $order->status }}</span>
-                                                                    @elseif($order->status == 'dibatalkan')
-                                                                        <span
-                                                                            class="badge rounded-pill text-bg-dark">{{ $order->status }}</span>
-                                                                    @endif
+                                                                    {{ $order->nama }}
                                                                 </td>
                                                             </tr>
                                                         </thead>
@@ -65,31 +53,32 @@
                                         <div class="col-md-6 mb-4">
                                             <div class="card-body">
                                                 <h6 class="card-title">Pembayaran -
-                                                    @if ($detail->metode == 'tunai')
-                                                        <span class="badge text-bg-primary">{{ $detail->metode }}</span>
-                                                    @elseif($detail->metode == 'transfer')
-                                                        <span class="badge text-bg-info">{{ $detail->metode }}</span>
-                                                    @endif
+                                                        <span class="badge text-bg-primary">{{ $detail->transaction_status }}</span>
                                                 </h6>
                                                 <div class="table-responsive text-nowrap">
                                                     <table class="table table-borderless table-sm">
                                                         <thead>
                                                             <tr>
+                                                                <td>Metode</td>
+                                                                <td>:</td>
+                                                                <td>{{ $detail->payment_type }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Batas bayar  </td>
+                                                                <td>:</td>
+                                                                <td>{{ format_jam($detail->expiry_time) }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Pembayaran masuk  </td>
+                                                                <td>:</td>
+                                                                <td>{{ format_jam($detail->transaction_time ) ?? '-' }}</td>
+                                                            </tr>
+                                                            <tr>
                                                                 <td>Total</td>
                                                                 <td>:</td>
-                                                                <td>{{ 'Rp.' . number_format($detail->jumlah_bayar) }}</td>
+                                                                <td>{{ 'Rp.' . number_format($detail->gross_amount) }}</td>
                                                             </tr>
-                                                            <tr>
-                                                                <td>Bayar</td>
-                                                                <td>:</td>
-                                                                <td>Rp. - </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Kembalian</td>
-                                                                <td>:</td>
-                                                                <td>Rp. - </td>
-                                                            </tr>
-
+                                                        
                                                         </thead>
                                                     </table>
                                                 </div>
@@ -121,6 +110,7 @@
                                                                 @endforeach
                                                             </tbody>
                                                             <thead>
+                                                                
                                                                 <tr class="bg-dark text-white">
                                                                     <td class="text-white">Total</td>
                                                                     <td></td>
@@ -151,12 +141,12 @@
                                                             @endif
                                                         </i>
                                                     </h6>
-                                                    @if ($detail->status == 'lunas')
+                                                    @if ($detail->transaction_status == 'PAID')
                                                         <div class="text-center">
                                                             <img class=" mt-5" width="70"
                                                                 src="{{ asset('images/done.png') }}" alt="">
                                                         </div>
-                                                    @elseif($detail->status == 'menunggu')
+                                                    @elseif($detail->transaction_status == 'PENDING')
                                                         <div class="text-center">
                                                             <img class=" mt-5" width="70"
                                                                 src="{{ asset('images/tunggu.png') }}" alt="">

@@ -47,35 +47,33 @@
                                     <tr>
                                         <td>{{ $data_pembayaran->firstItem() + $loop->index }}</td>
                                         <td class="">
-                                            <div class="mb-3">{{ $item->order->order_id }}</div>
+                                            <div class="mb-3">{{ $item->xendit_external_id }}</div>
                                             <small class="mt-2 mb-2">
                                                 <i>Status :
-                                                    @if ($item->status == 'lunas')
-                                                        <span class="badge bg-label-success">{{ $item->status }}</span>
+                                                    @if ($item->transaction_status == 'lunas')
+                                                        <span
+                                                            class="badge bg-label-success">{{ $item->transaction_status }}</span>
                                                     @elseif($item->status == 'menunggu')
-                                                        <span class="badge bg-label-primary">{{ $item->status }}</span>
+                                                        <span
+                                                            class="badge bg-label-primary">{{ $item->transaction_status }}</span>
                                                     @else
-                                                        <span class="badge bg-label-danger">{{ $item->status }}</span>
+                                                        <span
+                                                            class="badge bg-label-danger">{{ $item->transaction_status }}</span>
                                                     @endif
                                                 </i>
                                             </small>
 
                                         </td>
-                                        <td>{{ 'Rp. ' . number_format($item->jumlah_bayar) }}</td>
+                                        <td>{{ 'Rp. ' . number_format($item->gross_amount) }}</td>
                                         <td class="text-center">
                                             <div>
-                                                @if ($item->metode == 'tunai')
-                                                    <span class="badge text-bg-primary">{{ $item->metode }}</span>
-                                                @elseif($item->metode == 'transfer')
-                                                    <span class="badge text-bg-info">{{ $item->metode }}</span>
-                                                @endif
-
+                                                <span class="badge text-bg-primary">{{ $item->payment_type }}</span>
                                         </td>
                                         <td>
-                                            {{ tanggal_indo($item->waktu_bayar) }}
+                                            {{ tanggal_indo($item->transaction_time) }}
                                         </td>
                                         <td>
-                                            <i> {{ format_jam($item->waktu_bayar) }}</i>
+                                            <i> {{ format_jam($item->transaction_time) }}</i>
                                         </td>
                                         <td class="text-center">
                                             <a href="{{ route('detail.pembayaran', $item->id) }}"

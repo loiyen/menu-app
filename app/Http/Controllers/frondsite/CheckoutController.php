@@ -34,8 +34,6 @@ class CheckoutController extends Controller
 
         $cart = session('cart', []);
         
-
-
         if (count($cart) == 0) {
             return redirect('/')->with('error', 'Silakan pilih menu terlebih dahulu!');
         }
@@ -47,7 +45,6 @@ class CheckoutController extends Controller
             $totalHarga += $item['harga'] * $item['qty'];
             $totalItem += $item['qty'];
         }
-
 
         if ($totalHarga < 100) {
             return response()->json([
@@ -166,10 +163,10 @@ class CheckoutController extends Controller
         return view('frondsite.halamanEditPesanan', [
             'title'         => 'Edit pesanan',
             'pesanan'       => $item,
-            'keranjang' => $cart,
-            'kategori' => $kategori,
-            'total_harga' => $totalHarga,
-            'total_item' => $totalItem
+            'keranjang'     => $cart,
+            'kategori'      => $kategori,
+            'total_harga'   => $totalHarga,
+            'total_item'    => $totalItem
         ]);
     }
 

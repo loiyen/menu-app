@@ -42,6 +42,159 @@
     <script src="{{ asset('js/plugins.js') }}"></script>
     <script src="{{ asset('js/script.js') }}"></script>
 
+    <style>
+        /*kategori menu*/
+        .category-scroll {
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .category-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .category-pill {
+            background: #f8f9fa;
+            color: #555;
+            border: 1px solid transparent;
+            white-space: nowrap;
+            transition: all 0.25s ease;
+        }
+
+        .category-pill:hover {
+            background: #eef1f5;
+            color: #000;
+            transform: translateY(-1px);
+        }
+
+        .category-pill.active {
+            background: linear-gradient(135deg, #fee100, #fde73d);
+            color: #fff !important;
+            box-shadow: 0 4px 10px rgba(255, 204, 0, 0);
+            border: none;
+        }
+
+        /*card menu*/
+        .menu-img {
+            height: 160px;
+            object-fit: cover;
+        }
+
+        @media (max-width: 576px) {
+            .menu-img {
+                height: 140px;
+            }
+        }
+
+        .menu-card {
+            transition: all 0.25s ease;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        .qty-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 6px;
+            background: #f8f9fa;
+            padding: 4px;
+            border-radius: 50px;
+        }
+
+        .qty-input {
+            border: none;
+            max-width: 40px;
+            font-weight: 600;
+            background: transparent;
+        }
+
+        .qty-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            padding: 0;
+        }
+
+        /*scrole*/
+        .menu-scroll-vertical {
+            max-height: 70vh;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        .menu-scroll-vertical {
+            scroll-behavior: smooth;
+        }
+
+        .menu-scroll-vertical::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .menu-scroll-vertical::-webkit-scrollbar-thumb {
+            background: #ddd;
+            border-radius: 10px;
+        }
+
+
+
+        /* Container */
+        .modern-toast-error {
+            border-radius: 14px !important;
+            padding: 12px 14px !important;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08) !important;
+            border-left: 4px solid #06ce27;
+            display: flex !important;
+            align-items: center !important;
+        }
+
+        /* Title */
+        .toast-title {
+            font-size: 14px !important;
+            font-weight: 600 !important;
+            margin-bottom: 2px !important;
+        }
+
+        /* Text */
+        .toast-text {
+            font-size: 13px !important;
+            color: #666 !important;
+        }
+
+        /* Icon */
+        .swal2-icon.swal2-error {
+            border-color: #dc3545 !important;
+            color: #dc3545 !important;
+            transform: scale(0.7);
+        }
+
+        /* Progress bar */
+        .swal2-timer-progress-bar {
+            background: linear-gradient(90deg, #ffe102, #ffd503);
+        }
+
+
+        .history-card {
+            transition: all 0.25s ease;
+        }
+
+        .history-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        .bg-success-subtle {
+            background-color: #e6f7ee;
+        }
+
+        .bg-danger-subtle {
+            background-color: #fdeaea;
+        }
+    </style>
+
 
 
 </head>
@@ -140,7 +293,8 @@
                                 </h6>
 
                             </div>
-                            <small style="color: rgb(88, 88, 88)">{{ 'Rp' . number_format($item['total']) ?? '' }}</small>
+                            <small
+                                style="color: rgb(88, 88, 88)">{{ 'Rp' . number_format($item['total']) ?? '' }}</small>
                             <div>
                                 <a href="{{ route('hapus.cartitem', $item['id']) }}"
                                     class="btn btn-sm  btn-outline-danger">
@@ -260,33 +414,50 @@
                 toast: true,
                 position: "top-end",
                 showConfirmButton: false,
-                timer: 3000,
+                timer: 2500,
                 timerProgressBar: true,
+                background: '#ffffff',
+                color: '#333',
+                customClass: {
+                    popup: 'modern-toast',
+                    title: 'toast-title',
+                    htmlContainer: 'toast-text'
+                },
                 didOpen: (toast) => {
-                    toast.onmouseenter = Swal.stopTimer;
-                    toast.onmouseleave = Swal.resumeTimer;
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
                 }
             });
+
             Toast.fire({
                 icon: 'success',
-                title: 'Sukses',
-                text: '{{ session('success') }}'
+                title: 'Berhasil',
+                html: '{{ session('success') }}'
             });
         </script>
     @endif
+
     @if (session('error'))
         <script>
             const Toast = Swal.mixin({
                 toast: true,
                 position: "top-end",
                 showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
+                timer: 2500,
+                timerProgressBarerror: true,
+                background: '#ffffff',
+                color: '#333',
+                customClass: {
+                    popup: 'modern-toast',
+                    title: 'toast-title',
+                    htmlContainer: 'toast-text'
+                },
                 didOpen: (toast) => {
-                    toast.onmouseenter = Swal.stopTimer;
-                    toast.onmouseleave = Swal.resumeTimer;
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
                 }
             });
+
             Toast.fire({
                 icon: 'error',
                 title: 'Gagal!',
@@ -300,7 +471,7 @@
             Swal.fire({
                 position: "top-end",
                 icon: 'success',
-                title: 'Sukses',
+                title: 'Sukses123',
                 text: '{{ session('success1') }}',
                 showConfirmButton: false,
                 timer: 1500

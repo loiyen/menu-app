@@ -29,7 +29,7 @@
                                     <i class="icon-base bx bx-search"></i>
                                 </span>
                                 <input type="text" id="search-input-order" class="form-control"
-                                    placeholder="Masukan order id..." aria-describedby="basic-addon-search31" />
+                                    placeholder="Masukan nama..." aria-describedby="basic-addon-search31" />
                             </div>
                         </form>
                     </div>
@@ -61,9 +61,11 @@
                                     <tr>
                                         <td>{{ $order->firstItem() + $loop->index }}</td>
                                         <td class="">
-                                            <div class="mb-2">No.Transaksi : <br> <small style="color: black">{{ $item->transaction->xendit_external_id }}
+                                                 <div class="mb-2">Kode Pemesanan : <br> <small style="color: black">{{ $item->nomor_pesanan ?? '0' }}
                                                 </small>
                                             </div>
+                                           
+                                           
                                             <div>Tanggal & waktu : <br> <small style="color: black">
                                                   {{ tanggal_indo($item->waktu_pesan) }}, {{ format_jam($item->waktu_pesan) }}
                                                 </small>

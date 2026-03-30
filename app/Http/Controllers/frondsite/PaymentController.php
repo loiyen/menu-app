@@ -27,9 +27,10 @@ class PaymentController extends Controller
     public function createOrder(Request $request)
     {
         $request->validate([
-            'nama' => 'required|string|max:255',
-            'phone' => 'required|string|max:255',
-            'metode' => 'required',
+            'nama'      => 'required|string|max:255',
+            'phone'     => 'required|string|max:255',
+            'email'     => 'required|string|max:255',
+            'metode'    => 'required',
         ]);
 
         session()->put('phone', $request->phone);
@@ -40,28 +41,32 @@ class PaymentController extends Controller
 
         $totalHarga = 0;
         $totalItem = 0;
+        $ppn = 4000;
 
         foreach ($cart as $item) {
             $totalHarga += $item['harga'] * $item['qty'];
             $totalItem += $item['qty'];
         }
+        if (empty($meja)) {
+            return redirect('/pembayaran-pesanan')->with('error', 'Data meja kosong!. Scan barcode meja');
+        }
+
         $order = Orders::where('phone', $request->phone)->where('payment_status', 'UNPAID')->first();
 
         if ($order) {
             return redirect(route('riwayat.pesananuser'))->with('error', 'Anda sudah memiliki pesanan yang belum dibayar');
         }
 
-
         $order = Orders::create([
-            'nomor_pesanan'       => 'ORD-' . Str::uuid(),
+            // 'nomor_pesanan'       => 'ORD-' . Str::uuid(),
             'nama'                => $request->nama,
             'phone'               => $request->phone,
-            'email'          => $request->email,
-            'meja_id'        => $meja,
-            'waktu_pesan'    => now(),
-            'payment_status' => 'UNPAID',
-            'catatan'        => $request->catatan,
-            'total_harga'    => $totalHarga
+            'email'               => $request->email,
+            'meja_id'             => $meja,
+            'waktu_pesan'         => now(),
+            'payment_status'      => 'UNPAID',
+            'catatan'             => $request->catatan,
+            'total_harga'         => $totalHarga + $ppn,
         ]);
 
 
@@ -106,7 +111,7 @@ class PaymentController extends Controller
             return back()->with('success', 'Sudah dibayar');
         }
 
-       
+
         return redirect($order->transaction->invoice_url);
     }
 }

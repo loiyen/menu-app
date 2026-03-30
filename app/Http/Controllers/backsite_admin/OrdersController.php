@@ -5,6 +5,7 @@ namespace App\Http\Controllers\backsite_admin;
 use App\Http\Controllers\Controller;
 use App\Models\Orders;
 use App\Models\Pembayarans;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,10 +15,10 @@ class OrdersController extends Controller
     public function index(Request $request)
     {
 
-        $perPage         = $request->get('perPage', 20); 
+        $perPage         = $request->get('perPage', 20);
         $pembayaran      = Pembayarans::sum('jumlah_bayar');
         $user            = Auth::user();
-        $orders          = Orders::with('meja','transaction')->paginate($perPage);
+        $orders          = Orders::with('meja', 'transaction')->paginate($perPage);
 
 
         return view('backsite.order.halamanOrder', [
@@ -30,10 +31,12 @@ class OrdersController extends Controller
 
     public function show($id)
     {
-        $pembayaran     = Pembayarans::sum('jumlah_bayar');
+
         $user           = Auth::user();
 
-        $order_detail   = Orders::with(['items.menu', 'meja', 'pembayaran'])->findOrFail($id);
+        $order_detail   = Orders::with(['items.menu', 'meja', 'transaction'])->findOrFail($id);
+
+        $pembayaran     = Transaction::where('order_id', $id)->first();
 
         $total_item = 0;
         foreach ($order_detail->items as $item) {
@@ -58,8 +61,8 @@ class OrdersController extends Controller
             return response('');
         }
 
-        $result = Orders::with(['items.menu', 'meja', 'pembayaran'])
-            ->where('order_id', 'like', "%$keyword%")
+        $result = Orders::with(['items.menu', 'meja', 'transaction'])
+            ->where('nama', 'like', "%$keyword%")
             ->paginate(20);
 
 
@@ -73,7 +76,7 @@ class OrdersController extends Controller
 
         $dari   = $request->input('dari');
         $sampai = $request->input('sampai');
-        $perPage = 20; 
+        $perPage = 20;
 
         $order = Orders::when($dari && $sampai, function ($query) use ($dari, $sampai) {
             return $query->whereDate('waktu_pesan', '>=', $dari)
@@ -87,5 +90,4 @@ class OrdersController extends Controller
             'order'         => $order,
         ]);
     }
-
 }

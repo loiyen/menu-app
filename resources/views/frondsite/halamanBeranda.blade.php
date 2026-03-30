@@ -19,14 +19,7 @@
                             <span>Hari ini, 15:00 - 01:00</span>
                         </small>
                     </div>
-
-                    <!-- Right Icon -->
-                    <a href="/info-jam"
-                        class="btn btn-light rounded-circle shadow-sm d-flex align-items-center justify-content-center"
-                        style="width: 38px; height: 38px;">
-                        <i class="fa fa-arrow-right text-secondary"></i>
-                    </a>
-
+                    <div></div>
                 </div>
             </div>
         </div>
@@ -58,18 +51,22 @@
         <div class="card border-0 shadow-sm rounded-4 p-3">
 
             <!-- Header -->
-            <div class="mb-3">
-                <h5 class="fw-semibold mb-2">Kategori</h5>
+            <div class="mb-4">
+                <h5 class="fw-semibold mb-3 d-flex align-items-center gap-2">
+                    <i class="bi bi-grid"></i> Kategori
+                </h5>
 
-                <div class="overflow-auto">
+                <div class="category-scroll pb-2">
                     <ul class="nav nav-pills flex-nowrap gap-2">
 
                         @foreach ($kategori as $category)
                             <li class="nav-item">
-                                <button class="nav-link rounded-pill px-3 small {{ $loop->first ? 'active' : '' }}"
+                                <button
+                                    class="nav-link category-pill d-flex align-items-center gap-2 px-3 py-2 rounded-pill {{ $loop->first ? 'active' : '' }}"
                                     data-bs-toggle="tab" data-bs-target="#nav-{{ $category->id }}">
 
-                                    {{ $category->nama }}
+                                    <i class="bi bi-tag"></i>
+                                    <span class="text-truncate">{{ $category->nama }}</span>
                                 </button>
                             </li>
                         @endforeach
@@ -84,74 +81,71 @@
                 @foreach ($kategori as $kat)
                     <div class="tab-pane fade {{ $loop->first ? 'show active' : '' }}" id="nav-{{ $kat->id }}">
 
-                        <div class="row g-3 mt-1">
+                        <div class="menu-scroll-vertical mt-2">
 
                             @forelse ($kat->menu as $item)
                                 <!-- CARD MENU -->
-                                <div class="col-6 col-md-4 col-lg-3">
-                                    <div class="card border-0 shadow-sm rounded-4 h-100 menu-card">
+                                <div class="col-12 col-sm-3 col-md-4 col-lg-3">
+                                    <div
+                                        class="menu-scroll d-flex gap-3 pb-2 card menu-card border-0 shadow-sm rounded-4 h-100">
 
                                         <!-- Image -->
                                         <a href="{{ route('detail.menu', $item->id) }}">
                                             <img src="{{ asset('storage/' . $item->gambar) }}"
-                                                class="card-img-top rounded-top-4" style="height:140px; object-fit:cover;">
+                                                class="card-img-top rounded-top-4 menu-img">
                                         </a>
 
                                         <!-- Body -->
-                                        <div class="card-body p-2 d-flex flex-column">
+                                        <div class="card-body p-3 d-flex flex-column">
 
-                                            <h6 class="fw-semibold mb-1 text-dark">
+                                            <h6 class="fw-semibold mb-1 text-dark text-truncate">
                                                 {{ $item->nama }}
                                             </h6>
 
-                                            <small class="text-primary fw-semibold mb-2">
-                                                Rp {{ number_format($item->harga) }}
-                                            </small>
+                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <small class="text-primary fw-bold">
+                                                    Rp {{ number_format($item->harga) }}
+                                                </small>
+                                                <small class="text-muted">Max 10</small>
+                                            </div>
 
                                             <!-- Spacer -->
                                             <div class="mt-auto">
-
                                                 <form action="{{ route('cart.add') }}" method="POST">
                                                     @csrf
-
                                                     <input type="hidden" name="id" value="{{ $item->id }}">
                                                     <input type="hidden" name="nama" value="{{ $item->nama }}">
                                                     <input type="hidden" name="harga" value="{{ $item->harga }}">
                                                     <input type="hidden" name="gambar" value="{{ $item->gambar }}">
-
-                                                    <!-- QTY -->
-                                                    <div class="d-flex align-items-center justify-content-between mb-2">
-                                                        <div class="input-group input-group-sm" style="width:120px;">
-                                                            <div class="input-group product-qty">
-                                                                <span class="input-group-btn ">
-                                                                    <button type="button"
-                                                                        class="quantity-left-minus btn btn-danger btn-number"
-                                                                        data-type="minus">
-                                                                        <svg width="16" height="16">
-                                                                            <use xlink:href="#minus"></use>
-                                                                        </svg>
-                                                                    </button>
-                                                                </span>
-                                                                <input type="text" name="qty" id="quantity"
-                                                                    class="form-control input-number" value="1">
-                                                                <span class="input-group-btn">
-                                                                    <button type="button"
-                                                                        class="quantity-right-plus btn btn-primary btn-number"
-                                                                        data-type="plus">
-                                                                        <svg width="16" height="16">
-                                                                            <use xlink:href="#plus"></use>
-                                                                        </svg>
-                                                                    </button>
-                                                                </span>
-                                                            </div>
+                                                    <div
+                                                        class="d-flex align-items-center justify-content-between mb-3 mt-3">
+                                                        <div class="input-group product-qty">
+                                                            <span class="input-group-btn ">
+                                                                <button type="button"
+                                                                    class="quantity-left-minus btn btn-danger btn-number"
+                                                                    data-type="minus">
+                                                                    <svg width="16" height="16">
+                                                                        <use xlink:href="#minus"></use>
+                                                                    </svg>
+                                                                </button>
+                                                            </span>
+                                                            <input type="text" name="qty" id="quantity"
+                                                                class="form-control input-number text-center"
+                                                                value="1">
+                                                            <span class="input-group-btn">
+                                                                <button type="button"
+                                                                    class="quantity-right-plus btn btn-primary btn-number"
+                                                                    data-type="plus">
+                                                                    <svg width="16" height="16">
+                                                                        <use xlink:href="#plus"></use>
+                                                                    </svg>
+                                                                </button>
+                                                            </span>
                                                         </div>
-
-                                                        <small class="text-muted">Max 10</small>
                                                     </div>
-
                                                     <!-- BUTTON -->
                                                     <button type="submit"
-                                                        class="btn btn-primary w-100 btn-sm rounded-pill">
+                                                        class="btn btn-primary w-100 rounded-pill btn-sm fw-semibold">
                                                         + Tambah
                                                     </button>
 
@@ -164,20 +158,27 @@
 
                             @empty
                                 <div class="col-12">
-                                    <div
-                                        class="d-flex flex-column align-items-center justify-content-center text-center py-5">
-                                        <div class="mb-3">
-                                            <img src="images/notfound.png" width="90" class="opacity-75">
+                                    <div class="empty-state text-center px-3 py-5">
+
+                                        <!-- SVG ICON -->
+                                        <div class="empty-icon mb-3">
+                                            <svg width="80" height="80" fill="none" viewBox="0 0 24 24">
+                                                <path d="M3 7h18l-1.5 11a2 2 0 0 1-2 1.5h-11a2 2 0 0 1-2-1.5L3 7z"
+                                                    stroke="#6c757d" stroke-width="1.5" />
+                                                <path d="M9 11h6M10 15h4" stroke="#adb5bd" stroke-width="1.5"
+                                                    stroke-linecap="round" />
+                                                <circle cx="9" cy="5" r="1" fill="#6c757d" />
+                                                <circle cx="15" cy="5" r="1" fill="#6c757d" />
+                                            </svg>
                                         </div>
-                                        <h6 class="fw-semibold text-dark mb-1">
+
+                                        <h5 class="fw-semibold text-dark mb-2">
                                             Menu tidak tersedia
-                                        </h6>
-                                        <small class="text-muted mb-3">
+                                        </h5>
+
+                                        <p class="text-muted small mb-3">
                                             Silakan pilih kategori lain atau coba lagi nanti
-                                        </small>
-                                        <a href="#" class="btn btn-light btn-sm rounded-pill px-3">
-                                            Refresh
-                                        </a>
+                                        </p>
 
                                     </div>
                                 </div>

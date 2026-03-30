@@ -26,7 +26,7 @@ class halamanHomeController extends Controller
         }
 
         return view('frondsite.halamanBeranda', [
-            'title'             => 'Kafe-one',
+            'title'             => 'Digiz Coffee & Eatery',
             'kategori'          => $kategori,
             'menu_lain'         => $menu,
             'keranjang'         => $cart,
@@ -52,7 +52,7 @@ class halamanHomeController extends Controller
         }
 
         return view('frondsite.halamanDetailMenu', [
-            'title'         => 'Detail menu',
+            'title'         => 'Detail | Digiz Coffee & Eatery',
             'kategori'      => $kategori,
             'menu'          => $menu,
             'menu_lain'     => $menu2,
@@ -85,9 +85,7 @@ class halamanHomeController extends Controller
         $cart = session()->get('cart', []);
 
         if (isset($cart[$id])) {
-
             $cart[$id]['qty'] += $qty;
-            // update total harga untuk item ini
             $cart[$id]['total'] = $cart[$id]['qty'] * $cart[$id]['harga'];
         } else {
             $cart[$id] = [

@@ -6,10 +6,10 @@
     <div class="row">
         <div class="col-lg-12">
             <!-- HEADER -->
-            <div class="mb-3">
-                <div class="d-flex align-items-center justify-content-between">
+            <div class="mb-3 mt-2">
+                <div class="d-flex align-items-center justify-content-between py-2">
 
-                    <!-- Back -->
+                   
                     <a href="/"
                         class="btn btn-light rounded-circle shadow-sm d-flex align-items-center justify-content-center"
                         style="width:38px;height:38px;">
@@ -160,7 +160,7 @@
                     </div>
                 </div>
 
-                <div class="col-12 mb-3">
+                <div class="col-12 mb-5">
 
                     <div class="card border-0 shadow-sm rounded-4">
 
@@ -190,25 +190,10 @@
                                     Rp 4.000
                                 </span>
                             </div>
-
-                            <hr class="my-2">
-
-                            <!-- TOTAL -->
-                            <div class="d-flex justify-content-between align-items-center">
-
-                                <span class="fw-semibold text-dark">
-                                    Total
-                                </span>
-
-                                <span class="fw-bold text-primary fs-6">
-                                    Rp {{ number_format($total_harga + 4000) }}
-                                </span>
-
-                            </div>
-
                         </div>
                     </div>
                 </div>
+                <div class="mb-5"></div>
 
                 <div class="fixed-bottom bg-white border-top shadow-sm">
 

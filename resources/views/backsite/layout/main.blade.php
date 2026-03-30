@@ -53,11 +53,9 @@
 
             <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
                 <div class="app-brand demo">
-                    <span>
-                        <img src="{{ asset('images/logo2.png') }}" alt="logo" width="70">
-                    </span>
+                   
                     <a href="/dashboard" class="app-brand-link">
-                        <h5 class="app-brand-text  menu-text fw-bold ms-3 mt-4">Coffe shop</h5>
+                        <h5 class="app-brand-text  menu-text fw-bold ms-3 mt-4">Digiz Coffee & Eatery</h5>
                     </a>
 
                     <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">
@@ -174,10 +172,6 @@
                                     <span class="badge rounded-pill bg-info">Barista</span>
                                 @endif
                             </li>
-                            <li class="nav-item lh-1 me-4">
-                                {{ 'Rp. ' . number_format($pembayaran) }}
-                            </li>
-
                             <!-- User -->
                             <li class="nav-item navbar-dropdown dropdown-user dropdown">
                                 <a class="nav-link dropdown-toggle hide-arrow p-0" href="javascript:void(0);"

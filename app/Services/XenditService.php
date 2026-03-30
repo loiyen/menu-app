@@ -24,7 +24,7 @@ class XenditService
     public function createQrisTransaction(Orders $order)
     {
         $externalId = 'ORD-' . $order->id . '-' . Str::uuid();
-        $grossAmount = $order->total_harga + 4000;
+        $grossAmount = $order->total_harga;
         $payload = [
             'external_id' => $externalId,
             'amount' => $grossAmount,

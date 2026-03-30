@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StorepembayaransRequest;
 use App\Http\Requests\UpdatepembayaransRequest;
 use App\Models\Pembayarans;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,12 +18,12 @@ class PembayaransController extends Controller
      */
     public function index(Request $request)
     {
-        $pembayaran         = Pembayarans::sum('jumlah_bayar');
+        $pembayaran         = Transaction::sum('gross_amount');
         $user               = Auth::user();
 
         $perPage            = $request->get('perPage', 20); // default 5
 
-        $data_pembayaran     = Pembayarans::whereHas('order')->with('order')->paginate($perPage);
+        $data_pembayaran     = Transaction::whereHas('order')->with('order')->paginate($perPage);
 
         return view('backsite.pembayaran.halamanPembayaran', [
             'title'                => 'Pembayaran || coffe shopp',
@@ -35,10 +36,10 @@ class PembayaransController extends Controller
 
     public function detail_pembayaran($id)
     {
-        $pembayaran         = Pembayarans::sum('jumlah_bayar');
+        $pembayaran         = Transaction::sum('gross_amount');
         $user               = Auth::user();
 
-        $detail_pembayaran     = Pembayarans::with('order.items')->findOrFail($id);
+        $detail_pembayaran     = Transaction::with('order.items')->findOrFail($id);
         $order = $detail_pembayaran->order;
         $items = $order->items;
 
@@ -55,16 +56,16 @@ class PembayaransController extends Controller
 
     public function filter_Data_by_date(Request $request)
     {
-        $pembayaran     = Pembayarans::sum('jumlah_bayar');
+        $pembayaran     = Transaction::sum('gross_amount');
         $user           = Auth::user();
 
         $dari   = $request->input('dari');
         $sampai = $request->input('sampai');
         $perPage = 20;
 
-        $data_pembayaran = Pembayarans::when($dari && $sampai, function ($query) use ($dari, $sampai) {
-            return $query->whereDate('waktu_bayar', '>=', $dari)
-                ->whereDate('waktu_bayar', '<=', $sampai);
+        $data_pembayaran = Transaction::when($dari && $sampai, function ($query) use ($dari, $sampai) {
+            return $query->whereDate('transaction_time', '>=', $dari)
+                ->whereDate('transaction_time', '<=', $sampai);
         })->paginate($perPage);
 
         return view('backsite.pembayaran.halamanPembayaran', [

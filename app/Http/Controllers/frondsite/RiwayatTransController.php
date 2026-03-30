@@ -23,7 +23,7 @@ class RiwayatTransController extends Controller
         
         $totalHarga = 0;
         $totalItem = 0;
-
+ 
         foreach ($cart as $item) {
             $totalHarga += $item['harga'] * $item['qty'];
             $totalItem += $item['qty'];

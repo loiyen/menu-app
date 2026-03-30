@@ -16,11 +16,11 @@
                                 <div class="table-responsive text-nowrap mb-2">
                                     <table class="table table-borderless table-sm">
                                         <thead>
-                                            <tr>
+                                            {{-- <tr>
                                                 <td><strong>Order id</strong></td>
                                                 <td>:</td>
                                                 <td><b class="text-warning">{{ $order->order_id }}</td>
-                                            </tr>
+                                            </tr> --}}
                                           
                                             <tr>
                                                 <td>Total harga</td>
@@ -91,16 +91,8 @@
                         <div class="col-md-12 col-sm-12 mb-5">
 
                             <div class="row">
-                                <div class="col-md-4 col-sm-4">
-                                    <div class="card h-100">
-                                        <div class="card-body">
-                                            <h6 class="text-muted mt-3">Opsi gula : </h6>
-                                            <p>* {{ $order->opsi }}</p>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <div class="col-md-8 col-sm-8">
+                               
+                                <div class="col-md-12 ">
                                     <div class="card h-100">
                                         <div class="card-body">
                                             <h6 class="text-muted mt-3">Catatan : </h6>
@@ -152,15 +144,15 @@
                             <div class="card h-100">
                                 <div class="card-header  bg-primary d-flex justify-content-between align-items-center mb-0">
                                     <h6 class="mb-0 text-white">Pembayaran</h6>
-                                    @if ($order->pembayaran->status == 'menunggu')
+                                    @if ($pembayaran->transaction_status == 'PENDING')
                                         <span
-                                            class="badge rounded-pill text-bg-danger">{{ $order->pembayaran->status }}</span>
-                                    @elseif($order->pembayaran->status == 'lunas')
+                                            class="badge rounded-pill text-bg-danger">{{ $pembayaran->transaction_status }}</span>
+                                    @elseif($pembayaran->status == 'PAID')
                                         <span
-                                            class="badge rounded-pill text-bg-danger">{{ $order->pembayaran->status }}</span>
+                                            class="badge rounded-pill text-bg-danger">{{ $pembayaran->transaction_status }}</span>
                                     @else
                                         <span
-                                            class="badge rounded-pill text-bg-dark">{{ $order->pembayaran->status }}</span>
+                                            class="badge rounded-pill text-bg-dark">{{ $pembayaran->transaction_status }}</span>
                                     @endif
                                 </div>
                                 <div class="card-body">
@@ -170,29 +162,29 @@
                                                 <tr>
                                                     <td>Metode</td>
                                                     <td>:</td>
-                                                    <td>{{ $order->pembayaran->metode }}</td>
+                                                    <td>{{ $pembayaran->payment_type }}</td>
                                                 </tr>
                                                 <tr>
                                                     <td>Total</td>
                                                     <td>:</td>
-                                                    <td><b>{{ 'Rp.' . number_format($order->pembayaran->jumlah_bayar) }}</b>
+                                                    <td><b>{{ 'Rp.' . number_format($pembayaran->gross_amount) }}</b>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>Tanggal</td>
                                                     <td>:</td>
-                                                    <td>{{ tanggal_indo($order->pembayaran->waktu_bayar) }}</td>
+                                                    <td>{{ tanggal_indo($pembayaran->transaction_time) }}</td>
                                                 </tr>
                                                 <tr>
                                                     <td>Jam</td>
                                                     <td>:</td>
-                                                    <td>{{ format_jam($order->pembayaran->waktu_bayar) }}</td>
+                                                    <td>{{ format_jam($pembayaran->transaction_time) }}</td>
                                                 </tr>
                                             </thead>
 
                                         </table>
                                     </div>
-                                    <a href="{{ route('detail.pembayaran', $order->pembayaran->id) }}" class="col-12 btn btn-primary btn-sm">Lihat</a>
+                                    <a href="{{ route('detail.pembayaran', $pembayaran->id) }}" class="col-12 btn btn-primary btn-sm">Lihat</a>
                                 </div>
                             </div>
                         </div>

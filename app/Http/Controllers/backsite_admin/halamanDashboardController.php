@@ -25,7 +25,6 @@ class halamanDashboardController extends Controller
         $meja       = Mejas::count();
 
         //order
-        $pembayaran = Pembayarans::sum('jumlah_bayar');
         $total_order = Orders::where('payment_status', 'paid')->sum('total_harga');
 
         //kategori
@@ -49,7 +48,7 @@ class halamanDashboardController extends Controller
             'order_item'            => $order_item,
             'total_order'           => $total_order,
             'meja'                  => $meja,
-            'pembayaran'            => $pembayaran,
+           
             'kategori'              => $kategori,
             'pendapatan'            => $total_gross_amount,
             'paid'                  => $total_paid,

@@ -2,25 +2,28 @@
 
 @section('container')
     <div class="row">
-        <div class="col-12 mb-3">
-            <div class="d-flex align-items-center justify-content-between">
+        <div class="col-12 mb-3 mt-2">
 
-                <!-- Back Button -->
-                <a href="/"
-                    class="btn btn-light rounded-circle shadow-sm d-flex align-items-center justify-content-center"
-                    style="width:38px;height:38px;">
-                    <i class="fa fa-arrow-left text-dark"></i>
+            <div class="detail-header d-flex align-items-center justify-content-between py-2">
+
+                <!-- BACK BUTTON -->
+                <a href="/" class="back-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
                 </a>
 
-                <!-- Title -->
-                <h6 class="fw-semibold mb-0 text-dark">
+                <!-- TITLE -->
+                <h6 class="fw-semibold mb-0 text-dark text-center flex-grow-1">
                     Detail Menu
                 </h6>
 
-                <!-- Placeholder biar balance -->
-                <div style="width:38px;"></div>
+                <!-- RIGHT SPACE / OPTIONAL ACTION -->
+                <div class="header-action"></div>
 
             </div>
+
         </div>
 
         <div class="col-12">
