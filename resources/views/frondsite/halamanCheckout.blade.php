@@ -9,7 +9,7 @@
             <div class="mb-3 mt-2">
                 <div class="d-flex align-items-center justify-content-between py-2">
 
-                   
+
                     <a href="/"
                         class="btn btn-light rounded-circle shadow-sm d-flex align-items-center justify-content-center"
                         style="width:38px;height:38px;">
@@ -29,21 +29,30 @@
 
             <!-- TIPE PESANAN -->
             <div class="col-12 mb-3">
-                <div class="card border-0 shadow-sm rounded-4 bg-light">
+                <div class="card border-0 shadow-sm rounded-4">
 
-                    <div class="card-body d-flex align-items-center justify-content-between p-3">
+                    <div class="card-body p-3 d-flex justify-content-between align-items-center">
 
                         <!-- Left -->
-                        <div>
-                            <small class="text-muted d-block mb-1">
-                                Tipe Pesanan
-                            </small>
-                            <span class="fw-semibold text-dark">
-                                Makan di tempat
-                            </span>
+                        <div class="d-flex align-items-center gap-2">
+
+                            <div class="bg-success-subtle rounded-circle d-flex align-items-center justify-content-center"
+                                style="width:36px;height:36px;">
+                                <i class="fa fa-utensils text-success"></i>
+                            </div>
+
+                            <div>
+                                <small class="text-muted d-block">
+                                    Tipe Pesanan
+                                </small>
+                                <span class="fw-semibold text-dark">
+                                    Makan di tempat
+                                </span>
+                            </div>
+
                         </div>
 
-                        <!-- Right Badge -->
+                        <!-- Status -->
                         <span class="badge bg-success-subtle text-success rounded-pill px-3 py-2">
                             <i class="fa fa-check me-1"></i> Aktif
                         </span>

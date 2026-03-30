@@ -51,7 +51,7 @@
 
                     <!-- Status -->
                     <span class="badge bg-success-subtle text-success rounded-pill px-3 py-2">
-                        Aktif
+                        <i class="fa fa-check me-1"></i> Aktif
                     </span>
 
                 </div>

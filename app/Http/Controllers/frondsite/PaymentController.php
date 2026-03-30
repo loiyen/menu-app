@@ -58,7 +58,7 @@ class PaymentController extends Controller
         }
 
         $order = Orders::create([
-            // 'nomor_pesanan'       => 'ORD-' . Str::uuid(),
+            'nomor_pesanan'       => 'ORD-' . Str::uuid(),
             'nama'                => $request->nama,
             'phone'               => $request->phone,
             'email'               => $request->email,
