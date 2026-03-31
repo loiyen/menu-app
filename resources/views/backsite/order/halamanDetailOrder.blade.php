@@ -21,7 +21,7 @@
                                                 <td>:</td>
                                                 <td><b class="text-warning">{{ $order->order_id }}</td>
                                             </tr> --}}
-                                          
+
                                             <tr>
                                                 <td>Total harga</td>
                                                 <td>:</td>
@@ -49,7 +49,7 @@
                                 <div class="table-responsive text-nowrap">
                                     <table class="table table-borderless table-sm">
                                         <thead>
-                                              <tr>
+                                            <tr>
                                                 <td><strong>Nama</strong></td>
                                                 <td>:</td>
                                                 <td><strong>{{ $order->nama }}</strong></td>
@@ -91,7 +91,7 @@
                         <div class="col-md-12 col-sm-12 mb-5">
 
                             <div class="row">
-                               
+
                                 <div class="col-md-12 ">
                                     <div class="card h-100">
                                         <div class="card-body">
@@ -146,13 +146,13 @@
                                     <h6 class="mb-0 text-white">Pembayaran</h6>
                                     @if ($pembayaran->transaction_status == 'PENDING')
                                         <span
-                                            class="badge rounded-pill text-bg-danger">{{ $pembayaran->transaction_status }}</span>
+                                            class="badge rounded-pill text-bg-warning">{{ $pembayaran->transaction_status }}</span>
                                     @elseif($pembayaran->status == 'PAID')
                                         <span
-                                            class="badge rounded-pill text-bg-danger">{{ $pembayaran->transaction_status }}</span>
+                                            class="badge rounded-pill text-bg-success">{{ $pembayaran->transaction_status }}</span>
                                     @else
                                         <span
-                                            class="badge rounded-pill text-bg-dark">{{ $pembayaran->transaction_status }}</span>
+                                            class="badge rounded-pill text-bg-danger">{{ $pembayaran->transaction_status }}</span>
                                     @endif
                                 </div>
                                 <div class="card-body">
@@ -184,7 +184,8 @@
 
                                         </table>
                                     </div>
-                                    <a href="{{ route('detail.pembayaran', $pembayaran->id) }}" class="col-12 btn btn-primary btn-sm">Lihat</a>
+                                    <a href="{{ route('detail.pembayaran', $pembayaran->id) }}"
+                                        class="col-12 btn btn-primary btn-sm">Lihat</a>
                                 </div>
                             </div>
                         </div>
@@ -209,7 +210,7 @@
                                                 <td><b>{{ $order->nama }}</b></td>
                                             </tr>
                                             <tr>
-                                                <td>Sub total</td>
+                                                <td>Sub total + PPN</td>
                                                 <td></td>
                                                 <td></td>
                                                 <td>:</td>
@@ -226,10 +227,11 @@
                                                 <td class="text-white"><b>Bayar</b></td>
                                                 <td></td>
                                                 <td></td>
-                                                <td>:</td>   
-                                                <td class="text-white"><b>{{ 'Rp.' . number_format($order->total_harga + 4000) }}</b></td>
+                                                <td>:</td>
+                                                <td class="text-white">
+                                                    <b>{{ 'Rp.' . number_format($order->total_harga) }}</b></td>
                                             </tr>
-                                            
+
 
                                         </thead>
                                     </table>

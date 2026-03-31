@@ -41,7 +41,7 @@ class RiwayatTransController extends Controller
         }
 
         return view('frondsite.riwayat.halamanRiwayatTrans', [
-            'title'             => 'Riwayat',
+            'title'             => 'Riwayat | Digiz Coffee & Eatery',
             'orders'            => $orders,
             'keranjang'         => $cart,
             'total_harga'       => $totalHarga,
@@ -66,7 +66,7 @@ class RiwayatTransController extends Controller
         $totalItem = $orders->items->sum('qty');
 
         return view('frondsite.riwayat.halamanDetailRiwayat', [
-            'title'         => 'Detail',
+            'title'         => 'Detail riwayat | Digiz Coffee & Eatery',
             'orders'        => $orders,
             'keranjang'     => $cart,
             'total_harga'   => $totalHarga,

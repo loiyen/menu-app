@@ -53,7 +53,7 @@ class CheckoutController extends Controller
         }
 
         return view('frondsite.halamanCheckout', [
-            'title' => 'Pesanan',
+            'title' => 'Pesanan | Digiz Coffee & Eatery',
             'tampilkan_alert' => true,
             'kategori' => $kategori,
             'keranjang' => $cart,
@@ -133,7 +133,7 @@ class CheckoutController extends Controller
         }
 
         return view('frondsite.pesanan.halamanDetailpembelian', [
-            'title' => 'Detail pemesanan',
+            'title' => 'Detail pemesanan | Digiz Coffee & Eatery',
             'kategori' => $kategori,
             'keranjang' => $cart,
             'orders' => $orders,
@@ -161,7 +161,7 @@ class CheckoutController extends Controller
         $item     = $cart[$id] ?? null;
 
         return view('frondsite.halamanEditPesanan', [
-            'title'         => 'Edit pesanan',
+            'title'         => 'Edit pesanan | Digiz Coffee & Eatery',
             'pesanan'       => $item,
             'keranjang'     => $cart,
             'kategori'      => $kategori,
@@ -218,7 +218,7 @@ class CheckoutController extends Controller
         }
 
         return view('frondsite.halamanPembayaran', [
-            'title'     => 'Pembayaran',
+            'title'     => 'Pembayaran | Digiz Coffee & Eatery',
             'kategori' => $kategori,
             'keranjang' => $cart,
             'total_harga' => $totalHarga,
