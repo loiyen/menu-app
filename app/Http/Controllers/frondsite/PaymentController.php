@@ -91,12 +91,14 @@ class PaymentController extends Controller
     {
         session()->forget('cart');
 
-        return redirect(route('riwayat.pesananuser'))->with('success', 'Payment success');
+        return redirect(route('riwayat.pesananuser'))->with('success', 'Transaksi Berhasil');
     }
 
     public function failed(Request $request)
     {
-        return redirect(route('history.order'))->with('error', 'Payment failed');
+        session()->forget('cart');
+
+        return redirect(route('riwayat.pesananuser'))->with('error', 'Transaksi Gagal!');
     }
 
     public function bayar($id)
