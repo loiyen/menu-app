@@ -149,6 +149,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/order/{id}', [OrdersController::class, 'show'])->name('detail.order');
     Route::get('/order/order-id/search-live', [OrdersController::class, 'searchLive'])->name('order.searchLive');
     Route::get('/filterdataorder', [OrdersController::class, 'filter_Data_by_date']);
+    Route::get('/cetak-nota/{id}', [OrdersController::class, 'cetak_nota'])->name('cetak.nota');
 
     //pembayaran 
     Route::get('/pembayaran', [PembayaransController::class, 'index'])->name('pembayaran.index');
