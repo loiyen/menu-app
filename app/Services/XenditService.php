@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\Order;
 use App\Models\Orders;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\Http;
@@ -18,13 +17,10 @@ class XenditService
         $this->apiKey = config('services.xendit.api_key');
     }
 
-    /**
-     * Buat QRIS Transaction
-     */
     public function createQrisTransaction(Orders $order)
     {
         $externalId = 'ORD-' . $order->id . '-' . Str::uuid();
-        $grossAmount = $order->total_harga;
+        $grossAmount = (int) $order->total_harga;
         $payload = [
             'external_id' => $externalId,
             'amount' => $grossAmount,
@@ -44,15 +40,15 @@ class XenditService
             ],
             'success_redirect_url' => url('/payment-success'),
             'failure_redirect_url' => url('/payment-failure'),
-            'items' => 
-                $order->items->map(function ($item) {
-                    return [
-                        'id' => $item->id,
-                        'price' => $item->sub_total / $item->qty,
-                        'quantity' => $item->qty,
-                        'name' => $item->nama_menu,
-                    ];
-                })->toArray(),
+            'items' =>
+            $order->items->map(function ($item) {
+                return [
+                    'id' => $item->id,
+                    'price' => $item->sub_total / $item->qty,
+                    'quantity' => $item->qty,
+                    'name' => $item->nama_menu,
+                ];
+            })->toArray(),
             'fees' => [
                 [
                     'type' => 'PPN',
@@ -65,7 +61,7 @@ class XenditService
             ],
         ];
         $headers = [
-            'api-version' => "2022-07-31" ,
+            'api-version' => "2022-07-31",
             'Content-Type' => 'application/json',
         ];
 
@@ -86,7 +82,7 @@ class XenditService
 
         return Transaction::create([
             'order_id' => $order->id,
-            'xendit_external_id' => $externalId, 
+            'xendit_external_id' => $externalId,
             'payment_type' => 'qris',
             'transaction_status' => 'PENDING',
             'gross_amount' => $grossAmount,

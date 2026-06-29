@@ -48,6 +48,7 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
+                                    <th class="text-center">CETAK</th>
                                     <th class="text-center">ID transaksi</th>
                                     <th class="">Nama</th>
                                     <th class="text-center">Status pembayaran</th>
@@ -60,6 +61,13 @@
                                 @forelse ($order as $item)
                                     <tr>
                                         <td>{{ $order->firstItem() + $loop->index }}</td>
+                                        
+                                        <td >
+                                            <a href="{{ route('cetak.nota', $item->id) }}" class="btn mb-2 btn-info">
+                                                <i class='bx bx-printer'></i>
+                                            </a>
+                                        </td>
+                                        
                                         <td class="">
                                             <div class="mb-2">Kode Pemesanan : <br> <small
                                                     style="color: black">{{ $item->nomor_pesanan ?? '0' }}

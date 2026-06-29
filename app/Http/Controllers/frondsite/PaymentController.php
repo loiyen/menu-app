@@ -1,23 +1,15 @@
 <?php
 
 namespace App\Http\Controllers\frondsite;
-
-use App\Models\Order;
-use App\Models\OrderItem;
-use App\Models\Transaction;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Services\XenditService;
-use App\Services\MidtransService;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Models\Orders;
 
 class PaymentController extends Controller
 {
     protected XenditService $xendit;
-
 
     public function __construct(XenditService $xendit)
     {
@@ -35,7 +27,7 @@ class PaymentController extends Controller
 
         session()->put('phone', $request->phone);
 
-        // Hitung total dari cart
+       
         $meja = session('id');
         $cart = session('cart', []);
 

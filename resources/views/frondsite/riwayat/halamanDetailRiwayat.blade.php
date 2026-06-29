@@ -20,16 +20,42 @@
 
         <!-- STATUS -->
         <div class="card border-0 shadow-sm rounded-4 p-3 mb-3">
-            <div class="d-flex align-items-center gap-2 text-success fw-semibold">
 
-                <!-- ICON SUCCESS -->
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor">
-                    <path
-                        d="M16.707 5.293a1 1 0 010 1.414l-7.25 7.25a1 1 0 01-1.414 0l-3.25-3.25a1 1 0 111.414-1.414L8.5 11.586l6.543-6.543a1 1 0 011.414 0z" />
-                </svg>
+            @if ($orders->payment_status === 'PAID')
+                <div
+                    class="d-inline-flex align-items-center gap-2 px-3 py-2 rounded-pill bg-success-subtle border border-success-subtle">
+                    <div class="rounded-circle bg-success d-flex align-items-center justify-content-center"
+                        style="width:24px;height:24px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="white"
+                            viewBox="0 0 16 16">
+                            <path
+                                d="M16.707 5.293a1 1 0 010 1.414l-7.25 7.25a1 1 0 01-1.414 0l-3.25-3.25a1 1 0 111.414-1.414L8.5 11.586l6.543-6.543a1 1 0 011.414 0z" />
+                        </svg>
+                    </div>
 
-                Pesanan Selesai
-            </div>
+                    <div>
+                        <div class="fw-bold text-success">Pembayaran Berhasil</div>
+                        <small class="text-muted">Pesanan telah dibayar</small>
+                    </div>
+                </div>
+            @else
+                <div
+                    class="d-inline-flex align-items-center gap-2 px-3 py-2 rounded-pill bg-warning-subtle border border-warning-subtle">
+                    <div class="rounded-circle bg-warning d-flex align-items-center justify-content-center"
+                        style="width:24px;height:24px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="white"
+                            viewBox="0 0 16 16">
+                            <path
+                                d="M8 1a7 7 0 110 14A7 7 0 018 1zm0 3a1 1 0 00-1 1v3a1 1 0 102 0V5a1 1 0 00-1-1zm0 7a1.25 1.25 0 100-2.5A1.25 1.25 0 008 11z" />
+                        </svg>
+                    </div>
+
+                    <div>
+                        <div class="fw-bold text-dark">Menunggu Pembayaran</div>
+                        <small class="text-muted">Pesanan belum dibayar</small>
+                    </div>
+                </div>
+            @endif
 
             <div class="mt-3 small text-muted">
                 No. Pesanan <br>
@@ -73,21 +99,16 @@
                             Rp{{ number_format($item->harga) }}
                         </div>
 
-                        <!-- STATUS -->
-                        @if ($item->status === 'proses')
-                            <span class="badge  rounded-pill px-2 mt-1" style="background: red">
-                                Proses
-                            </span>
-                        @else
-                            <span class="badge rounded-pill px-2 mt-1" style="background: rgb(0, 236, 59)">
-                                Selesai
-                            </span>
-                        @endif
                     </div>
                 </div>
                 <div>
                     <h6 class="text-muted">Catatan : </h6>
-                    <p>{{ $item->catatan_menu }}</p>
+                    @if ($item->catatan_menu == null)
+                        <p>Tidak ada</p>
+                    @else
+                        <p>{{ $item->catatan_menu }}</p>
+                    @endif
+
                 </div>
             @endforeach
         </div>
@@ -122,11 +143,20 @@
         </div>
 
         <!-- BUTTON -->
-        <div class="d-grid">
-            <a href="/" class="btn btn-primary rounded-pill fw-semibold py-2">
-                Pesan Lagi
-            </a>
+        <div class="d-grid ">
+            @if ($orders->payment_status === 'PAID')
+                <a href="/" class="btn btn-primary rounded-pill fw-semibold py-2">
+                    Pesan Lagi
+                </a>
+            @else
+                <a href="{{ route('pembayaran.pesanan', $orders->id) }}"
+                    class="btn btn-primary rounded-pill fw-semibold py-2">
+                    Bayar
+                </a>
+            @endif
+
         </div>
+        <div class="mb-5"></div>
 
     </div>
 @endsection

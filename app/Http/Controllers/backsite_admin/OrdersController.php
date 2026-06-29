@@ -90,4 +90,14 @@ class OrdersController extends Controller
             'order'         => $order,
         ]);
     }
+
+    public function cetak_nota($id)
+    {
+        $order = Orders::findOrFail($id);
+
+        return view('backsite.cetak_nota.cetak-nota-detail-order', [
+            'title' => 'Cetak Nota',
+            'order' => $order
+        ]);
+    }
 }

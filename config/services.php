@@ -40,9 +40,11 @@ return [
         'client_key'    => env('MIDTRANS_CLIENT_KEY'),
         'is_production' => env('MIDTRANS_IS_PRODUCTION', false),
     ],
+    
     'xendit' => [
         'api_key' => env('XENDIT_API_KEY'),
+        'callback_token' => env('XENDIT_CALLBACK_TOKEN'),
         'is_production' => env('XENDIT_IS_PRODUCTION', false),
-],
+    ],
 
 ];
