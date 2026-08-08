@@ -15,13 +15,14 @@ class Orders extends Model
     'nama',
     'phone',
     'email',
-    'meja_id',    
+    'meja_id',
     'waktu_pesan',
     'opsi',
     'status',
     'payment_status',
     'catatan',
     'total_harga',
+    'status_order',
 
   ];
 
@@ -35,15 +36,13 @@ class Orders extends Model
     return $this->hasMany(OrderItems::class, 'order_id');
   }
 
-  public function pembayaran()
-  {
-    return $this->hasOne(Pembayarans::class, 'order_id');
-  }
+  // public function pembayaran()
+  // {
+  //   return $this->hasOne(Pembayarans::class, 'order_id');
+  // }
 
   public function transaction()
   {
     return $this->hasOne(Transaction::class, 'order_id');
   }
-
-
 }

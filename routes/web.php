@@ -20,6 +20,8 @@ use App\Http\Controllers\backsite_kasir\RiwayatKasirController;
 use App\Http\Controllers\backsite_barista\RiwayatPesanController;
 use App\Http\Controllers\backsite_kasir\DashboardKasirController;
 use App\Http\Controllers\backsite_admin\halamanDashboardController;
+use App\Http\Controllers\backsite_admin\PesananRealtimeController;
+use App\Http\Controllers\backsite_admin\ReportController;
 use App\Http\Controllers\backsite_barista\DashboardBaristaController;
 use App\Http\Controllers\frondsite\RiwayatTransController;
 use App\Http\Controllers\frondsite\PaymentController;
@@ -132,6 +134,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/hapus/{id}', [MenusController::class, 'destroy'])->name('hapus.menu');
     Route::get('/menu3/search-live', [MenusController::class, 'searchLive_ds'])->name('menu.searchLive');
 
+    //pesanan
+    Route::get('/pesanan-realtime', [PesananRealtimeController::class, 'index'])
+        ->name('pesanan.realtime');
+
+    Route::get('/pesanan-realtime/data', [PesananRealtimeController::class, 'data'])
+        ->name('pesanan.realtime.data');
+
+    Route::patch('/pesanan-realtime/{order}/selesai', [PesananRealtimeController::class, 'selesai'])
+        ->name('pesanan.realtime.selesai');
+
+
     //kategori
     Route::get('/kategori', [KategorisController::class, 'index']);
     Route::post('/simpankategori', [KategorisController::class, 'create'])->name('simpan.kategori');
@@ -156,6 +169,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/detail/pembayaran/{id}', [PembayaransController::class, 'detail_pembayaran'])->name('detail.pembayaran');
     Route::get('/filterdatapembayaran', [PembayaransController::class, 'filter_Data_by_date']);
 
+    //laporan 
+    Route::get('/laporan', [ReportController::class, 'index'])->name('laporan.index');
+    
     //akun
     Route::get('/akun', [AkunController::class, 'index']);
 });
