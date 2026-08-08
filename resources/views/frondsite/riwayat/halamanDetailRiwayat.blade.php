@@ -110,6 +110,14 @@
                     @endif
 
                 </div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <h6 class="text-muted">Status pesanan : </h6>
+                    @if ($item->status == 'proses')
+                        <span class="badge bg-primary">Proses</span>
+                    @else
+                        <span class="badge" style="background-color: forestgreen">Selesai</span>
+                    @endif
+                </div>
             @endforeach
         </div>
 
@@ -117,9 +125,14 @@
         <div class="card border-0 shadow-sm rounded-4 p-3 mb-3">
             <h6 class="fw-semibold mb-3">Rincian Pembayaran</h6>
 
-            <div class="d-flex justify-content-between small mb-2">
+            <div class="d-flex justify-content-between small mb-">
                 <span class="text-muted">Metode</span>
-                <span class="fw-medium">{{ $orders->transaction->payment_type }}</span>
+                <span class="fw-medium">
+                    @if ($orders->transaction->payment_type == 'qris')
+                        <p>QRIS</p>
+                    @endif
+
+                </span>
             </div>
 
             <div class="d-flex justify-content-between small mb-2">
