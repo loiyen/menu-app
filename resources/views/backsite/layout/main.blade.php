@@ -43,6 +43,90 @@
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
 
     <script src="{{ asset('admin/assets/js/config.js') }}"></script>
+
+    <style>
+        .live-status-card {
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            border-radius: 24px;
+            padding: 24px;
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            box-shadow: 0 18px 40px rgba(15, 23, 42, 0.18);
+        }
+
+        .live-status-label {
+            color: rgba(255, 255, 255, 0.72);
+            font-weight: 600;
+        }
+
+        .live-status-icon {
+            width: 54px;
+            height: 54px;
+            border-radius: 18px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-size: 26px;
+            background: rgba(255, 255, 255, 0.18);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+        }
+
+        .order-note-box {
+            margin-top: 12px;
+            border-radius: 14px;
+            padding: 10px 12px;
+            background: rgba(105, 108, 255, .08);
+            border: 1px solid rgba(105, 108, 255, .16);
+            color: #334155;
+            font-size: 13px;
+        }
+
+        .menu-note-box {
+            margin-top: 8px;
+            border-radius: 12px;
+            padding: 8px 10px;
+            background: #ffffff;
+            border: 1px dashed rgba(100, 116, 139, .28);
+            color: #64748b;
+            font-size: 12px;
+        }
+
+        .menu-price-info {
+            margin-top: 6px;
+            color: #64748b;
+            font-size: 12px;
+        }
+
+        .dashboard-balance-card {
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            border-radius: 24px;
+            padding: 24px;
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            box-shadow: 0 18px 40px rgba(15, 23, 42, 0.18);
+        }
+
+        .dashboard-balance-label {
+            color: rgba(255, 255, 255, 0.72);
+            font-weight: 600;
+        }
+
+        .dashboard-balance-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.18);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            flex-shrink: 0;
+        }
+    </style>
 </head>
 
 <body>
@@ -53,7 +137,7 @@
 
             <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
                 <div class="app-brand demo">
-                   
+
                     <a href="/dashboard" class="app-brand-link">
                         <h5 class="app-brand-text  menu-text fw-bold ms-3 mt-4">Digiz Coffee & Eatery</h5>
                     </a>
@@ -100,7 +184,27 @@
 
                     <!-- Apps & Pages -->
                     <li class="menu-header small text-uppercase">
-                        <span class="menu-header-text">Sub menu</span>
+                        <span class="menu-header-text">Realtime Order</span>
+                    </li>
+
+                    <li class="menu-item {{ request()->is('pesanan*') ? 'active open' : '' }}">
+                        <a href="{{ route('pesanan.realtime') }}" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-bell"></i>
+                            <div class="text-truncate">Pesanan</div>
+
+                            @isset($pesanan_baru)
+                                @if ($pesanan_baru > 0)
+                                    <span class="badge rounded-pill bg-danger ms-auto">
+                                        {{ $pesanan_baru }}
+                                    </span>
+                                @endif
+                            @endisset
+                        </a>
+                    </li>
+
+                    <!-- Apps & Pages -->
+                    <li class="menu-header small text-uppercase">
+                        <span class="menu-header-text">Data Meja</span>
                     </li>
 
 
@@ -124,6 +228,17 @@
                         <a href="/pembayaran" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-card"></i>
                             <div class="text-truncate" data-i18n="Boxicons">Pembayaran</div>
+                        </a>
+                    </li>
+
+                    <li class="menu-header small text-uppercase">
+                        <span class="menu-header-text">Manajemen Laporan</span>
+                    </li>
+
+                    <li class="menu-item {{ request()->is('laporan*') ? 'active open' : '' }}">
+                        <a href="{{ route('laporan.index') }}" class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-file"></i>
+                            <div class="text-truncate">Laporan</div>
                         </a>
                     </li>
 
@@ -201,13 +316,14 @@
                                     <li>
                                         <div class="dropdown-divider my-1"></div>
                                     </li>
-                
+
                                     <li>
 
                                         <form action="{{ route('logout') }}" method="POST">
                                             @csrf
                                             <button type="submit" class="dropdown-item">
-                                                <i class="icon-base bx bx-power-off icon-md me-3"></i><span>Keluar</span>
+                                                <i
+                                                    class="icon-base bx bx-power-off icon-md me-3"></i><span>Keluar</span>
                                             </button>
                                         </form>
                                     </li>
