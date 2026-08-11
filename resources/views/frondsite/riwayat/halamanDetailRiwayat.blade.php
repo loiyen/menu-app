@@ -77,7 +77,7 @@
 
             <div class="mt-2 small text-muted">
                 Status pesanan <br>
-                @if ($orders->catatan == 'proses')
+                @if ($orders->status_order == 'proses')
                     <span class="badge bg-primary">Proses</span>
                 @else
                     <span class="badge" style="background-color: lime">Selesai</span>
