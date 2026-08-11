@@ -112,7 +112,7 @@
                 </div>
                 <div class="d-flex justify-content-between align-items-center">
                     <h6 class="text-muted">Status pesanan : </h6>
-                    @if ($item->status == 'proses')
+                    @if ($item->status_order === 'proses')
                         <span class="badge bg-primary">Proses</span>
                     @else
                         <span class="badge" style="background-color: forestgreen">Selesai</span>
@@ -142,7 +142,7 @@
 
             <div class="d-flex justify-content-between small mb-2">
                 <span class="text-muted">PPN</span>
-                <span>Rp4,000</span>
+                <span>Rp200</span>
             </div>
 
             <hr>
