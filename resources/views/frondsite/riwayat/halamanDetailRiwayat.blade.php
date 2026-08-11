@@ -74,6 +74,12 @@
                 Catatan <br>
                 <span class="text-dark fw-medium">{{ $orders->catatan ?? '-' }}</span>
             </div>
+
+            <div class="mt-2 small text-muted">
+                Status pesanan <br>
+                <span class="text-dark fw-medium">{{ $orders->status_order ?? '-' }}</span>
+            </div>
+
         </div>
 
         <!-- DETAIL MENU -->
@@ -110,14 +116,7 @@
                     @endif
 
                 </div>
-                <div class="d-flex justify-content-between align-items-center">
-                    <h6 class="text-muted">Status pesanan : </h6>
-                    @if ($item->status_order === 'proses')
-                        <span class="badge bg-primary">Proses</span>
-                    @else
-                        <span class="badge" style="background-color: forestgreen">Selesai</span>
-                    @endif
-                </div>
+                
             @endforeach
         </div>
 
