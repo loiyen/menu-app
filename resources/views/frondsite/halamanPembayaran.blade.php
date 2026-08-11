@@ -213,7 +213,7 @@
                                 Total Pembayaran
                             </small>
                             <span class="fw-bold text-primary fs-5">
-                                Rp {{ number_format($total_harga + 4000) }}
+                                Rp {{ number_format($total_harga + 200) }}
                             </span>
                         </div>
                         <!-- BUTTON -->

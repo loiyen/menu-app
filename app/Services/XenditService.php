@@ -52,7 +52,7 @@ class XenditService
             'fees' => [
                 [
                     'type' => 'PPN',
-                    'value' => 4000,
+                    'value' => 200,
                 ],
             ],
             'payment_methods' => ['QRIS'],

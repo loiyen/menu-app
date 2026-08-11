@@ -186,7 +186,7 @@
                                     Subtotal ({{ $total_item }} menu)
                                 </span>
                                 <span class="fw-semibold">
-                                    Rp {{ number_format($total_harga) }}
+                                    Rp{{ number_format($total_harga) }}
                                 </span>
                             </div>
 
@@ -196,7 +196,7 @@
                                     PPN
                                 </span>
                                 <span class="text-muted">
-                                    Rp 4.000
+                                    Rp200
                                 </span>
                             </div>
                         </div>
@@ -216,7 +216,7 @@
                                     Total Pembayaran
                                 </small>
                                 <span class="fw-bold text-primary fs-5">
-                                    Rp {{ number_format($total_harga + 4000) }}
+                                    Rp {{ number_format($total_harga + 200) }}
                                 </span>
                             </div>
 

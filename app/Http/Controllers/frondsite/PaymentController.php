@@ -33,7 +33,7 @@ class PaymentController extends Controller
 
         $totalHarga = 0;
         $totalItem = 0;
-        $ppn = 4000;
+        $ppn = 200;
 
         foreach ($cart as $item) {
             $totalHarga += $item['harga'] * $item['qty'];
@@ -61,7 +61,6 @@ class PaymentController extends Controller
             'total_harga'         => $totalHarga + $ppn,
         ]);
 
-
         foreach ($cart as $item) {
             $order->items()->create([
                 'menu_id'       => $item['id'],
@@ -69,8 +68,7 @@ class PaymentController extends Controller
                 'sub_total'     => $item['harga'] * $item['qty'],
                 'qty'           => $item['qty'],
                 'harga'         => $item['harga'],
-                'catatan_menu'  => $item['catatan'],
-                'status'        => 'Proses'
+                'catatan_menu'  => $item['catatan']
             ]);
         }
 
