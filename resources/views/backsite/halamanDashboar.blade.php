@@ -176,7 +176,7 @@
                         </span>
 
                         <h3 class="fw-bold mb-2 text-white">
-                            Selamat Datang di Dashboard MenuQR
+                            Selamat Datang di Dashboard 
                         </h3>
 
                         <p class="mb-0 text-white-50">
