@@ -77,7 +77,11 @@
 
             <div class="mt-2 small text-muted">
                 Status pesanan <br>
-                <span class="text-dark fw-medium">{{ $orders->status_order ?? '-' }}</span>
+                @if ($orders->catatan == 'proses')
+                    <span class="badge bg-primary">Proses</span>
+                @else
+                    <span class="badge" style="background-color: lime">Selesai</span>
+                @endif
             </div>
 
         </div>
@@ -116,7 +120,6 @@
                     @endif
 
                 </div>
-                
             @endforeach
         </div>
 
